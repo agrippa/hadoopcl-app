@@ -1,0 +1,2458 @@
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     25841  0.0  0.0 106084  1400 ?        Ss   23:51   0:00 bash -c ps aux | grep java
+jmg3     25857  0.0  0.0 103232   844 ?        S    23:51   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   17:46   0:00 tail -f kmeans.java.compressed
+jmg3     25991  0.0  0.0  59072  3528 pts/0    S    23:51   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     25997  0.0  0.0 106084  1396 ?        Ss   23:51   0:00 bash -c ps aux | grep java
+jmg3     26013  0.0  0.0 103232   844 ?        R    23:51   0:00 grep java
+Done
+java: no process killed
+java: no process killed
+jmg3     25903  0.0  0.0 106084  1400 ?        Ss   23:52   0:00 bash -c ps aux | grep java
+jmg3     25919  0.0  0.0 103232   840 ?        S    23:52   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   17:46   0:00 tail -f kmeans.java.compressed
+jmg3     26074  0.0  0.0  59072  3528 pts/0    S    23:52   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     26080  0.0  0.0 106084  1400 ?        Ss   23:52   0:00 bash -c ps aux | grep java
+jmg3     26096  0.0  0.0 103232   840 ?        R    23:52   0:00 grep java
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/22 23:52:08 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/22 23:52:08 INFO util.GSet: VM type       = 64-bit
+13/05/22 23:52:08 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/22 23:52:08 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/22 23:52:08 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/22 23:52:08 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/22 23:52:08 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/22 23:52:08 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/22 23:52:08 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/22 23:52:08 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/22 23:52:08 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/22 23:52:09 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/22 23:52:09 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/22 23:52:09 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:04:05 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 00:04:05 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 00:04:05 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 00:04:06 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 00:04:06 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 00:04:07 INFO mapred.JobClient: Running job: job_201305222352_0001
+13/05/23 00:04:08 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 00:04:29 INFO mapred.JobClient:  map 8% reduce 0%
+13/05/23 00:04:32 INFO mapred.JobClient:  map 13% reduce 0%
+13/05/23 00:04:35 INFO mapred.JobClient:  map 19% reduce 0%
+13/05/23 00:04:38 INFO mapred.JobClient:  map 26% reduce 0%
+13/05/23 00:04:41 INFO mapred.JobClient:  map 32% reduce 0%
+13/05/23 00:04:44 INFO mapred.JobClient:  map 35% reduce 0%
+13/05/23 00:04:47 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 00:04:50 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 00:04:53 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 00:05:44 INFO mapred.JobClient:  map 46% reduce 0%
+13/05/23 00:05:47 INFO mapred.JobClient:  map 48% reduce 2%
+13/05/23 00:05:50 INFO mapred.JobClient:  map 49% reduce 3%
+13/05/23 00:05:53 INFO mapred.JobClient:  map 51% reduce 4%
+13/05/23 00:05:56 INFO mapred.JobClient:  map 53% reduce 6%
+13/05/23 00:05:59 INFO mapred.JobClient:  map 56% reduce 8%
+13/05/23 00:06:02 INFO mapred.JobClient:  map 60% reduce 9%
+13/05/23 00:06:05 INFO mapred.JobClient:  map 64% reduce 11%
+13/05/23 00:06:08 INFO mapred.JobClient:  map 69% reduce 12%
+13/05/23 00:06:11 INFO mapred.JobClient:  map 73% reduce 14%
+13/05/23 00:06:14 INFO mapred.JobClient:  map 77% reduce 14%
+13/05/23 00:06:17 INFO mapred.JobClient:  map 78% reduce 14%
+13/05/23 00:06:21 INFO mapred.JobClient:  map 79% reduce 14%
+13/05/23 00:06:27 INFO mapred.JobClient:  map 82% reduce 14%
+13/05/23 00:06:30 INFO mapred.JobClient:  map 84% reduce 14%
+13/05/23 00:06:33 INFO mapred.JobClient:  map 86% reduce 14%
+13/05/23 00:06:57 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 00:07:00 INFO mapred.JobClient:  map 87% reduce 15%
+13/05/23 00:07:03 INFO mapred.JobClient:  map 88% reduce 18%
+13/05/23 00:07:06 INFO mapred.JobClient:  map 91% reduce 20%
+13/05/23 00:07:09 INFO mapred.JobClient:  map 93% reduce 21%
+13/05/23 00:07:12 INFO mapred.JobClient:  map 95% reduce 21%
+13/05/23 00:07:15 INFO mapred.JobClient:  map 97% reduce 21%
+13/05/23 00:07:18 INFO mapred.JobClient:  map 98% reduce 21%
+13/05/23 00:07:22 INFO mapred.JobClient:  map 99% reduce 21%
+13/05/23 00:07:31 INFO mapred.JobClient:  map 99% reduce 24%
+13/05/23 00:07:43 INFO mapred.JobClient:  map 96% reduce 26%
+13/05/23 00:07:46 INFO mapred.JobClient:  map 96% reduce 27%
+13/05/23 00:07:48 INFO mapred.JobClient: Task Id : attempt_201305222352_0001_m_000029_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305222352_0001_m_000029_0: Scope block from 31 to  64
+13/05/23 00:07:49 INFO mapred.JobClient:  map 96% reduce 28%
+13/05/23 00:07:58 INFO mapred.JobClient:  map 97% reduce 28%
+13/05/23 00:08:01 INFO mapred.JobClient:  map 98% reduce 30%
+13/05/23 00:08:04 INFO mapred.JobClient:  map 96% reduce 31%
+13/05/23 00:08:07 INFO mapred.JobClient:  map 96% reduce 32%
+13/05/23 00:08:09 INFO mapred.JobClient: Task Id : attempt_201305222352_0001_m_000029_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305222352_0001_m_000029_1: Scope block from 31 to  64
+13/05/23 00:08:19 INFO mapred.JobClient:  map 97% reduce 32%
+13/05/23 00:08:22 INFO mapred.JobClient:  map 98% reduce 32%
+13/05/23 00:08:28 INFO mapred.JobClient:  map 99% reduce 32%
+13/05/23 00:08:41 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 00:08:47 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 00:08:59 INFO mapred.JobClient:  map 100% reduce 55%
+13/05/23 00:09:02 INFO mapred.JobClient:  map 100% reduce 80%
+13/05/23 00:09:05 INFO mapred.JobClient:  map 100% reduce 88%
+13/05/23 00:09:08 INFO mapred.JobClient:  map 100% reduce 97%
+13/05/23 00:09:11 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 00:09:19 INFO mapred.JobClient: Job complete: job_201305222352_0001
+13/05/23 00:09:19 INFO mapred.JobClient: Counters: 29
+13/05/23 00:09:19 INFO mapred.JobClient:   Job Counters 
+13/05/23 00:09:19 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 00:09:19 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2465612
+13/05/23 00:09:19 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 00:09:19 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 00:09:19 INFO mapred.JobClient:     Launched map tasks=32
+13/05/23 00:09:19 INFO mapred.JobClient:     Data-local map tasks=32
+13/05/23 00:09:19 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=1056786
+13/05/23 00:09:19 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 00:09:19 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 00:09:19 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 00:09:19 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 00:09:19 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 00:09:19 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 00:09:19 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 00:09:19 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 00:09:19 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 00:09:19 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 00:09:19 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 00:09:19 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 00:09:19 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 00:09:19 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 00:09:19 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 00:09:19 INFO mapred.JobClient:     CPU time spent (ms)=1996480
+13/05/23 00:09:19 INFO mapred.JobClient:     Total committed heap usage (bytes)=43305140224
+13/05/23 00:09:19 INFO mapred.JobClient:     Combine input records=0
+13/05/23 00:09:19 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 00:09:19 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 00:09:19 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 00:09:19 INFO mapred.JobClient:     Combine output records=0
+13/05/23 00:09:19 INFO mapred.JobClient:     Physical memory (bytes) snapshot=36486533120
+13/05/23 00:09:19 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 00:09:19 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091360309248
+13/05/23 00:09:19 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 312980 ms
+
+real	5m14.382s
+user	0m3.594s
+sys	0m0.312s
+Grepping Logs
+Done, Killing
+jmg3     29612  0.0  0.0 106084  1400 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     29628  0.0  0.0 103232   844 ?        S    00:09   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     27347  0.0  0.0  59072  3532 pts/0    S    00:09   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     27353  0.0  0.0 106084  1400 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     27369  0.0  0.0 103232   844 ?        R    00:09   0:00 grep java
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     29654  0.0  0.0 106084  1400 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     29670  0.0  0.0 103232   840 ?        S    00:09   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     27406  0.0  0.0  59072  3528 pts/0    S    00:09   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     27412  0.0  0.0 106084  1396 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     27428  0.0  0.0 103232   844 ?        R    00:09   0:00 grep java
+Done
+java: no process killed
+java: no process killed
+jmg3     29716  0.0  0.0 106084  1400 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     29732  0.0  0.0 103232   844 ?        S    00:09   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     27489  0.0  0.0  59072  3528 pts/0    S    00:09   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     27495  0.0  0.0 106084  1400 ?        Ss   00:09   0:00 bash -c ps aux | grep java
+jmg3     27511  0.0  0.0 103232   844 ?        R    00:09   0:00 grep java
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:09:49 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 00:09:49 INFO util.GSet: VM type       = 64-bit
+13/05/23 00:09:49 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 00:09:49 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 00:09:49 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 00:09:49 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 00:09:49 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 00:09:49 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 00:09:49 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 00:09:49 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 00:09:49 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 00:09:50 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 00:09:50 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 00:09:50 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:22:35 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 00:22:35 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 00:22:35 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 00:22:35 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 00:22:35 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 00:22:36 INFO mapred.JobClient: Running job: job_201305230009_0001
+13/05/23 00:22:37 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 00:22:56 INFO mapred.JobClient:  map 8% reduce 0%
+13/05/23 00:22:59 INFO mapred.JobClient:  map 13% reduce 0%
+13/05/23 00:23:02 INFO mapred.JobClient:  map 19% reduce 0%
+13/05/23 00:23:05 INFO mapred.JobClient:  map 25% reduce 0%
+13/05/23 00:23:08 INFO mapred.JobClient:  map 32% reduce 0%
+13/05/23 00:23:11 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 00:23:14 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 00:23:17 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 00:23:56 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 00:24:02 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 00:24:08 INFO mapred.JobClient:  map 47% reduce 0%
+13/05/23 00:24:11 INFO mapred.JobClient:  map 49% reduce 2%
+13/05/23 00:24:14 INFO mapred.JobClient:  map 52% reduce 4%
+13/05/23 00:24:17 INFO mapred.JobClient:  map 54% reduce 5%
+13/05/23 00:24:20 INFO mapred.JobClient:  map 56% reduce 5%
+13/05/23 00:24:23 INFO mapred.JobClient:  map 59% reduce 8%
+13/05/23 00:24:28 INFO mapred.JobClient:  map 63% reduce 10%
+13/05/23 00:24:31 INFO mapred.JobClient:  map 64% reduce 10%
+13/05/23 00:24:34 INFO mapred.JobClient:  map 67% reduce 12%
+13/05/23 00:24:37 INFO mapred.JobClient:  map 70% reduce 14%
+13/05/23 00:24:40 INFO mapred.JobClient:  map 74% reduce 14%
+13/05/23 00:24:43 INFO mapred.JobClient:  map 79% reduce 15%
+13/05/23 00:24:46 INFO mapred.JobClient:  map 81% reduce 15%
+13/05/23 00:24:52 INFO mapred.JobClient:  map 82% reduce 15%
+13/05/23 00:24:55 INFO mapred.JobClient:  map 83% reduce 15%
+13/05/23 00:25:06 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 00:25:09 INFO mapred.JobClient:  map 87% reduce 15%
+13/05/23 00:25:12 INFO mapred.JobClient:  map 89% reduce 15%
+13/05/23 00:25:15 INFO mapred.JobClient:  map 89% reduce 16%
+13/05/23 00:25:18 INFO mapred.JobClient:  map 91% reduce 17%
+13/05/23 00:25:21 INFO mapred.JobClient:  map 91% reduce 20%
+13/05/23 00:25:24 INFO mapred.JobClient:  map 93% reduce 21%
+13/05/23 00:25:27 INFO mapred.JobClient:  map 95% reduce 21%
+13/05/23 00:25:30 INFO mapred.JobClient:  map 97% reduce 21%
+13/05/23 00:25:33 INFO mapred.JobClient:  map 98% reduce 21%
+13/05/23 00:25:36 INFO mapred.JobClient:  map 99% reduce 23%
+13/05/23 00:25:39 INFO mapred.JobClient:  map 100% reduce 23%
+13/05/23 00:25:42 INFO mapred.JobClient:  map 100% reduce 24%
+13/05/23 00:25:45 INFO mapred.JobClient:  map 100% reduce 25%
+13/05/23 00:25:57 INFO mapred.JobClient:  map 100% reduce 26%
+13/05/23 00:26:03 INFO mapred.JobClient:  map 100% reduce 27%
+13/05/23 00:26:06 INFO mapred.JobClient:  map 100% reduce 29%
+13/05/23 00:26:09 INFO mapred.JobClient:  map 100% reduce 30%
+13/05/23 00:26:27 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 00:26:30 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 00:26:42 INFO mapred.JobClient:  map 100% reduce 63%
+13/05/23 00:26:45 INFO mapred.JobClient:  map 100% reduce 80%
+13/05/23 00:26:48 INFO mapred.JobClient:  map 100% reduce 85%
+13/05/23 00:26:51 INFO mapred.JobClient:  map 100% reduce 92%
+13/05/23 00:26:54 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 00:26:59 INFO mapred.JobClient: Job complete: job_201305230009_0001
+13/05/23 00:26:59 INFO mapred.JobClient: Counters: 29
+13/05/23 00:26:59 INFO mapred.JobClient:   Job Counters 
+13/05/23 00:26:59 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 00:26:59 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2280785
+13/05/23 00:26:59 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 00:26:59 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 00:26:59 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 00:26:59 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 00:26:59 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=853591
+13/05/23 00:26:59 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 00:26:59 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 00:26:59 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 00:26:59 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 00:26:59 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 00:26:59 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 00:26:59 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 00:26:59 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 00:26:59 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 00:26:59 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 00:26:59 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 00:26:59 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 00:26:59 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 00:26:59 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 00:26:59 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 00:26:59 INFO mapred.JobClient:     CPU time spent (ms)=1902750
+13/05/23 00:26:59 INFO mapred.JobClient:     Total committed heap usage (bytes)=42392158208
+13/05/23 00:26:59 INFO mapred.JobClient:     Combine input records=0
+13/05/23 00:26:59 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 00:26:59 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 00:26:59 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 00:26:59 INFO mapred.JobClient:     Combine output records=0
+13/05/23 00:26:59 INFO mapred.JobClient:     Physical memory (bytes) snapshot=33624002560
+13/05/23 00:26:59 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 00:26:59 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091292147712
+13/05/23 00:26:59 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 263550 ms
+
+real	4m24.799s
+user	0m3.344s
+sys	0m0.225s
+Grepping Logs
+Done, Killing
+jmg3       679  0.0  0.0 106084  1396 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3       695  0.0  0.0 103232   836 ?        S    00:27   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     28719  0.0  0.0  59072  3528 pts/0    S    00:27   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     28725  0.0  0.0 106084  1400 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3     28741  0.0  0.0 103232   840 ?        R    00:27   0:00 grep java
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3       721  0.0  0.0 106084  1400 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3       737  0.0  0.0 103232   836 ?        S    00:27   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     28778  0.0  0.0  59072  3528 pts/0    S    00:27   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     28784  0.0  0.0 106084  1400 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3     28800  0.0  0.0 103232   840 ?        R    00:27   0:00 grep java
+Done
+java: no process killed
+java: no process killed
+jmg3       783  0.0  0.0 106084  1400 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3       800  0.0  0.0 103232   836 ?        S    00:27   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     28870  0.0  0.0  59072  3528 pts/0    S    00:27   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     28876  0.0  0.0 106084  1396 ?        Ss   00:27   0:00 bash -c ps aux | grep java
+jmg3     28892  0.0  0.0 103232   840 ?        R    00:27   0:00 grep java
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:27:25 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 00:27:25 INFO util.GSet: VM type       = 64-bit
+13/05/23 00:27:25 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 00:27:25 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 00:27:25 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 00:27:25 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 00:27:25 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 00:27:25 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 00:27:25 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 00:27:25 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 00:27:25 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 00:27:25 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 00:27:25 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 00:27:25 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:39:25 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 00:39:25 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 00:39:25 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 00:39:26 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 00:39:26 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 00:39:27 INFO mapred.JobClient: Running job: job_201305230027_0001
+13/05/23 00:39:28 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 00:39:48 INFO mapred.JobClient:  map 6% reduce 0%
+13/05/23 00:39:51 INFO mapred.JobClient:  map 13% reduce 0%
+13/05/23 00:39:54 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 00:39:57 INFO mapred.JobClient:  map 25% reduce 0%
+13/05/23 00:40:00 INFO mapred.JobClient:  map 31% reduce 0%
+13/05/23 00:40:03 INFO mapred.JobClient:  map 34% reduce 0%
+13/05/23 00:40:06 INFO mapred.JobClient:  map 36% reduce 0%
+13/05/23 00:40:09 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 00:40:12 INFO mapred.JobClient:  map 39% reduce 0%
+13/05/23 00:40:18 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 00:40:24 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 00:40:27 INFO mapred.JobClient:  map 39% reduce 0%
+13/05/23 00:40:29 INFO mapred.JobClient: Task Id : attempt_201305230027_0001_m_000000_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305230027_0001_m_000000_0: Scope block from 31 to  64
+13/05/23 00:40:38 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 00:40:41 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 00:40:45 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 00:40:47 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 00:40:50 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 00:40:53 INFO mapred.JobClient:  map 46% reduce 0%
+13/05/23 00:40:56 INFO mapred.JobClient:  map 46% reduce 1%
+13/05/23 00:40:59 INFO mapred.JobClient:  map 48% reduce 3%
+13/05/23 00:41:02 INFO mapred.JobClient:  map 49% reduce 4%
+13/05/23 00:41:05 INFO mapred.JobClient:  map 52% reduce 4%
+13/05/23 00:41:08 INFO mapred.JobClient:  map 54% reduce 6%
+13/05/23 00:41:11 INFO mapred.JobClient:  map 56% reduce 8%
+13/05/23 00:41:14 INFO mapred.JobClient:  map 58% reduce 8%
+13/05/23 00:41:17 INFO mapred.JobClient:  map 59% reduce 8%
+13/05/23 00:41:20 INFO mapred.JobClient:  map 59% reduce 11%
+13/05/23 00:41:23 INFO mapred.JobClient:  map 62% reduce 12%
+13/05/23 00:41:26 INFO mapred.JobClient:  map 64% reduce 12%
+13/05/23 00:41:29 INFO mapred.JobClient:  map 67% reduce 12%
+13/05/23 00:41:32 INFO mapred.JobClient:  map 69% reduce 13%
+13/05/23 00:41:35 INFO mapred.JobClient:  map 71% reduce 14%
+13/05/23 00:41:38 INFO mapred.JobClient:  map 72% reduce 15%
+13/05/23 00:41:41 INFO mapred.JobClient:  map 77% reduce 15%
+13/05/23 00:41:44 INFO mapred.JobClient:  map 80% reduce 15%
+13/05/23 00:41:47 INFO mapred.JobClient:  map 84% reduce 15%
+13/05/23 00:41:50 INFO mapred.JobClient:  map 87% reduce 15%
+13/05/23 00:41:53 INFO mapred.JobClient:  map 89% reduce 15%
+13/05/23 00:42:08 INFO mapred.JobClient:  map 89% reduce 16%
+13/05/23 00:42:11 INFO mapred.JobClient:  map 91% reduce 19%
+13/05/23 00:42:14 INFO mapred.JobClient:  map 93% reduce 20%
+13/05/23 00:42:17 INFO mapred.JobClient:  map 95% reduce 20%
+13/05/23 00:42:20 INFO mapred.JobClient:  map 96% reduce 21%
+13/05/23 00:42:29 INFO mapred.JobClient:  map 96% reduce 22%
+13/05/23 00:42:35 INFO mapred.JobClient:  map 98% reduce 22%
+13/05/23 00:42:44 INFO mapred.JobClient:  map 99% reduce 22%
+13/05/23 00:42:48 INFO mapred.JobClient:  map 96% reduce 23%
+13/05/23 00:42:53 INFO mapred.JobClient: Task Id : attempt_201305230027_0001_m_000028_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305230027_0001_m_000028_0: Scope block from 31 to  64
+13/05/23 00:42:54 INFO mapred.JobClient:  map 96% reduce 24%
+13/05/23 00:42:57 INFO mapred.JobClient:  map 96% reduce 25%
+13/05/23 00:43:00 INFO mapred.JobClient:  map 96% reduce 26%
+13/05/23 00:43:03 INFO mapred.JobClient:  map 97% reduce 27%
+13/05/23 00:43:06 INFO mapred.JobClient:  map 98% reduce 27%
+13/05/23 00:43:09 INFO mapred.JobClient:  map 98% reduce 28%
+13/05/23 00:43:12 INFO mapred.JobClient:  map 99% reduce 29%
+13/05/23 00:43:15 INFO mapred.JobClient:  map 99% reduce 31%
+13/05/23 00:43:18 INFO mapred.JobClient:  map 99% reduce 32%
+13/05/23 00:43:24 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 00:43:36 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 00:43:45 INFO mapred.JobClient:  map 100% reduce 54%
+13/05/23 00:43:48 INFO mapred.JobClient:  map 100% reduce 70%
+13/05/23 00:43:51 INFO mapred.JobClient:  map 100% reduce 79%
+13/05/23 00:43:54 INFO mapred.JobClient:  map 100% reduce 84%
+13/05/23 00:43:57 INFO mapred.JobClient:  map 100% reduce 95%
+13/05/23 00:44:00 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 00:44:05 INFO mapred.JobClient: Job complete: job_201305230027_0001
+13/05/23 00:44:05 INFO mapred.JobClient: Counters: 29
+13/05/23 00:44:05 INFO mapred.JobClient:   Job Counters 
+13/05/23 00:44:05 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 00:44:05 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2338505
+13/05/23 00:44:05 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 00:44:05 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 00:44:05 INFO mapred.JobClient:     Launched map tasks=32
+13/05/23 00:44:05 INFO mapred.JobClient:     Data-local map tasks=32
+13/05/23 00:44:05 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=934277
+13/05/23 00:44:05 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 00:44:05 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 00:44:05 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 00:44:05 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 00:44:05 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 00:44:05 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 00:44:05 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 00:44:05 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 00:44:05 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 00:44:05 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 00:44:05 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 00:44:05 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 00:44:05 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 00:44:05 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 00:44:05 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 00:44:05 INFO mapred.JobClient:     CPU time spent (ms)=1861130
+13/05/23 00:44:05 INFO mapred.JobClient:     Total committed heap usage (bytes)=44168052736
+13/05/23 00:44:05 INFO mapred.JobClient:     Combine input records=0
+13/05/23 00:44:05 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 00:44:05 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 00:44:05 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 00:44:05 INFO mapred.JobClient:     Combine output records=0
+13/05/23 00:44:05 INFO mapred.JobClient:     Physical memory (bytes) snapshot=35257843712
+13/05/23 00:44:05 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 00:44:05 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091155824640
+13/05/23 00:44:05 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 279825 ms
+
+real	4m41.100s
+user	0m3.471s
+sys	0m0.281s
+Grepping Logs
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/data/current/blk_8354493137360426155: No such file or directory
+Done, Killing
+jmg3      4664  0.0  0.0 106084  1396 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3      4681  0.0  0.0 103232   840 ?        S    00:44   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     30108  0.0  0.0  59072  3532 pts/0    S    00:44   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     30114  0.0  0.0 106084  1400 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3     30130  0.0  0.0 103232   844 ?        R    00:44   0:00 grep java
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3      4711  0.0  0.0 106084  1400 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3      4732  0.0  0.0 103232   844 ?        S    00:44   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     30167  0.0  0.0  59072  3528 pts/0    S    00:44   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     30173  0.0  0.0 106084  1396 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3     30189  0.0  0.0 103232   844 ?        R    00:44   0:00 grep java
+Done
+java: no process killed
+java: no process killed
+jmg3      4778  0.0  0.0 106084  1396 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3      4794  0.0  0.0 103232   844 ?        S    00:44   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     30250  0.0  0.0  58312  3528 pts/0    S    00:44   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     30256  0.0  0.0 106084  1400 ?        Ss   00:44   0:00 bash -c ps aux | grep java
+jmg3     30272  0.0  0.0 103232   848 ?        R    00:44   0:00 grep java
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:44:33 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 00:44:33 INFO util.GSet: VM type       = 64-bit
+13/05/23 00:44:33 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 00:44:33 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 00:44:33 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 00:44:33 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 00:44:33 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 00:44:33 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 00:44:33 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 00:44:33 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 00:44:33 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 00:44:34 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 00:44:34 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 00:44:34 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 00:55:55 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 00:55:55 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 00:55:55 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 00:55:55 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 00:55:56 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 00:55:56 INFO mapred.JobClient: Running job: job_201305230044_0001
+13/05/23 00:55:57 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 00:56:19 INFO mapred.JobClient:  map 2% reduce 0%
+13/05/23 00:56:22 INFO mapred.JobClient:  map 11% reduce 0%
+13/05/23 00:56:25 INFO mapred.JobClient:  map 15% reduce 0%
+13/05/23 00:56:28 INFO mapred.JobClient:  map 21% reduce 0%
+13/05/23 00:56:31 INFO mapred.JobClient:  map 26% reduce 0%
+13/05/23 00:56:34 INFO mapred.JobClient:  map 31% reduce 0%
+13/05/23 00:56:37 INFO mapred.JobClient:  map 36% reduce 0%
+13/05/23 00:56:40 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 00:56:43 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 00:56:46 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 00:56:52 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 00:57:29 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 00:57:32 INFO mapred.JobClient:  map 46% reduce 1%
+13/05/23 00:57:35 INFO mapred.JobClient:  map 47% reduce 2%
+13/05/23 00:57:38 INFO mapred.JobClient:  map 48% reduce 3%
+13/05/23 00:57:41 INFO mapred.JobClient:  map 49% reduce 4%
+13/05/23 00:57:44 INFO mapred.JobClient:  map 50% reduce 6%
+13/05/23 00:57:47 INFO mapred.JobClient:  map 53% reduce 8%
+13/05/23 00:57:50 INFO mapred.JobClient:  map 57% reduce 10%
+13/05/23 00:57:53 INFO mapred.JobClient:  map 60% reduce 11%
+13/05/23 00:57:56 INFO mapred.JobClient:  map 63% reduce 11%
+13/05/23 00:57:59 INFO mapred.JobClient:  map 64% reduce 11%
+13/05/23 00:58:02 INFO mapred.JobClient:  map 67% reduce 14%
+13/05/23 00:58:06 INFO mapred.JobClient:  map 74% reduce 14%
+13/05/23 00:58:09 INFO mapred.JobClient:  map 77% reduce 14%
+13/05/23 00:58:12 INFO mapred.JobClient:  map 81% reduce 14%
+13/05/23 00:58:15 INFO mapred.JobClient:  map 84% reduce 14%
+13/05/23 00:58:18 INFO mapred.JobClient:  map 86% reduce 14%
+13/05/23 00:58:21 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 00:58:27 INFO mapred.JobClient:  map 86% reduce 16%
+13/05/23 00:58:30 INFO mapred.JobClient:  map 87% reduce 16%
+13/05/23 00:58:33 INFO mapred.JobClient:  map 88% reduce 16%
+13/05/23 00:58:36 INFO mapred.JobClient:  map 90% reduce 16%
+13/05/23 00:58:39 INFO mapred.JobClient:  map 91% reduce 16%
+13/05/23 00:58:42 INFO mapred.JobClient:  map 92% reduce 17%
+13/05/23 00:58:45 INFO mapred.JobClient:  map 93% reduce 19%
+13/05/23 00:58:48 INFO mapred.JobClient:  map 95% reduce 20%
+13/05/23 00:58:51 INFO mapred.JobClient:  map 96% reduce 21%
+13/05/23 00:58:54 INFO mapred.JobClient:  map 97% reduce 23%
+13/05/23 00:58:57 INFO mapred.JobClient:  map 98% reduce 23%
+13/05/23 00:59:06 INFO mapred.JobClient:  map 98% reduce 25%
+13/05/23 00:59:09 INFO mapred.JobClient:  map 99% reduce 25%
+13/05/23 00:59:15 INFO mapred.JobClient:  map 100% reduce 25%
+13/05/23 00:59:21 INFO mapred.JobClient:  map 100% reduce 28%
+13/05/23 00:59:24 INFO mapred.JobClient:  map 100% reduce 29%
+13/05/23 00:59:30 INFO mapred.JobClient:  map 100% reduce 30%
+13/05/23 00:59:39 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 00:59:50 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 00:59:53 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 00:59:59 INFO mapred.JobClient:  map 100% reduce 40%
+13/05/23 01:00:02 INFO mapred.JobClient:  map 100% reduce 51%
+13/05/23 01:00:05 INFO mapred.JobClient:  map 100% reduce 67%
+13/05/23 01:00:08 INFO mapred.JobClient:  map 100% reduce 76%
+13/05/23 01:00:11 INFO mapred.JobClient:  map 100% reduce 84%
+13/05/23 01:00:14 INFO mapred.JobClient:  map 100% reduce 95%
+13/05/23 01:00:17 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 01:00:22 INFO mapred.JobClient: Job complete: job_201305230044_0001
+13/05/23 01:00:22 INFO mapred.JobClient: Counters: 29
+13/05/23 01:00:22 INFO mapred.JobClient:   Job Counters 
+13/05/23 01:00:22 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 01:00:22 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2279254
+13/05/23 01:00:22 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 01:00:22 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 01:00:22 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 01:00:22 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 01:00:22 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=825699
+13/05/23 01:00:22 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 01:00:22 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 01:00:22 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 01:00:22 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 01:00:22 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 01:00:22 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 01:00:22 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 01:00:22 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 01:00:22 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 01:00:22 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 01:00:22 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 01:00:22 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 01:00:22 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 01:00:22 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 01:00:22 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 01:00:22 INFO mapred.JobClient:     CPU time spent (ms)=1987390
+13/05/23 01:00:22 INFO mapred.JobClient:     Total committed heap usage (bytes)=45892239360
+13/05/23 01:00:22 INFO mapred.JobClient:     Combine input records=0
+13/05/23 01:00:22 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 01:00:22 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 01:00:22 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 01:00:22 INFO mapred.JobClient:     Combine output records=0
+13/05/23 01:00:22 INFO mapred.JobClient:     Physical memory (bytes) snapshot=37114523648
+13/05/23 01:00:22 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 01:00:22 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091428470784
+13/05/23 01:00:22 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 266560 ms
+
+real	4m27.801s
+user	0m3.376s
+sys	0m0.240s
+Grepping Logs
+Done, Killing
+jmg3      8209  0.0  0.0 106084  1400 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3      8225  0.0  0.0 103232   840 ?        S    01:00   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     31460  0.0  0.0  59072  3532 pts/0    S    01:00   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     31466  0.0  0.0 106084  1400 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3     31482  0.0  0.0 103232   844 ?        R    01:00   0:00 grep java
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3      8251  0.0  0.0 106084  1396 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3      8267  0.0  0.0 103232   844 ?        S    01:00   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     31519  0.0  0.0  59072  3528 pts/0    S    01:00   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     31525  0.0  0.0 106084  1400 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3     31541  0.0  0.0 103232   844 ?        R    01:00   0:00 grep java
+Done
+java: no process killed
+java: no process killed
+jmg3      8313  0.0  0.0 106084  1400 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3      8329  0.0  0.0 103232   844 ?        S    01:00   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+jmg3     31615  0.0  0.0  59072  3524 pts/0    S    01:00   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3     31621  0.0  0.0 106084  1400 ?        Ss   01:00   0:00 bash -c ps aux | grep java
+jmg3     31637  0.0  0.0 103232   848 ?        R    01:00   0:00 grep java
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:00:48 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 01:00:48 INFO util.GSet: VM type       = 64-bit
+13/05/23 01:00:48 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 01:00:48 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 01:00:48 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 01:00:49 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 01:00:49 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 01:00:49 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 01:00:49 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 01:00:49 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 01:00:49 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 01:00:49 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 01:00:49 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 01:00:49 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:12:03 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 01:12:03 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 01:12:03 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 01:12:03 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 01:12:03 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 01:12:04 INFO mapred.JobClient: Running job: job_201305230100_0001
+13/05/23 01:12:05 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 01:12:25 INFO mapred.JobClient:  map 5% reduce 0%
+13/05/23 01:12:28 INFO mapred.JobClient:  map 12% reduce 0%
+13/05/23 01:12:31 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 01:12:34 INFO mapred.JobClient:  map 24% reduce 0%
+13/05/23 01:12:37 INFO mapred.JobClient:  map 31% reduce 0%
+13/05/23 01:12:40 INFO mapred.JobClient:  map 36% reduce 0%
+13/05/23 01:12:43 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 01:12:46 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 01:13:04 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 01:13:10 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 01:13:16 INFO mapred.JobClient:  map 47% reduce 0%
+13/05/23 01:13:19 INFO mapred.JobClient:  map 48% reduce 0%
+13/05/23 01:13:22 INFO mapred.JobClient:  map 48% reduce 1%
+13/05/23 01:13:25 INFO mapred.JobClient:  map 49% reduce 1%
+13/05/23 01:13:28 INFO mapred.JobClient:  map 49% reduce 2%
+13/05/23 01:13:34 INFO mapred.JobClient:  map 50% reduce 3%
+13/05/23 01:13:37 INFO mapred.JobClient:  map 50% reduce 4%
+13/05/23 01:13:40 INFO mapred.JobClient:  map 52% reduce 4%
+13/05/23 01:13:43 INFO mapred.JobClient:  map 53% reduce 4%
+13/05/23 01:13:46 INFO mapred.JobClient:  map 55% reduce 4%
+13/05/23 01:13:49 INFO mapred.JobClient:  map 55% reduce 6%
+13/05/23 01:13:52 INFO mapred.JobClient:  map 56% reduce 8%
+13/05/23 01:13:55 INFO mapred.JobClient:  map 58% reduce 10%
+13/05/23 01:13:58 INFO mapred.JobClient:  map 61% reduce 12%
+13/05/23 01:14:01 INFO mapred.JobClient:  map 65% reduce 13%
+13/05/23 01:14:04 INFO mapred.JobClient:  map 71% reduce 14%
+13/05/23 01:14:07 INFO mapred.JobClient:  map 76% reduce 14%
+13/05/23 01:14:10 INFO mapred.JobClient:  map 80% reduce 14%
+13/05/23 01:14:13 INFO mapred.JobClient:  map 80% reduce 15%
+13/05/23 01:14:16 INFO mapred.JobClient:  map 83% reduce 15%
+13/05/23 01:14:19 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 01:14:22 INFO mapred.JobClient:  map 88% reduce 15%
+13/05/23 01:14:25 INFO mapred.JobClient:  map 89% reduce 18%
+13/05/23 01:14:28 INFO mapred.JobClient:  map 90% reduce 18%
+13/05/23 01:14:31 INFO mapred.JobClient:  map 92% reduce 18%
+13/05/23 01:14:41 INFO mapred.JobClient:  map 93% reduce 18%
+13/05/23 01:14:50 INFO mapred.JobClient:  map 95% reduce 18%
+13/05/23 01:14:53 INFO mapred.JobClient:  map 97% reduce 18%
+13/05/23 01:14:56 INFO mapred.JobClient:  map 99% reduce 18%
+13/05/23 01:14:59 INFO mapred.JobClient:  map 99% reduce 19%
+13/05/23 01:15:06 INFO mapred.JobClient:  map 100% reduce 20%
+13/05/23 01:15:09 INFO mapred.JobClient:  map 100% reduce 21%
+13/05/23 01:15:12 INFO mapred.JobClient:  map 100% reduce 22%
+13/05/23 01:15:21 INFO mapred.JobClient:  map 100% reduce 25%
+13/05/23 01:15:24 INFO mapred.JobClient:  map 100% reduce 27%
+13/05/23 01:15:27 INFO mapred.JobClient:  map 100% reduce 28%
+13/05/23 01:15:39 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 01:15:42 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 01:15:45 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 01:15:54 INFO mapred.JobClient:  map 100% reduce 46%
+13/05/23 01:15:57 INFO mapred.JobClient:  map 100% reduce 73%
+13/05/23 01:16:00 INFO mapred.JobClient:  map 100% reduce 87%
+13/05/23 01:16:03 INFO mapred.JobClient:  map 100% reduce 90%
+13/05/23 01:16:06 INFO mapred.JobClient:  map 100% reduce 95%
+13/05/23 01:16:09 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 01:16:14 INFO mapred.JobClient: Job complete: job_201305230100_0001
+13/05/23 01:16:14 INFO mapred.JobClient: Counters: 29
+13/05/23 01:16:14 INFO mapred.JobClient:   Job Counters 
+13/05/23 01:16:14 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 01:16:14 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2266560
+13/05/23 01:16:14 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 01:16:14 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 01:16:14 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 01:16:14 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 01:16:14 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=862473
+13/05/23 01:16:14 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 01:16:14 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 01:16:14 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 01:16:14 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 01:16:14 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 01:16:14 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 01:16:14 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 01:16:14 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 01:16:14 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 01:16:14 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 01:16:14 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 01:16:14 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 01:16:14 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 01:16:14 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 01:16:14 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 01:16:14 INFO mapred.JobClient:     CPU time spent (ms)=1846570
+13/05/23 01:16:14 INFO mapred.JobClient:     Total committed heap usage (bytes)=49755193344
+13/05/23 01:16:14 INFO mapred.JobClient:     Combine input records=0
+13/05/23 01:16:14 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 01:16:14 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 01:16:14 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 01:16:14 INFO mapred.JobClient:     Combine output records=0
+13/05/23 01:16:14 INFO mapred.JobClient:     Physical memory (bytes) snapshot=39138062336
+13/05/23 01:16:14 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 01:16:14 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091360309248
+13/05/23 01:16:14 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 251492 ms
+
+real	4m12.744s
+user	0m3.344s
+sys	0m0.252s
+Grepping Logs
+Done, Killing
+jmg3     11747  0.0  0.0 106084  1396 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3     11763  0.0  0.0 103232   844 ?        S    01:16   0:00 grep java
+jmg3       379  0.0  0.0  59072  3532 pts/0    S    01:16   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3       385  0.0  0.0 106084  1396 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3       401  0.0  0.0 103232   832 ?        S    01:16   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     11789  0.0  0.0 106084  1400 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3     11805  0.0  0.0 103232   840 ?        S    01:16   0:00 grep java
+jmg3       440  0.0  0.0  59072  3528 pts/0    S    01:16   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3       448  0.0  0.0 106084  1400 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3       464  0.0  0.0 103232   832 ?        S    01:16   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Done
+java: no process killed
+java: no process killed
+jmg3     11852  0.0  0.0 106084  1400 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3     11868  0.0  0.0 103232   844 ?        S    01:16   0:00 grep java
+jmg3       539  0.0  0.0  59072  3532 pts/0    S    01:16   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3       545  0.0  0.0 106084  1400 ?        Ss   01:16   0:00 bash -c ps aux | grep java
+jmg3       561  0.0  0.0 103232   836 ?        S    01:16   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:16:42 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 01:16:42 INFO util.GSet: VM type       = 64-bit
+13/05/23 01:16:42 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 01:16:42 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 01:16:42 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 01:16:42 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 01:16:42 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 01:16:42 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 01:16:42 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 01:16:42 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 01:16:42 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 01:16:42 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 01:16:43 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 01:16:43 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:27:29 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 01:27:29 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 01:27:29 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 01:27:30 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 01:27:30 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 01:27:31 INFO mapred.JobClient: Running job: job_201305230116_0001
+13/05/23 01:27:32 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 01:27:54 INFO mapred.JobClient:  map 5% reduce 0%
+13/05/23 01:27:57 INFO mapred.JobClient:  map 12% reduce 0%
+13/05/23 01:28:00 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 01:28:03 INFO mapred.JobClient:  map 25% reduce 0%
+13/05/23 01:28:06 INFO mapred.JobClient:  map 30% reduce 0%
+13/05/23 01:28:09 INFO mapred.JobClient:  map 34% reduce 0%
+13/05/23 01:28:12 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 01:28:15 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 01:28:18 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 01:28:24 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 01:28:48 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 01:28:54 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 01:29:00 INFO mapred.JobClient:  map 46% reduce 1%
+13/05/23 01:29:03 INFO mapred.JobClient:  map 48% reduce 3%
+13/05/23 01:29:06 INFO mapred.JobClient:  map 49% reduce 3%
+13/05/23 01:29:09 INFO mapred.JobClient:  map 51% reduce 5%
+13/05/23 01:29:12 INFO mapred.JobClient:  map 54% reduce 6%
+13/05/23 01:29:15 INFO mapred.JobClient:  map 55% reduce 8%
+13/05/23 01:29:18 INFO mapred.JobClient:  map 58% reduce 10%
+13/05/23 01:29:21 INFO mapred.JobClient:  map 60% reduce 10%
+13/05/23 01:29:24 INFO mapred.JobClient:  map 61% reduce 13%
+13/05/23 01:29:27 INFO mapred.JobClient:  map 66% reduce 13%
+13/05/23 01:29:30 INFO mapred.JobClient:  map 70% reduce 13%
+13/05/23 01:29:33 INFO mapred.JobClient:  map 74% reduce 14%
+13/05/23 01:29:36 INFO mapred.JobClient:  map 79% reduce 14%
+13/05/23 01:29:39 INFO mapred.JobClient:  map 82% reduce 14%
+13/05/23 01:29:45 INFO mapred.JobClient:  map 83% reduce 15%
+13/05/23 01:29:51 INFO mapred.JobClient:  map 85% reduce 16%
+13/05/23 01:29:54 INFO mapred.JobClient:  map 87% reduce 16%
+13/05/23 01:29:57 INFO mapred.JobClient:  map 88% reduce 17%
+13/05/23 01:30:00 INFO mapred.JobClient:  map 89% reduce 20%
+13/05/23 01:30:06 INFO mapred.JobClient:  map 90% reduce 20%
+13/05/23 01:30:09 INFO mapred.JobClient:  map 91% reduce 21%
+13/05/23 01:30:12 INFO mapred.JobClient:  map 93% reduce 21%
+13/05/23 01:30:15 INFO mapred.JobClient:  map 95% reduce 21%
+13/05/23 01:30:18 INFO mapred.JobClient:  map 97% reduce 21%
+13/05/23 01:30:21 INFO mapred.JobClient:  map 99% reduce 21%
+13/05/23 01:30:24 INFO mapred.JobClient:  map 100% reduce 21%
+13/05/23 01:30:27 INFO mapred.JobClient:  map 100% reduce 22%
+13/05/23 01:30:33 INFO mapred.JobClient:  map 100% reduce 23%
+13/05/23 01:30:42 INFO mapred.JobClient:  map 100% reduce 24%
+13/05/23 01:30:45 INFO mapred.JobClient:  map 100% reduce 26%
+13/05/23 01:30:48 INFO mapred.JobClient:  map 100% reduce 27%
+13/05/23 01:31:04 INFO mapred.JobClient:  map 100% reduce 28%
+13/05/23 01:31:07 INFO mapred.JobClient:  map 100% reduce 29%
+13/05/23 01:31:10 INFO mapred.JobClient:  map 100% reduce 30%
+13/05/23 01:31:13 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 01:31:16 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 01:31:28 INFO mapred.JobClient:  map 100% reduce 76%
+13/05/23 01:31:31 INFO mapred.JobClient:  map 100% reduce 89%
+13/05/23 01:31:37 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 01:31:42 INFO mapred.JobClient: Job complete: job_201305230116_0001
+13/05/23 01:31:42 INFO mapred.JobClient: Counters: 29
+13/05/23 01:31:42 INFO mapred.JobClient:   Job Counters 
+13/05/23 01:31:42 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 01:31:42 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2200329
+13/05/23 01:31:42 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 01:31:42 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 01:31:42 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 01:31:42 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 01:31:42 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=823269
+13/05/23 01:31:42 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 01:31:42 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 01:31:42 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 01:31:42 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 01:31:42 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 01:31:42 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 01:31:42 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 01:31:42 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 01:31:42 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 01:31:42 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 01:31:42 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 01:31:42 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 01:31:42 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 01:31:42 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 01:31:42 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 01:31:42 INFO mapred.JobClient:     CPU time spent (ms)=1857180
+13/05/23 01:31:42 INFO mapred.JobClient:     Total committed heap usage (bytes)=41991667712
+13/05/23 01:31:42 INFO mapred.JobClient:     Combine input records=0
+13/05/23 01:31:42 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 01:31:42 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 01:31:42 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 01:31:42 INFO mapred.JobClient:     Combine output records=0
+13/05/23 01:31:42 INFO mapred.JobClient:     Physical memory (bytes) snapshot=33906495488
+13/05/23 01:31:42 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 01:31:42 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091155824640
+13/05/23 01:31:42 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 252545 ms
+
+real	4m13.783s
+user	0m3.362s
+sys	0m0.231s
+Grepping Logs
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/data/current/blk_-2454831137026135375: No such file or directory
+Done, Killing
+jmg3     15288  0.0  0.0 106084  1396 ?        Ss   01:31   0:00 bash -c ps aux | grep java
+jmg3     15304  0.0  0.0 103232   840 ?        S    01:31   0:00 grep java
+jmg3      1785  0.0  0.0  59072  3528 pts/0    S    01:31   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      1792  0.0  0.0 106084  1396 ?        Ss   01:31   0:00 bash -c ps aux | grep java
+jmg3      1808  0.0  0.0 103232   840 ?        S    01:31   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     15330  0.0  0.0 106084  1396 ?        Ss   01:31   0:00 bash -c ps aux | grep java
+jmg3     15346  0.0  0.0 103232   844 ?        S    01:31   0:00 grep java
+jmg3      1850  0.0  0.0  59072  3532 pts/0    S    01:31   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      1856  0.0  0.0 106084  1400 ?        Ss   01:31   0:00 bash -c ps aux | grep java
+jmg3      1873  0.0  0.0 103232   840 ?        S    01:31   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Done
+java: no process killed
+java: no process killed
+jmg3     15392  0.0  0.0 106084  1400 ?        Ss   01:32   0:00 bash -c ps aux | grep java
+jmg3     15408  0.0  0.0 103232   840 ?        S    01:32   0:00 grep java
+jmg3      1934  0.0  0.0  59072  3528 pts/0    S    01:32   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      1940  0.0  0.0 106084  1396 ?        Ss   01:32   0:00 bash -c ps aux | grep java
+jmg3      1960  0.0  0.0 103232   840 ?        S    01:32   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:32:09 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 01:32:09 INFO util.GSet: VM type       = 64-bit
+13/05/23 01:32:09 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 01:32:09 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 01:32:09 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 01:32:09 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 01:32:09 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 01:32:09 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 01:32:09 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 01:32:09 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 01:32:09 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 01:32:09 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 01:32:10 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 01:32:10 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:43:05 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 01:43:05 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 01:43:05 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 01:43:06 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 01:43:06 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 01:43:06 INFO mapred.JobClient: Running job: job_201305230132_0001
+13/05/23 01:43:07 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 01:43:27 INFO mapred.JobClient:  map 6% reduce 0%
+13/05/23 01:43:30 INFO mapred.JobClient:  map 12% reduce 0%
+13/05/23 01:43:33 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 01:43:37 INFO mapred.JobClient:  map 23% reduce 0%
+13/05/23 01:43:40 INFO mapred.JobClient:  map 27% reduce 0%
+13/05/23 01:43:43 INFO mapred.JobClient:  map 30% reduce 0%
+13/05/23 01:43:46 INFO mapred.JobClient:  map 33% reduce 0%
+13/05/23 01:43:49 INFO mapred.JobClient:  map 35% reduce 0%
+13/05/23 01:43:52 INFO mapred.JobClient:  map 38% reduce 0%
+13/05/23 01:43:55 INFO mapred.JobClient:  map 39% reduce 0%
+13/05/23 01:43:58 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 01:44:07 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 01:44:13 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 01:44:16 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 01:44:25 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 01:44:31 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 01:44:37 INFO mapred.JobClient:  map 47% reduce 1%
+13/05/23 01:44:40 INFO mapred.JobClient:  map 48% reduce 2%
+13/05/23 01:44:43 INFO mapred.JobClient:  map 49% reduce 2%
+13/05/23 01:44:46 INFO mapred.JobClient:  map 51% reduce 3%
+13/05/23 01:44:49 INFO mapred.JobClient:  map 53% reduce 4%
+13/05/23 01:44:52 INFO mapred.JobClient:  map 55% reduce 5%
+13/05/23 01:44:55 INFO mapred.JobClient:  map 58% reduce 8%
+13/05/23 01:45:00 INFO mapred.JobClient:  map 61% reduce 11%
+13/05/23 01:45:06 INFO mapred.JobClient:  map 68% reduce 13%
+13/05/23 01:45:09 INFO mapred.JobClient:  map 73% reduce 14%
+13/05/23 01:45:12 INFO mapred.JobClient:  map 79% reduce 14%
+13/05/23 01:45:15 INFO mapred.JobClient:  map 84% reduce 14%
+13/05/23 01:45:18 INFO mapred.JobClient:  map 85% reduce 15%
+13/05/23 01:45:21 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 01:45:27 INFO mapred.JobClient:  map 86% reduce 17%
+13/05/23 01:45:30 INFO mapred.JobClient:  map 88% reduce 18%
+13/05/23 01:45:33 INFO mapred.JobClient:  map 91% reduce 18%
+13/05/23 01:45:36 INFO mapred.JobClient:  map 95% reduce 18%
+13/05/23 01:45:39 INFO mapred.JobClient:  map 98% reduce 18%
+13/05/23 01:45:42 INFO mapred.JobClient:  map 99% reduce 19%
+13/05/23 01:45:45 INFO mapred.JobClient:  map 99% reduce 20%
+13/05/23 01:45:51 INFO mapred.JobClient:  map 99% reduce 21%
+13/05/23 01:46:03 INFO mapred.JobClient:  map 99% reduce 22%
+13/05/23 01:46:06 INFO mapred.JobClient:  map 99% reduce 23%
+13/05/23 01:46:30 INFO mapred.JobClient:  map 99% reduce 25%
+13/05/23 01:46:36 INFO mapred.JobClient:  map 99% reduce 26%
+13/05/23 01:46:39 INFO mapred.JobClient:  map 100% reduce 28%
+13/05/23 01:46:42 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 01:46:51 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 01:47:04 INFO mapred.JobClient:  map 100% reduce 53%
+13/05/23 01:47:07 INFO mapred.JobClient:  map 100% reduce 76%
+13/05/23 01:47:10 INFO mapred.JobClient:  map 100% reduce 82%
+13/05/23 01:47:16 INFO mapred.JobClient:  map 100% reduce 96%
+13/05/23 01:47:19 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 01:47:24 INFO mapred.JobClient: Job complete: job_201305230132_0001
+13/05/23 01:47:24 INFO mapred.JobClient: Counters: 29
+13/05/23 01:47:24 INFO mapred.JobClient:   Job Counters 
+13/05/23 01:47:24 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 01:47:24 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2284067
+13/05/23 01:47:24 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 01:47:24 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 01:47:24 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 01:47:24 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 01:47:24 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=810669
+13/05/23 01:47:24 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 01:47:24 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 01:47:24 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 01:47:24 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 01:47:24 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 01:47:24 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 01:47:24 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 01:47:24 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 01:47:24 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 01:47:24 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 01:47:24 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 01:47:24 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 01:47:24 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 01:47:24 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 01:47:24 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 01:47:24 INFO mapred.JobClient:     CPU time spent (ms)=2015050
+13/05/23 01:47:24 INFO mapred.JobClient:     Total committed heap usage (bytes)=42343333888
+13/05/23 01:47:24 INFO mapred.JobClient:     Combine input records=0
+13/05/23 01:47:24 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 01:47:24 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 01:47:24 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 01:47:24 INFO mapred.JobClient:     Combine output records=0
+13/05/23 01:47:24 INFO mapred.JobClient:     Physical memory (bytes) snapshot=34727866368
+13/05/23 01:47:24 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 01:47:24 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091428470784
+13/05/23 01:47:24 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 258523 ms
+
+real	4m19.774s
+user	0m3.336s
+sys	0m0.252s
+Grepping Logs
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/data/current/blk_2435024767114631396_1038.meta: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/data/current/blk_2435024767114631396: No such file or directory
+Done, Killing
+jmg3     18807  0.0  0.0 106084  1400 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3     18823  0.0  0.0 103232   844 ?        S    01:47   0:00 grep java
+jmg3      3200  0.0  0.0  59072  3528 pts/0    S    01:47   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      3206  0.0  0.0 106084  1396 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3      3222  0.0  0.0 103232   840 ?        S    01:47   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     18849  0.0  0.0 106084  1400 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3     18865  0.0  0.0 103232   844 ?        S    01:47   0:00 grep java
+jmg3      3262  0.0  0.0  59072  3528 pts/0    S    01:47   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      3268  0.0  0.0 106084  1400 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3      3284  0.0  0.0 103232   840 ?        S    01:47   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Done
+java: no process killed
+java: no process killed
+jmg3     18911  0.0  0.0 106084  1400 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3     18927  0.0  0.0 103232   840 ?        S    01:47   0:00 grep java
+jmg3      3345  0.0  0.0  59072  3528 pts/0    S    01:47   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      3351  0.0  0.0 106084  1400 ?        Ss   01:47   0:00 bash -c ps aux | grep java
+jmg3      3369  0.0  0.0 103232   844 ?        S    01:47   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:47:52 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 01:47:52 INFO util.GSet: VM type       = 64-bit
+13/05/23 01:47:52 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 01:47:52 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 01:47:52 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 01:47:52 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 01:47:52 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 01:47:52 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 01:47:52 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 01:47:52 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 01:47:52 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 01:47:52 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 01:47:52 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 01:47:52 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 01:58:32 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 01:58:32 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 01:58:32 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 01:58:32 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 01:58:33 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 01:58:33 INFO mapred.JobClient: Running job: job_201305230147_0001
+13/05/23 01:58:34 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 01:58:55 INFO mapred.JobClient:  map 7% reduce 0%
+13/05/23 01:58:58 INFO mapred.JobClient:  map 13% reduce 0%
+13/05/23 01:59:01 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 01:59:04 INFO mapred.JobClient:  map 25% reduce 0%
+13/05/23 01:59:07 INFO mapred.JobClient:  map 30% reduce 0%
+13/05/23 01:59:10 INFO mapred.JobClient:  map 36% reduce 0%
+13/05/23 01:59:13 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 01:59:16 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 01:59:43 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 01:59:49 INFO mapred.JobClient: Task Id : attempt_201305230147_0001_m_000006_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305230147_0001_m_000006_0: Scope block from 31 to  64
+13/05/23 01:59:58 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 02:00:01 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 02:00:04 INFO mapred.JobClient:  map 44% reduce 1%
+13/05/23 02:00:07 INFO mapred.JobClient:  map 45% reduce 2%
+13/05/23 02:00:10 INFO mapred.JobClient:  map 45% reduce 3%
+13/05/23 02:00:14 INFO mapred.JobClient:  map 48% reduce 5%
+13/05/23 02:00:17 INFO mapred.JobClient:  map 50% reduce 5%
+13/05/23 02:00:20 INFO mapred.JobClient:  map 53% reduce 7%
+13/05/23 02:00:23 INFO mapred.JobClient:  map 57% reduce 8%
+13/05/23 02:00:26 INFO mapred.JobClient:  map 61% reduce 10%
+13/05/23 02:00:29 INFO mapred.JobClient:  map 64% reduce 10%
+13/05/23 02:00:32 INFO mapred.JobClient:  map 67% reduce 11%
+13/05/23 02:00:35 INFO mapred.JobClient:  map 70% reduce 12%
+13/05/23 02:00:38 INFO mapred.JobClient:  map 72% reduce 13%
+13/05/23 02:00:41 INFO mapred.JobClient:  map 75% reduce 13%
+13/05/23 02:00:44 INFO mapred.JobClient:  map 78% reduce 14%
+13/05/23 02:00:47 INFO mapred.JobClient:  map 81% reduce 14%
+13/05/23 02:00:50 INFO mapred.JobClient:  map 84% reduce 14%
+13/05/23 02:00:53 INFO mapred.JobClient:  map 85% reduce 14%
+13/05/23 02:00:56 INFO mapred.JobClient:  map 86% reduce 14%
+13/05/23 02:00:59 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 02:01:02 INFO mapred.JobClient:  map 87% reduce 15%
+13/05/23 02:01:05 INFO mapred.JobClient:  map 88% reduce 15%
+13/05/23 02:01:13 INFO mapred.JobClient:  map 89% reduce 15%
+13/05/23 02:01:19 INFO mapred.JobClient:  map 89% reduce 17%
+13/05/23 02:01:22 INFO mapred.JobClient:  map 92% reduce 18%
+13/05/23 02:01:25 INFO mapred.JobClient:  map 94% reduce 18%
+13/05/23 02:01:28 INFO mapred.JobClient:  map 96% reduce 18%
+13/05/23 02:01:31 INFO mapred.JobClient:  map 98% reduce 19%
+13/05/23 02:01:34 INFO mapred.JobClient:  map 99% reduce 21%
+13/05/23 02:01:37 INFO mapred.JobClient:  map 100% reduce 22%
+13/05/23 02:01:40 INFO mapred.JobClient:  map 100% reduce 23%
+13/05/23 02:01:55 INFO mapred.JobClient:  map 100% reduce 24%
+13/05/23 02:02:01 INFO mapred.JobClient:  map 100% reduce 26%
+13/05/23 02:02:04 INFO mapred.JobClient:  map 100% reduce 27%
+13/05/23 02:02:07 INFO mapred.JobClient:  map 100% reduce 30%
+13/05/23 02:02:19 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 02:02:25 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 02:02:37 INFO mapred.JobClient:  map 100% reduce 48%
+13/05/23 02:02:40 INFO mapred.JobClient:  map 100% reduce 63%
+13/05/23 02:02:43 INFO mapred.JobClient:  map 100% reduce 77%
+13/05/23 02:02:46 INFO mapred.JobClient:  map 100% reduce 91%
+13/05/23 02:02:49 INFO mapred.JobClient:  map 100% reduce 96%
+13/05/23 02:02:52 INFO mapred.JobClient:  map 100% reduce 97%
+13/05/23 02:02:55 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 02:03:00 INFO mapred.JobClient: Job complete: job_201305230147_0001
+13/05/23 02:03:00 INFO mapred.JobClient: Counters: 29
+13/05/23 02:03:00 INFO mapred.JobClient:   Job Counters 
+13/05/23 02:03:00 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 02:03:00 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2277994
+13/05/23 02:03:00 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 02:03:00 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 02:03:00 INFO mapred.JobClient:     Launched map tasks=31
+13/05/23 02:03:00 INFO mapred.JobClient:     Data-local map tasks=31
+13/05/23 02:03:00 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=858967
+13/05/23 02:03:00 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 02:03:00 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 02:03:00 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 02:03:00 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 02:03:00 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 02:03:00 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 02:03:00 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 02:03:00 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 02:03:00 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 02:03:00 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 02:03:00 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 02:03:00 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 02:03:00 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 02:03:00 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 02:03:00 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 02:03:00 INFO mapred.JobClient:     CPU time spent (ms)=1935680
+13/05/23 02:03:00 INFO mapred.JobClient:     Total committed heap usage (bytes)=47303360512
+13/05/23 02:03:00 INFO mapred.JobClient:     Combine input records=0
+13/05/23 02:03:00 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 02:03:00 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 02:03:00 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 02:03:00 INFO mapred.JobClient:     Combine output records=0
+13/05/23 02:03:00 INFO mapred.JobClient:     Physical memory (bytes) snapshot=38920388608
+13/05/23 02:03:00 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 02:03:00 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091360309248
+13/05/23 02:03:00 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 267749 ms
+
+real	4m29.005s
+user	0m3.453s
+sys	0m0.307s
+Grepping Logs
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000012_0/job.xml: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000005_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000004_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000024_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/.job.xml.crc: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000021_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/work: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000016_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/job.xml: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/.jobToken.crc: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000000_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000013_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/jars: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000019_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000020_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000003_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000017_0: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/jobToken: No such file or directory
+grep: /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201305230147_0001/attempt_201305230147_0001_m_000018_0: No such file or directory
+Done, Killing
+jmg3     22510  0.0  0.0 106084  1396 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3     22526  0.0  0.0 103232   844 ?        S    02:03   0:00 grep java
+jmg3      4667  0.0  0.0  59072  3528 pts/0    S    02:03   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      4673  0.0  0.0 106084  1404 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3      4691  0.0  0.0 103232   844 ?        S    02:03   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     22552  0.0  0.0 106084  1400 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3     22568  0.0  0.0 103232   844 ?        S    02:03   0:00 grep java
+jmg3      4737  0.0  0.0  59204  3532 pts/0    S    02:03   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      4743  0.0  0.0 106084  1404 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3      4759  0.0  0.0 103232   844 ?        S    02:03   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Done
+java: no process killed
+java: no process killed
+jmg3     22614  0.0  0.0 106084  1400 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3     22630  0.0  0.0 103232   840 ?        S    02:03   0:00 grep java
+jmg3      4820  0.0  0.0  59072  3524 pts/0    S    02:03   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      4826  0.0  0.0 106084  1400 ?        Ss   02:03   0:00 bash -c ps aux | grep java
+jmg3      4842  0.0  0.0 103232   844 ?        S    02:03   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 02:03:30 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 02:03:30 INFO util.GSet: VM type       = 64-bit
+13/05/23 02:03:30 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 02:03:30 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 02:03:30 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 02:03:31 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 02:03:31 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 02:03:31 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 02:03:31 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 02:03:31 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 02:03:31 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 02:03:31 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 02:03:31 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 02:03:31 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 02:14:33 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 02:14:33 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 02:14:33 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 02:14:34 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 02:14:34 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 02:14:34 INFO mapred.JobClient: Running job: job_201305230203_0001
+13/05/23 02:14:35 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 02:14:57 INFO mapred.JobClient:  map 9% reduce 0%
+13/05/23 02:15:00 INFO mapred.JobClient:  map 14% reduce 0%
+13/05/23 02:15:03 INFO mapred.JobClient:  map 20% reduce 0%
+13/05/23 02:15:06 INFO mapred.JobClient:  map 28% reduce 0%
+13/05/23 02:15:09 INFO mapred.JobClient:  map 32% reduce 0%
+13/05/23 02:15:11 INFO mapred.JobClient:  map 37% reduce 0%
+13/05/23 02:15:14 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 02:15:17 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 02:15:20 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 02:16:00 INFO mapred.JobClient:  map 44% reduce 0%
+13/05/23 02:16:06 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 02:16:09 INFO mapred.JobClient:  map 45% reduce 1%
+13/05/23 02:16:12 INFO mapred.JobClient:  map 48% reduce 2%
+13/05/23 02:16:15 INFO mapred.JobClient:  map 50% reduce 3%
+13/05/23 02:16:18 INFO mapred.JobClient:  map 53% reduce 5%
+13/05/23 02:16:21 INFO mapred.JobClient:  map 56% reduce 6%
+13/05/23 02:16:24 INFO mapred.JobClient:  map 57% reduce 7%
+13/05/23 02:16:27 INFO mapred.JobClient:  map 60% reduce 9%
+13/05/23 02:16:30 INFO mapred.JobClient:  map 64% reduce 10%
+13/05/23 02:16:33 INFO mapred.JobClient:  map 66% reduce 11%
+13/05/23 02:16:36 INFO mapred.JobClient:  map 67% reduce 13%
+13/05/23 02:16:39 INFO mapred.JobClient:  map 71% reduce 14%
+13/05/23 02:16:42 INFO mapred.JobClient:  map 75% reduce 14%
+13/05/23 02:16:45 INFO mapred.JobClient:  map 79% reduce 14%
+13/05/23 02:16:48 INFO mapred.JobClient:  map 85% reduce 14%
+13/05/23 02:16:54 INFO mapred.JobClient:  map 86% reduce 14%
+13/05/23 02:16:57 INFO mapred.JobClient:  map 87% reduce 16%
+13/05/23 02:17:00 INFO mapred.JobClient:  map 90% reduce 17%
+13/05/23 02:17:03 INFO mapred.JobClient:  map 92% reduce 17%
+13/05/23 02:17:06 INFO mapred.JobClient:  map 94% reduce 17%
+13/05/23 02:17:09 INFO mapred.JobClient:  map 95% reduce 17%
+13/05/23 02:17:12 INFO mapred.JobClient:  map 96% reduce 17%
+13/05/23 02:17:33 INFO mapred.JobClient:  map 96% reduce 18%
+13/05/23 02:17:39 INFO mapred.JobClient:  map 97% reduce 18%
+13/05/23 02:17:42 INFO mapred.JobClient:  map 97% reduce 20%
+13/05/23 02:17:45 INFO mapred.JobClient:  map 98% reduce 23%
+13/05/23 02:17:48 INFO mapred.JobClient:  map 99% reduce 23%
+13/05/23 02:17:54 INFO mapred.JobClient:  map 100% reduce 25%
+13/05/23 02:17:57 INFO mapred.JobClient:  map 100% reduce 26%
+13/05/23 02:18:12 INFO mapred.JobClient:  map 100% reduce 28%
+13/05/23 02:18:18 INFO mapred.JobClient:  map 100% reduce 30%
+13/05/23 02:18:21 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 02:18:24 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 02:18:33 INFO mapred.JobClient:  map 100% reduce 47%
+13/05/23 02:18:36 INFO mapred.JobClient:  map 100% reduce 75%
+13/05/23 02:18:41 INFO mapred.JobClient:  map 100% reduce 78%
+13/05/23 02:18:50 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 02:18:55 INFO mapred.JobClient: Job complete: job_201305230203_0001
+13/05/23 02:18:55 INFO mapred.JobClient: Counters: 29
+13/05/23 02:18:55 INFO mapred.JobClient:   Job Counters 
+13/05/23 02:18:55 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 02:18:55 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2418481
+13/05/23 02:18:55 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 02:18:55 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 02:18:55 INFO mapred.JobClient:     Launched map tasks=30
+13/05/23 02:18:55 INFO mapred.JobClient:     Data-local map tasks=30
+13/05/23 02:18:55 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=822923
+13/05/23 02:18:55 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 02:18:55 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 02:18:55 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 02:18:55 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 02:18:55 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 02:18:55 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 02:18:55 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 02:18:55 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 02:18:55 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 02:18:55 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 02:18:55 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 02:18:55 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 02:18:55 INFO mapred.JobClient:     Reduce shuffle bytes=2552000870
+13/05/23 02:18:55 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 02:18:55 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 02:18:55 INFO mapred.JobClient:     CPU time spent (ms)=1979210
+13/05/23 02:18:55 INFO mapred.JobClient:     Total committed heap usage (bytes)=48403906560
+13/05/23 02:18:55 INFO mapred.JobClient:     Combine input records=0
+13/05/23 02:18:55 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 02:18:55 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 02:18:55 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 02:18:55 INFO mapred.JobClient:     Combine output records=0
+13/05/23 02:18:55 INFO mapred.JobClient:     Physical memory (bytes) snapshot=37500420096
+13/05/23 02:18:55 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 02:18:55 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091496632320
+13/05/23 02:18:55 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 261579 ms
+
+real	4m22.817s
+user	0m3.360s
+sys	0m0.237s
+Grepping Logs
+Done, Killing
+jmg3     26023  0.0  0.0 106084  1396 ?        Ss   02:18   0:00 bash -c ps aux | grep java
+jmg3     26039  0.0  0.0 103232   844 ?        S    02:18   0:00 grep java
+jmg3      6044  0.0  0.0  59072  3532 pts/0    S    02:18   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      6050  0.0  0.0 106084  1400 ?        Ss   02:18   0:00 bash -c ps aux | grep java
+jmg3      6066  0.0  0.0 103232   844 ?        S    02:18   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+run_opencl_test.sh: Running kmeans with input compression none, intermediate compression none
+Buffer size 1048576 bytes, Java heap size 16G
+Killing
+java: no process killed
+java: no process killed
+jmg3     26065  0.0  0.0 106084  1396 ?        Ss   02:18   0:00 bash -c ps aux | grep java
+jmg3     26081  0.0  0.0 103232   844 ?        S    02:18   0:00 grep java
+jmg3      6103  0.0  0.0  59072  3528 pts/0    S    02:18   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      6109  0.0  0.0 106084  1396 ?        Ss   02:18   0:00 bash -c ps aux | grep java
+jmg3      6125  0.0  0.0 103232   844 ?        S    02:18   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Done
+java: no process killed
+java: no process killed
+jmg3     26127  0.0  0.0 106084  1396 ?        Ss   02:19   0:00 bash -c ps aux | grep java
+jmg3     26143  0.0  0.0 103232   844 ?        S    02:19   0:00 grep java
+jmg3      6186  0.0  0.0  59072  3528 pts/0    S    02:19   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      6192  0.0  0.0 106084  1400 ?        Ss   02:19   0:00 bash -c ps aux | grep java
+jmg3      6208  0.0  0.0 103232   844 ?        S    02:19   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed
+Setting path to /tmp/1311669.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 1 2 16
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1311669.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-016.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx16G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.user.jobconf.limit</name><value>10485760</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1311669.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-016.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-008
+-----------------------------------------------------
+gpu-016
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 02:19:22 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-016.davinci.rice.edu/192.168.110.216
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Tue May 21 23:11:28 CDT 2013
+************************************************************/
+13/05/23 02:19:22 INFO util.GSet: VM type       = 64-bit
+13/05/23 02:19:22 INFO util.GSet: 2% max memory = 17.77875 MB
+13/05/23 02:19:22 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+13/05/23 02:19:22 INFO util.GSet: recommended=2097152, actual=2097152
+13/05/23 02:19:22 INFO namenode.FSNamesystem: fsOwner=jmg3
+13/05/23 02:19:22 INFO namenode.FSNamesystem: supergroup=supergroup
+13/05/23 02:19:22 INFO namenode.FSNamesystem: isPermissionEnabled=true
+13/05/23 02:19:22 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+13/05/23 02:19:22 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+13/05/23 02:19:22 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+13/05/23 02:19:22 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+13/05/23 02:19:23 INFO common.Storage: Storage directory /tmp/1311669.daman.davinci.rice.edu/hadoop-jmg3/dfs/name has been successfully formatted.
+13/05/23 02:19:23 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-016.davinci.rice.edu/192.168.110.216
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-008: no tasktracker to stop
+no namenode to stop
+gpu-008: no datanode to stop
+gpu-016: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-016.davinci.rice.edu.out
+gpu-008: starting datanode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-008.davinci.rice.edu.out
+gpu-016: starting secondarynamenode, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-016.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-016.davinci.rice.edu.out
+gpu-008: starting tasktracker, logging to /tmp/1311669.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-008.davinci.rice.edu.out
+gpu-008: Max num map slots is 13
+Completed start all
+Putting inputs
+Warning: $HADOOP_HOME is deprecated.
+
+Running Application
+Warning: $HADOOP_HOME is deprecated.
+
+13/05/23 02:33:23 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+13/05/23 02:33:23 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+13/05/23 02:33:23 INFO compress.CodecPool: Got brand-new decompressor
+13/05/23 02:33:23 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+13/05/23 02:33:24 INFO input.FileInputFormat: Total input paths to process : 30
+13/05/23 02:33:24 INFO mapred.JobClient: Running job: job_201305230219_0001
+13/05/23 02:33:25 INFO mapred.JobClient:  map 0% reduce 0%
+13/05/23 02:33:45 INFO mapred.JobClient:  map 6% reduce 0%
+13/05/23 02:33:48 INFO mapred.JobClient:  map 12% reduce 0%
+13/05/23 02:33:51 INFO mapred.JobClient:  map 18% reduce 0%
+13/05/23 02:33:54 INFO mapred.JobClient:  map 23% reduce 0%
+13/05/23 02:33:58 INFO mapred.JobClient:  map 29% reduce 0%
+13/05/23 02:34:01 INFO mapred.JobClient:  map 34% reduce 0%
+13/05/23 02:34:04 INFO mapred.JobClient:  map 37% reduce 0%
+13/05/23 02:34:07 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 02:34:11 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 02:34:14 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 02:34:32 INFO mapred.JobClient:  map 40% reduce 0%
+13/05/23 02:34:37 INFO mapred.JobClient: Task Id : attempt_201305230219_0001_m_000007_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305230219_0001_m_000007_0: Scope block from 31 to  64
+13/05/23 02:34:38 INFO mapred.JobClient:  map 41% reduce 0%
+13/05/23 02:34:40 INFO mapred.JobClient:  map 42% reduce 0%
+13/05/23 02:34:43 INFO mapred.JobClient:  map 43% reduce 0%
+13/05/23 02:34:46 INFO mapred.JobClient:  map 45% reduce 0%
+13/05/23 02:34:49 INFO mapred.JobClient:  map 46% reduce 2%
+13/05/23 02:34:52 INFO mapred.JobClient:  map 46% reduce 3%
+13/05/23 02:34:55 INFO mapred.JobClient:  map 48% reduce 5%
+13/05/23 02:34:58 INFO mapred.JobClient:  map 50% reduce 6%
+13/05/23 02:35:01 INFO mapred.JobClient:  map 53% reduce 7%
+13/05/23 02:35:04 INFO mapred.JobClient:  map 57% reduce 7%
+13/05/23 02:35:08 INFO mapred.JobClient:  map 59% reduce 7%
+13/05/23 02:35:11 INFO mapred.JobClient:  map 62% reduce 7%
+13/05/23 02:35:14 INFO mapred.JobClient:  map 65% reduce 8%
+13/05/23 02:35:17 INFO mapred.JobClient:  map 66% reduce 8%
+13/05/23 02:35:20 INFO mapred.JobClient:  map 67% reduce 8%
+13/05/23 02:35:24 INFO mapred.JobClient:  map 67% reduce 9%
+13/05/23 02:35:27 INFO mapred.JobClient:  map 68% reduce 10%
+13/05/23 02:35:30 INFO mapred.JobClient:  map 69% reduce 12%
+13/05/23 02:35:33 INFO mapred.JobClient:  map 70% reduce 13%
+13/05/23 02:35:36 INFO mapred.JobClient:  map 73% reduce 14%
+13/05/23 02:35:39 INFO mapred.JobClient:  map 75% reduce 14%
+13/05/23 02:35:42 INFO mapred.JobClient:  map 77% reduce 14%
+13/05/23 02:35:45 INFO mapred.JobClient:  map 81% reduce 15%
+13/05/23 02:35:48 INFO mapred.JobClient:  map 84% reduce 15%
+13/05/23 02:35:51 INFO mapred.JobClient:  map 87% reduce 15%
+13/05/23 02:35:54 INFO mapred.JobClient:  map 89% reduce 15%
+13/05/23 02:35:57 INFO mapred.JobClient:  map 86% reduce 15%
+13/05/23 02:36:00 INFO mapred.JobClient:  map 86% reduce 16%
+13/05/23 02:36:03 INFO mapred.JobClient:  map 88% reduce 18%
+13/05/23 02:36:05 INFO mapred.JobClient: Task Id : attempt_201305230219_0001_m_000020_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 139.
+Throwable.getMessage: Task process exit with nonzero status of 139.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:274)
+Caused by: java.io.IOException: Task process exit with nonzero status of 139.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:261)
+
+attempt_201305230219_0001_m_000020_0: Scope block from 31 to  64
+13/05/23 02:36:06 INFO mapred.JobClient:  map 90% reduce 18%
+13/05/23 02:36:12 INFO mapred.JobClient:  map 92% reduce 18%
+13/05/23 02:36:15 INFO mapred.JobClient:  map 94% reduce 20%
+13/05/23 02:36:18 INFO mapred.JobClient:  map 96% reduce 21%
+13/05/23 02:36:21 INFO mapred.JobClient:  map 97% reduce 22%
+13/05/23 02:36:24 INFO mapred.JobClient:  map 98% reduce 22%
+13/05/23 02:36:30 INFO mapred.JobClient:  map 99% reduce 22%
+13/05/23 02:36:36 INFO mapred.JobClient:  map 99% reduce 23%
+13/05/23 02:36:42 INFO mapred.JobClient:  map 99% reduce 24%
+13/05/23 02:36:51 INFO mapred.JobClient:  map 99% reduce 25%
+13/05/23 02:36:57 INFO mapred.JobClient:  map 99% reduce 26%
+13/05/23 02:37:00 INFO mapred.JobClient:  map 99% reduce 29%
+13/05/23 02:37:03 INFO mapred.JobClient:  map 99% reduce 31%
+13/05/23 02:37:06 INFO mapred.JobClient:  map 100% reduce 31%
+13/05/23 02:37:15 INFO mapred.JobClient:  map 100% reduce 32%
+13/05/23 02:37:18 INFO mapred.JobClient:  map 100% reduce 33%
+13/05/23 02:37:24 INFO mapred.JobClient:  map 100% reduce 40%
+13/05/23 02:37:27 INFO mapred.JobClient:  map 100% reduce 58%
+13/05/23 02:37:30 INFO mapred.JobClient:  map 100% reduce 81%
+13/05/23 02:37:33 INFO mapred.JobClient:  map 100% reduce 89%
+13/05/23 02:37:37 INFO mapred.JobClient:  map 100% reduce 92%
+13/05/23 02:37:40 INFO mapred.JobClient:  map 100% reduce 96%
+13/05/23 02:37:46 INFO mapred.JobClient:  map 100% reduce 100%
+13/05/23 02:37:51 INFO mapred.JobClient: Job complete: job_201305230219_0001
+13/05/23 02:37:51 INFO mapred.JobClient: Counters: 29
+13/05/23 02:37:51 INFO mapred.JobClient:   Job Counters 
+13/05/23 02:37:51 INFO mapred.JobClient:     Launched reduce tasks=5
+13/05/23 02:37:51 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=2247350
+13/05/23 02:37:51 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+13/05/23 02:37:51 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+13/05/23 02:37:51 INFO mapred.JobClient:     Launched map tasks=32
+13/05/23 02:37:51 INFO mapred.JobClient:     Data-local map tasks=32
+13/05/23 02:37:51 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=915954
+13/05/23 02:37:51 INFO mapred.JobClient:   File Output Format Counters 
+13/05/23 02:37:51 INFO mapred.JobClient:     Bytes Written=485190
+13/05/23 02:37:51 INFO mapred.JobClient:   FileSystemCounters
+13/05/23 02:37:51 INFO mapred.JobClient:     FILE_BYTES_READ=6495004396
+13/05/23 02:37:51 INFO mapred.JobClient:     HDFS_BYTES_READ=3878119606
+13/05/23 02:37:51 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=9258797560
+13/05/23 02:37:51 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=485190
+13/05/23 02:37:51 INFO mapred.JobClient:   File Input Format Counters 
+13/05/23 02:37:51 INFO mapred.JobClient:     Bytes Read=3878115626
+13/05/23 02:37:51 INFO mapred.JobClient:   Map-Reduce Framework
+13/05/23 02:37:51 INFO mapred.JobClient:     Map output materialized bytes=2640000900
+13/05/23 02:37:51 INFO mapred.JobClient:     Map input records=120000000
+13/05/23 02:37:51 INFO mapred.JobClient:     Reduce shuffle bytes=2569649144
+13/05/23 02:37:51 INFO mapred.JobClient:     Spilled Records=415050090
+13/05/23 02:37:51 INFO mapred.JobClient:     Map output bytes=2400000000
+13/05/23 02:37:51 INFO mapred.JobClient:     CPU time spent (ms)=1945580
+13/05/23 02:37:51 INFO mapred.JobClient:     Total committed heap usage (bytes)=46769635328
+13/05/23 02:37:51 INFO mapred.JobClient:     Combine input records=0
+13/05/23 02:37:51 INFO mapred.JobClient:     SPLIT_RAW_BYTES=3980
+13/05/23 02:37:51 INFO mapred.JobClient:     Reduce input records=120000000
+13/05/23 02:37:51 INFO mapred.JobClient:     Reduce input groups=0
+13/05/23 02:37:51 INFO mapred.JobClient:     Combine output records=0
+13/05/23 02:37:51 INFO mapred.JobClient:     Physical memory (bytes) snapshot=38251585536
+13/05/23 02:37:51 INFO mapred.JobClient:     Reduce output records=20000
+13/05/23 02:37:51 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3091360309248
+13/05/23 02:37:51 INFO mapred.JobClient:     Map output records=120000000
+Execution Time 267916 ms
+
+real	4m29.188s
+user	0m3.461s
+sys	0m0.297s
+Grepping Logs
+Done, Killing
+jmg3     29842  0.0  0.0 106084  1400 ?        Ss   02:37   0:00 bash -c ps aux | grep java
+jmg3     29858  0.0  0.0 103232   844 ?        S    02:37   0:00 grep java
+jmg3      7428  0.0  0.0  59072  3528 pts/0    S    02:37   0:00 ssh -o ConnectTimeout=2 gpu-016 ps aux | grep java
+jmg3      7434  0.0  0.0 106084  1400 ?        Ss   02:37   0:00 bash -c ps aux | grep java
+jmg3      7450  0.0  0.0 103232   844 ?        S    02:37   0:00 grep java
+jmg3     15905  0.0  0.0 100928   620 pts/0    S+   May22   0:00 tail -f kmeans.java.compressed

@@ -1,0 +1,350 @@
+run_opencl_test.sh: Running sort with input compression default, intermediate compression lzo
+Buffer size 524288 bytes, Java heap size 8G
+Killing
+jmg3      6411  0.0  0.0 106084  1396 ?        Ss   13:53   0:00 bash -c ps aux | grep java
+jmg3      6427  0.0  0.0 103232   840 ?        S    13:53   0:00 grep java
+jmg3     10012  0.0  0.0  59072  3528 ?        S    13:53   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     10018  0.0  0.0 106084  1396 ?        Ss   13:53   0:00 bash -c ps aux | grep java
+jmg3     10034  0.0  0.0 103232   840 ?        S    13:53   0:00 grep java
+Done
+Setting path to /tmp/1270936.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 524288 524288 36 36 256 256 3 3 524288 524288 268435456 12 1 10 -10 8
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1270936.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-011.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>10</value>
+  <name>opencl.reducer.cpumult</name><value>-10</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx8G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=524288 -Dopencl.mapper.bufferSize.cpu=524288 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=524288 -Dopencl.reducer.bufferSize.cpu=524288</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1270936.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-011.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-010
+-----------------------------------------------------
+gpu-011
+-----------------------------------------------------
+Completed reconfiguring
+Completed namenode startup
+no jobtracker to stop
+gpu-010: no tasktracker to stop
+no namenode to stop
+gpu-010: no datanode to stop
+gpu-011: no secondarynamenode to stop
+Completed stop all
+starting namenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-011.davinci.rice.edu.out
+gpu-010: starting datanode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-010.davinci.rice.edu.out
+gpu-011: starting secondarynamenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-011.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-011.davinci.rice.edu.out
+gpu-010: starting tasktracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-010.davinci.rice.edu.out
+gpu-010: Max num map slots is 13
+Completed start all
+Putting inputs
+Running Application
+Done, Killing
+jmg3      9896  0.0  0.0 106084  1400 ?        Ss   13:59   0:00 bash -c ps aux | grep java
+jmg3      9912  0.0  0.0 103232   840 ?        S    13:59   0:00 grep java
+jmg3     11119  0.0  0.0  59072  3528 ?        S    13:59   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     11125  0.0  0.0 106084  1396 ?        Ss   13:59   0:00 bash -c ps aux | grep java
+jmg3     11141  0.0  0.0 103232   840 ?        S    13:59   0:00 grep java
+run_opencl_test.sh: Running sort with input compression default, intermediate compression lzo
+Buffer size 1048576 bytes, Java heap size 8G
+Killing
+jmg3      9958  0.0  0.0 106084  1396 ?        Ss   13:59   0:00 bash -c ps aux | grep java
+jmg3      9974  0.0  0.0 103232   840 ?        S    13:59   0:00 grep java
+jmg3     11200  0.0  0.0  59072  3528 ?        S    13:59   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     11206  0.0  0.0 106084  1400 ?        Ss   13:59   0:00 bash -c ps aux | grep java
+jmg3     11222  0.0  0.0 103232   844 ?        S    13:59   0:00 grep java
+Done
+Setting path to /tmp/1270936.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 1048576 1048576 36 36 256 256 3 3 1048576 1048576 268435456 12 1 10 -10 8
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1270936.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-011.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>10</value>
+  <name>opencl.reducer.cpumult</name><value>-10</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx8G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=1048576 -Dopencl.mapper.bufferSize.cpu=1048576 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=1048576 -Dopencl.reducer.bufferSize.cpu=1048576</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1270936.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-011.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-010
+-----------------------------------------------------
+gpu-011
+-----------------------------------------------------
+Completed reconfiguring
+Completed namenode startup
+no jobtracker to stop
+gpu-010: no tasktracker to stop
+no namenode to stop
+gpu-010: no datanode to stop
+gpu-011: no secondarynamenode to stop
+Completed stop all
+starting namenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-011.davinci.rice.edu.out
+gpu-010: starting datanode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-010.davinci.rice.edu.out
+gpu-011: starting secondarynamenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-011.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-011.davinci.rice.edu.out
+gpu-010: starting tasktracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-010.davinci.rice.edu.out
+gpu-010: Max num map slots is 13
+Completed start all
+Putting inputs
+Running Application
+Done, Killing
+jmg3     10090 12.1  0.5 4508900 270432 ?      Sl   13:59   0:44 /opt/apps/jdk/1.6/bin/java -Dproc_datanode -Xmx1000m -Djava.net.preferIPv4Stack=true -server -Dhadoop.log.dir=/tmp/1270936.daman.davinci.rice.edu/logs -Dhadoop.log.file=hadoop-jmg3-datanode-gpu-010.davinci.rice.edu.log -Dhadoop.home.dir=/home/jmg3/hadoop-1.0.3/libexec/.. -Dhadoop.id.str=jmg3 -Dhadoop.root.logger=INFO,DRFA -Dhadoop.security.logger=INFO,NullAppender -Djava.library.path=/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib::/home/jmg3/hadoop-1.0.3/libexec/../lib/native/Linux-amd64-64 -Dhadoop.policy.file=hadoop-policy.xml -classpath /home/jmg3/hadoop-1.0.3/libexec/../conf:/opt/apps/jdk/1.6/lib/tools.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/classes:/home/jmg3/hadoop-1.0.3/libexec/../build:/home/jmg3/hadoop-1.0.3/libexec/../build/test/classes:/home/jmg3/hadoop-1.0.3/libexec/../build/tools:/home/jmg3/hadoop-1.0.3/libexec/..:/home/jmg3/hadoop-1.0.3/libexec/../hadoop-core-*.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aparapi.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-1.7.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-core-1.8.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-cli-1.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-codec-1.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-collections-3.2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-configuration-1.6.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-daemon-1.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-digester-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-el-1.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-httpclient-3.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-io-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-lang-2.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-1.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-api-1.0.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-math-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-net-1.4.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/core-3.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-capacity-scheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-fairscheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-thriftfs-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hsqldb-1.8.0.10.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-core-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-mapper-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-compiler-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-runtime-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jdeb-0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-core-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-json-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-server-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jets3t-0.6.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-util-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jsch-0.1.42.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/junit-4.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/kfs-0.2.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/log4j-1.2.15.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/mockito-all-1.8.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/oro-2.0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/servlet-api-2.5-20081211.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-api-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-log4j12-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/xmlenc-0.52.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-beanutils-1.7.0.jar:/home/jmg3/hado
+jmg3     10212  3.5  0.6 74812972 341068 ?     Sl   13:59   0:12 /opt/apps/jdk/1.6/bin/java -Dproc_tasktracker -Xmx1000m -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/tmp/1270936.daman.davinci.rice.edu/logs -Dhadoop.log.file=hadoop-jmg3-tasktracker-gpu-010.davinci.rice.edu.log -Dhadoop.home.dir=/home/jmg3/hadoop-1.0.3/libexec/.. -Dhadoop.id.str=jmg3 -Dhadoop.root.logger=INFO,DRFA -Dhadoop.security.logger=INFO,NullAppender -Djava.library.path=/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib::/home/jmg3/hadoop-1.0.3/libexec/../lib/native/Linux-amd64-64 -Dhadoop.policy.file=hadoop-policy.xml -classpath /home/jmg3/hadoop-1.0.3/libexec/../conf:/opt/apps/jdk/1.6/lib/tools.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/classes:/home/jmg3/hadoop-1.0.3/libexec/../build:/home/jmg3/hadoop-1.0.3/libexec/../build/test/classes:/home/jmg3/hadoop-1.0.3/libexec/../build/tools:/home/jmg3/hadoop-1.0.3/libexec/..:/home/jmg3/hadoop-1.0.3/libexec/../hadoop-core-*.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aparapi.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-1.7.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-core-1.8.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-cli-1.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-codec-1.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-collections-3.2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-configuration-1.6.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-daemon-1.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-digester-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-el-1.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-httpclient-3.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-io-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-lang-2.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-1.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-api-1.0.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-math-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-net-1.4.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/core-3.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-capacity-scheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-fairscheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-thriftfs-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hsqldb-1.8.0.10.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-core-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-mapper-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-compiler-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-runtime-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jdeb-0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-core-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-json-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-server-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jets3t-0.6.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-util-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jsch-0.1.42.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/junit-4.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/kfs-0.2.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/log4j-1.2.15.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/mockito-all-1.8.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/oro-2.0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/servlet-api-2.5-20081211.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-api-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-log4j12-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/xmlenc-0.52.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-beanutils-1.7.0.jar:/home/jmg3/hadoop
+jmg3     13409  0.0  0.0 106084  1400 ?        Ss   14:06   0:00 bash -c ps aux | grep java
+jmg3     13425  0.0  0.0 103236   856 ?        S    14:06   0:00 grep java
+jmg3     12319  0.0  0.0  59072  3528 ?        S    14:06   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     12325  0.0  0.0 106084  1396 ?        Ss   14:06   0:00 bash -c ps aux | grep java
+jmg3     12341  0.0  0.0 103232   844 ?        S    14:06   0:00 grep java
+run_opencl_test.sh: Running sort with input compression default, intermediate compression lzo
+Buffer size 2097152 bytes, Java heap size 8G
+Killing
+jmg3     13471  0.0  0.0 106084  1396 ?        Ss   14:06   0:00 bash -c ps aux | grep java
+jmg3     13487  0.0  0.0 103232   844 ?        S    14:06   0:00 grep java
+jmg3     12400  0.0  0.0  59072  3528 ?        S    14:06   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     12406  0.0  0.0 106084  1400 ?        Ss   14:06   0:00 bash -c ps aux | grep java
+jmg3     12422  0.0  0.0 103232   844 ?        S    14:06   0:00 grep java
+Done
+Setting path to /tmp/1270936.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 2097152 2097152 36 36 256 256 3 3 2097152 2097152 268435456 12 1 10 -10 8
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1270936.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-011.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>10</value>
+  <name>opencl.reducer.cpumult</name><value>-10</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx8G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=2097152 -Dopencl.mapper.bufferSize.cpu=2097152 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=2097152 -Dopencl.reducer.bufferSize.cpu=2097152</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1270936.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-011.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-010
+-----------------------------------------------------
+gpu-011
+-----------------------------------------------------
+Completed reconfiguring
+Completed namenode startup
+no jobtracker to stop
+gpu-010: no tasktracker to stop
+no namenode to stop
+gpu-010: no datanode to stop
+gpu-011: no secondarynamenode to stop
+Completed stop all
+starting namenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-011.davinci.rice.edu.out
+gpu-010: starting datanode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-010.davinci.rice.edu.out
+gpu-011: starting secondarynamenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-011.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-011.davinci.rice.edu.out
+gpu-010: starting tasktracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-010.davinci.rice.edu.out
+gpu-010: Max num map slots is 13
+Completed start all
+Putting inputs
+Running Application
+Done, Killing
+jmg3     17223  0.0  0.0 106084  1396 ?        Ss   14:12   0:00 bash -c ps aux | grep java
+jmg3     17239  0.0  0.0 103232   840 ?        S    14:12   0:00 grep java
+jmg3     13506  0.0  0.0  59072  3528 ?        S    14:12   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     13512  0.0  0.0 106084  1400 ?        Ss   14:12   0:00 bash -c ps aux | grep java
+jmg3     13528  0.0  0.0 103232   844 ?        S    14:12   0:00 grep java
+run_opencl_test.sh: Running sort with input compression default, intermediate compression lzo
+Buffer size 4194304 bytes, Java heap size 8G
+Killing
+jmg3     17285  0.0  0.0 106084  1400 ?        Ss   14:12   0:00 bash -c ps aux | grep java
+jmg3     17301  0.0  0.0 103232   840 ?        S    14:12   0:00 grep java
+jmg3     13587  0.0  0.0  59072  3532 ?        S    14:12   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     13593  0.0  0.0 106084  1400 ?        Ss   14:12   0:00 bash -c ps aux | grep java
+jmg3     13609  0.0  0.0 103232   844 ?        S    14:12   0:00 grep java
+Done
+Setting path to /tmp/1270936.daman.davinci.rice.edu
+13 5 36 36 256 256 3 3 4194304 4194304 36 36 256 256 3 3 4194304 4194304 268435456 12 1 10 -10 8
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1270936.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-011.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>5</value>
+  <name>mapred.map.tasks</name><value>13</value>
+  <name>opencl.mapper.gpumult</name><value>12</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>10</value>
+  <name>opencl.reducer.cpumult</name><value>-10</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>13</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>5</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>1200000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx8G -Dopencl.mapper.groups.gpu=36 -Dopencl.mapper.groups.cpu=36 -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=256 -Dopencl.mapper.buffers.gpu=3 -Dopencl.mapper.buffers.cpu=3 -Dopencl.mapper.bufferSize.gpu=4194304 -Dopencl.mapper.bufferSize.cpu=4194304 -Dopencl.reducer.groups.gpu=36 -Dopencl.reducer.groups.cpu=36 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=256 -Dopencl.reducer.buffers.gpu=3 -Dopencl.reducer.buffers.cpu=3 -Dopencl.reducer.bufferSize.gpu=4194304 -Dopencl.reducer.bufferSize.cpu=4194304</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1270936.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-011.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-010
+-----------------------------------------------------
+gpu-011
+-----------------------------------------------------
+Completed reconfiguring
+Completed namenode startup
+no jobtracker to stop
+gpu-010: no tasktracker to stop
+no namenode to stop
+gpu-010: no datanode to stop
+gpu-011: no secondarynamenode to stop
+Completed stop all
+starting namenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-011.davinci.rice.edu.out
+gpu-010: starting datanode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-010.davinci.rice.edu.out
+gpu-011: starting secondarynamenode, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-011.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-011.davinci.rice.edu.out
+gpu-010: starting tasktracker, logging to /tmp/1270936.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-010.davinci.rice.edu.out
+gpu-010: Max num map slots is 13
+Completed start all
+Putting inputs
+Running Application
+Done, Killing
+jmg3     23221  0.0  0.0 106084  1400 ?        Ss   14:19   0:00 bash -c ps aux | grep java
+jmg3     23237  0.0  0.0 103232   844 ?        S    14:19   0:00 grep java
+jmg3     14692  0.0  0.0  59072  3528 ?        S    14:19   0:00 ssh -o ConnectTimeout=2 gpu-011 ps aux | grep java
+jmg3     14698  0.0  0.0 106084  1396 ?        Ss   14:19   0:00 bash -c ps aux | grep java
+jmg3     14714  0.0  0.0 103232   840 ?        S    14:19   0:00 grep java

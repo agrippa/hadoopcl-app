@@ -1,0 +1,13 @@
+#PBS -o /home/jmg3/app/pbs/sort_java_compressed/out
+#PBS -e /home/jmg3/app/pbs/sort_java_compressed/err
+#PBS -M jmg3@rice.edu
+#PBS -m bae
+#PBS -l nodes=2:ppn=12
+#PBS -l walltime=10:00:00
+#PBS -q graphics
+#PBS -V
+#PBS -N sort-java-compressed
+cd ${HADOOP_APP_DIR}
+for t in {1..5}; do
+    ./run_sort_java.sh default lzo 8
+done

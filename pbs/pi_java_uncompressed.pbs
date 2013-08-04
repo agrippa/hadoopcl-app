@@ -1,0 +1,13 @@
+#PBS -o /home/jmg3/app/pbs/pi_java_uncompressed/out
+#PBS -e /home/jmg3/app/pbs/pi_java_uncompressed/err
+#PBS -M jmg3@rice.edu
+#PBS -m bae
+#PBS -l nodes=2:ppn=12
+#PBS -l walltime=3:00:00
+#PBS -q graphics
+#PBS -V
+#PBS -N pi-java-uncompressed
+cd ${HADOOP_APP_DIR}
+for t in {1..10}; do
+    ./run_pi_java.sh none none 16
+done

@@ -1,0 +1,13 @@
+#PBS -o /home/jmg3/app/pbs/pi_opencl_compressed/out
+#PBS -e /home/jmg3/app/pbs/pi_opencl_compressed/err
+#PBS -M jmg3@rice.edu
+#PBS -m bae
+#PBS -l nodes=2:ppn=12
+#PBS -l walltime=3:00:00
+#PBS -q graphics
+#PBS -V
+#PBS -N pi-opencl-compressed
+cd ${HADOOP_APP_DIR}
+#for t in {1..10}; do
+    ./run_pi_opencl.sh default lzo 1048576 16
+#done

@@ -1,0 +1,81 @@
+#!/bin/bash
+
+#the purpose of this is to set the slaves and the
+#directory for the HDFS using the PBS environmental variables
+
+#it is repeatable , no side effects
+
+
+#if [ $# -ne 1 ]
+#then
+#	echo "Usage: ./this hadoop_dir_to_configure"
+#	exit
+#fi
+
+#HDIR=$1
+
+HDIR=hadoop-1.0.3
+
+TMPF=tmp3253434343431$HDIR
+hostname | grep login > /dev/null
+
+if [ $? -eq 0 ]
+then
+	echo "Run it from the hadoop master NOT from the login nodes"  
+	echo "The env variables that you need are not yet set on this login node"
+	exit
+fi 
+ 
+
+HADOOP_CFG="/users/aip1/$HDIR/conf"
+
+echo "Setting path to /tmp/${PBS_JOBID}"
+ 
+sed "s/PATHTOHDFS/\/tmp\/${PBS_JOBID}/g"  $HADOOP_CFG/core-site.toset | sed "s/MASTER/`hostname`/g"  > $HADOOP_CFG/core-site.xml
+sed "s/PATHTOHDFS/\/tmp\/${PBS_JOBID}/g"  $HADOOP_CFG/hadoop-env.toset > $HADOOP_CFG/hadoop-env.sh
+
+#sed "s/MASTER/`hostname`/g"  $HADOOP_CFG/mapred-site.toset | sed "s/threads<\/name><value>0<\/value>/threads<\/name><value>40<\/value>/g" | sed "s/copies<\/name><value>0<\/value>/copies<\/name><value>5<\/value>/g" | sed "s/map.tasks.maximum<\/name><value>0<\/value>/map.tasks.maximum<\/name><value>2<\/value>/g" | sed  "s/reduce.tasks.maximum<\/name><value>0<\/value>/reduce.tasks.maximum<\/name><value>2<\/value>/g" > $HADOOP_CFG/mapred-site.xml
+
+sed "s/MASTER/`hostname`/g"  $HADOOP_CFG/mapred-site.toset | sed "s/threads<\/name><value>0<\/value>/threads<\/name><value>40<\/value>/g" | sed "s/copies<\/name><value>0<\/value>/copies<\/name><value>5<\/value>/g" | sed "s/map.tasks.maximum<\/name><value>0<\/value>/map.tasks.maximum<\/name><value>$1<\/value>/g" | sed  "s/reduce.tasks.maximum<\/name><value>0<\/value>/reduce.tasks.maximum<\/name><value>2<\/value>/g" > $HADOOP_CFG/mapred-site.xml
+
+>$TMPF
+echo "s/datanode.handler.count<\/name><value>0<\/value>/datanode.handler.count<\/name><value>3<\/value>/g" > $TMPF
+echo "s/namenode.handler.count<\/name><value>0<\/value>/namenode.handler.count<\/name><value>10<\/value>/g" >> $TMPF
+echo "s/xcievers<\/name><value>0<\/value>/xcievers<\/name><value>256<\/value>/g" >> $TMPF
+echo "s/dfs.replication<\/name><value>0<\/value>/dfs.replication<\/name><value>1<\/value>/g" >> $TMPF
+#echo "s/dfs.block.size<\/name><value>0<\/value>/dfs.block.size<\/name><value>134217728<\/value>/g" >> $TMPF
+echo "s/dfs.block.size<\/name><value>0<\/value>/dfs.block.size<\/name><value>$2<\/value>/g" >> $TMPF
+
+sed -f $TMPF $HADOOP_CFG/hdfs-site.toset > $HADOOP_CFG/hdfs-site.xml
+
+
+	
+
+
+
+
+
+
+cat $PBS_NODEFILE | sort | uniq | grep -v `hostname | cut -d"." -f1 ` > $HADOOP_CFG/slaves
+echo `hostname -s` > $HADOOP_CFG/masters
+
+echo
+echo
+echo
+echo "Here are the results:"
+cat $HADOOP_CFG/hadoop-env.sh 
+echo "-----------------------------------------------------"
+cat $HADOOP_CFG/mapred-site.xml | egrep 'name>|value'
+echo "-----------------------------------------------------"
+cat $HADOOP_CFG/hdfs-site.xml | egrep 'name>|value'
+echo "-----------------------------------------------------"
+cat $HADOOP_CFG/core-site.xml | egrep 'name>|value'
+echo "-----------------------------------------------------"
+cat $HADOOP_CFG/slaves
+echo "-----------------------------------------------------"
+cat $HADOOP_CFG/masters
+echo "-----------------------------------------------------"
+
+
+
+

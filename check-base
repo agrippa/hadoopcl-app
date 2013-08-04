@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+
+NODES=`cat $PBS_NODEFILE | sort | uniq`
+
+#the problem is that the $val string gets broken up when given
+#as a parameter. So I was trying to reconstruct it
+ssh-all (){
+
+#	 ARG=" "
+#	 while [ "$1" != "" ]
+# 	 do
+#		 #echo $1
+#		ARG=$ARG" "$1
+#		shift
+# 	 done
+
+
+	 for i in $NODES; do ssh -o ConnectTimeout=2 $i $@; done
+}
+

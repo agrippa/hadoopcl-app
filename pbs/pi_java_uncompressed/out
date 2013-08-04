@@ -1,0 +1,71 @@
+Setting path to /tmp/1215067.daman.davinci.rice.edu
+12 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 1 1 1 1
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.6
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/1215067.daman.davinci.rice.edu/logs
+export HADOOP_CLASSPATH=/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=/home/jmg3/lzo-install/lib:${JAVA_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-013.davinci.rice.edu:54311</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>task.tracker.http.threads</name><value>40</value>
+  <name>mapred.reduce.tasks</name><value>4</value>
+  <name>mapred.map.tasks</name><value>12</value>
+  <name>opencl.mapper.gpumult</name><value>1</value>
+  <name>opencl.mapper.cpumult</name><value>1</value>
+  <name>opencl.reducer.gpumult</name><value>1</value>
+  <name>opencl.reducer.cpumult</name><value>1</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>12</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>4</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.reduce.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>120000</value>
+  <name>mapred.child.java.opts</name><value>-Xmx24G -Dopencl.mapper.groups.gpu=0 -Dopencl.mapper.groups.cpu=0 -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.mapper.buffers.gpu=0 -Dopencl.mapper.buffers.cpu=0 -Dopencl.mapper.bufferSize.gpu=0 -Dopencl.mapper.bufferSize.cpu=0 -Dopencl.reducer.groups.gpu=0 -Dopencl.reducer.groups.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.reducer.buffers.gpu=0 -Dopencl.reducer.buffers.cpu=0 -Dopencl.reducer.bufferSize.gpu=0 -Dopencl.reducer.bufferSize.cpu=0</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/1215067.daman.davinci.rice.edu/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-013.davinci.rice.edu:54310</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-012
+-----------------------------------------------------
+gpu-013
+-----------------------------------------------------
+Completed reconfiguring
+Completed namenode startup
+no jobtracker to stop
+gpu-012: no tasktracker to stop
+no namenode to stop
+gpu-012: no datanode to stop
+gpu-013: no secondarynamenode to stop
+Completed stop all
+starting namenode, logging to /tmp/1215067.daman.davinci.rice.edu/logs/hadoop-jmg3-namenode-gpu-013.davinci.rice.edu.out
+gpu-012: starting datanode, logging to /tmp/1215067.daman.davinci.rice.edu/logs/hadoop-jmg3-datanode-gpu-012.davinci.rice.edu.out
+gpu-013: starting secondarynamenode, logging to /tmp/1215067.daman.davinci.rice.edu/logs/hadoop-jmg3-secondarynamenode-gpu-013.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/1215067.daman.davinci.rice.edu/logs/hadoop-jmg3-jobtracker-gpu-013.davinci.rice.edu.out
+gpu-012: starting tasktracker, logging to /tmp/1215067.daman.davinci.rice.edu/logs/hadoop-jmg3-tasktracker-gpu-012.davinci.rice.edu.out
+gpu-012: Max num map slots is 12
+Completed start all
+Retrieving Outputs
