@@ -136,7 +136,7 @@ svec-map-output-generate:
 svec-reduce-output-generate:
 	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-reduce-output.input 10 1000000
 helloworld-generate:
-	java ${RUN_FLAGS} HelloWorldInputGenerator ${HADOOP_INPUT_DIR}/helloworld.input 10 10000
+	java ${RUN_FLAGS} HelloWorldCompressedInputGenerator ${HADOOP_INPUT_DIR}/helloworld.input 10 10000
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*
