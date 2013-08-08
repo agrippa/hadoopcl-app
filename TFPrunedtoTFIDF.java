@@ -1,3 +1,4 @@
+import org.apache.lucene.search.similarities.DefaultSimilarity;
 import java.util.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -20,7 +21,7 @@ import java.util.concurrent.*;
 import org.apache.mahout.common.StringTuple;
 import org.apache.mahout.math.*;
 
-public class PruneTF {
+public class TFPrunedtoTFIDF {
     private static HashMap<Integer, Long> readDFDictionary(SequenceFile.Reader reader) {
         final HashMap<Integer, Long> dict = new HashMap<Integer, Long>();
         final IntWritable key = new IntWritable();
@@ -30,6 +31,7 @@ public class PruneTF {
             while(reader.next(key, val)) {
                 dict.put(key.get(), val.get());
             }
+            reader.close();
         } catch(IOException io) {
             throw new RuntimeException(io);
         }
@@ -37,16 +39,20 @@ public class PruneTF {
     }
 
     public static void main(String[] args) {
-        if(args.length != 4) {
-            System.out.println("usage: java PruneTF tf-dir df-file output-dir vector-count");
+        if(args.length != 5) {
+            System.out.println("usage: java TFPrunedtoTFIDF pruned-dir df-file output-dir feature-count vector-count");
             return;
         }
 
-        String tfDirName = args[0];
+        String prunedDirName = args[0];
         String dfFileName = args[1];
         String outputDirName = args[2];
+        final long featureCount = Long.parseLong(args[3]);
+        final long vectorCount = Long.parseLong(args[4]);
+        final long minDF = 1;
+        final long maxDF = (long)(vectorCount * (85.0f / 100.0f));
 
-        File folder = new File(tfDirName);
+        File folder = new File(prunedDirName);
         File[] allFiles = folder.listFiles();
         int nSeqFiles = 0;
         for(int i = 0; i < allFiles.length; i++) {
@@ -55,11 +61,7 @@ public class PruneTF {
                 allFiles[nSeqFiles++] = allFiles[i];
             }
         }
-        System.out.println("Got "+nSeqFiles+" sequence files in \""+tfDirName+"\"");
 
-        final long vectorCount = Long.parseLong(args[3]);
-        final long minDF = 1;
-        final long maxDF = (long)(vectorCount * (85.0f / 100.0f));
         final Configuration conf = new Configuration();
         final FileSystem fs;
         try {
@@ -67,6 +69,7 @@ public class PruneTF {
         } catch(IOException io) {
             throw new RuntimeException(io);
         }
+
 
         final HashMap<Integer, Long> dfDict;
         try {
@@ -76,21 +79,20 @@ public class PruneTF {
             throw new RuntimeException(io);
         }
 
-        int nThreads = 12;
+        final int nThreads = 12;
         Thread[] threads = new Thread[nThreads];
         Runnable[] runners = new Runnable[nThreads];
-        int chunkSize = (nSeqFiles + nThreads - 1) / nThreads;
+        final int chunkSize = (nSeqFiles + nThreads - 1) / nThreads;
         for(int t = 0; t < nThreads; t++) {
             int start = t * chunkSize;
             int end = (t+1) * chunkSize;
             if(end > nSeqFiles) end = nSeqFiles;
-
-            runners[t] = new PruneRunner(t, start, end, dfDict, minDF, maxDF,
-                    allFiles, outputDirName, conf, fs);
+            runners[t] = new TFIDFRunner(t, start, end, dfDict, allFiles,
+                    outputDirName, featureCount, vectorCount, conf, fs,
+                    minDF, maxDF);
             threads[t] = new Thread(runners[t]);
             threads[t].start();
         }
-
         try {
             for(int t = 0; t < nThreads; t++) {
                 threads[t].join();
@@ -100,36 +102,47 @@ public class PruneTF {
         }
     }
 
-    public static class PruneRunner implements Runnable {
+    public static class TFIDFRunner implements Runnable {
         private final int start;
         private final int end;
-        private final int len;
         private final int tid;
+        private final int len;
         private final HashMap<Integer, Long> dfDict;
-        private final long minDF;
-        private final long maxDF;
-        private final File[] allFiles;
+        private final File[] files;
         private final String outputDirName;
+        private final long featureCount;
+        private final long vectorCount;
         private final Configuration conf;
         private final FileSystem fs;
+        private final long minDF;
+        private final long maxDF;
 
-        public PruneRunner(int tid, int start, int end, HashMap<Integer, Long> dfDict,
-                long minDF, long maxDF, File[] allFiles, String outputDirName,
-                Configuration conf, FileSystem fs) {
-            this.tid = tid; this.start = start; this.end = end;
-            this.dfDict = dfDict; this.minDF = minDF; this.maxDF = maxDF;
-            this.allFiles = allFiles; this.outputDirName = outputDirName;
-            this.len = (end-start);
+        public TFIDFRunner(int tid, int start, int end, HashMap<Integer, Long> dfDict,
+                File[] files, String outputDirName, long featureCount, long vectorCount,
+                Configuration conf, FileSystem fs, long minDF, long maxDF) {
+            this.start = start; this.end = end; this.len = (end-start);
+            this.tid = tid;
+            this.dfDict = dfDict;
+            this.files = files; this.outputDirName = outputDirName;
+            this.featureCount = featureCount; this.vectorCount = vectorCount;
             this.conf = conf; this.fs = fs;
+            this.minDF = minDF; this.maxDF = maxDF;
+        }
+
+        private static final DefaultSimilarity sim = new DefaultSimilarity();
+
+        private double tfidf_calculate(int tf, int df, int length, int numDocs) {
+            return sim.tf(tf) * sim.idf(df, numDocs);
         }
 
         public void run() {
             for(int i = start; i < end; i++) {
-                final File currentFile = allFiles[i];
+                File currentFile = files[i];
                 final SequenceFile.Reader reader;
                 try {
                     reader = new SequenceFile.Reader(fs,
-                            new Path(currentFile.getAbsolutePath()), conf);
+                            new Path(currentFile.getAbsolutePath()),
+                            conf);
                 } catch(IOException io) {
                     continue;
                 }
@@ -145,25 +158,29 @@ public class PruneTF {
 
                 try {
                     final Text key = new Text();
-                    final VectorWritable val = new VectorWritable();
-                    while(reader.next(key, val)) {
-                        org.apache.mahout.math.Vector value = val.get();
-                        org.apache.mahout.math.Vector clone = value.clone();
+                    final VectorWritable inputVal = new VectorWritable();
+                    while(reader.next(key, inputVal)) {
+                        org.apache.mahout.math.Vector value = inputVal.get();
+                        org.apache.mahout.math.Vector vector =
+                            new RandomAccessSparseVector((int) featureCount,
+                                    value.getNumNondefaultElements());
                         for(org.apache.mahout.math.Vector.Element e : value.nonZeroes()) {
                             if(!dfDict.containsKey(e.index())) {
-                                clone.setQuick(e.index(), 0.0);
-                            } else {
-                                long df = dfDict.get(e.index());
-                                if(df > maxDF || df < minDF) {
-                                    clone.setQuick(e.index(), 0.0);
-                                }
+                                continue;
                             }
+                            long df = dfDict.get(e.index());
+                            if (maxDF > -1 && (100.0 * df) / vectorCount > maxDF) {
+                                continue;
+                            }
+                            if (df < minDF) {
+                                df = minDF;
+                            }
+                            vector.setQuick(e.index(), tfidf_calculate((int) e.get(), (int) df, (int) featureCount, (int) vectorCount));
                         }
-                        writer.append(key, new VectorWritable(clone));
+                        writer.append(key, new VectorWritable(vector));
                     }
-
-                    reader.close();
                     writer.close();
+                    reader.close();
                 } catch(IOException io) {
                     throw new RuntimeException(io);
                 }
