@@ -161,8 +161,12 @@ mahout-kmeans-seed-read:
 mahout-compare-ele:
 	cd readers && java -cp ${CLASSPATH} MahoutReader /scratch/jmg3 compare
 
-mahout-transform:
-	cd transform && java -cp ${CLASSPATH} TransformMahoutInput /scratch/jmg3/mahout-work-jmg3/reuters-out-seqdir-sparse-kmeans
+reuters-transform:
+	cd transform && java -cp ${CLASSPATH} TransformMahoutInput /scratch/jmg3/mahout-work-jmg3/reuters-out-seqdir-sparse-kmeans/tfidf-vectors/ /scratch/jmg3/mahout-work-jmg3/reuters-out-seqdir-sparse-kmeans/hadoopcl-input/
+asf-transform:
+	cd transform && java -cp ${CLASSPATH} TransformMahoutInput /scratch/jmg3/asf-sparse/tfidf-vectors/ /scratch/jmg3/asf-sparse/hadoopcl-input/
+wiki-transform:
+	cd transform && java -cp ${CLASSPATH} TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors/ /scratch/jmg3/wiki-sparse/hadoopcl-input/
 
 CompressedInputGenerator.class: CompressedInputGenerator.java
 	javac CompressedInputGenerator.java
