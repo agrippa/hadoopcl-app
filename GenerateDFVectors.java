@@ -43,9 +43,9 @@ public class GenerateDFVectors {
 
     private static VectorWritable processInputPair(StringTuple value,
             HashMap<String, Integer> dictionary) {
-        org.apache.mahout.math.Vector vector = new RandomAccessSparseVector(GenerateDFVectors.dimension, value.length());
+        final org.apache.mahout.math.Vector vector = new RandomAccessSparseVector(GenerateDFVectors.dimension, value.length());
 
-        for(String term : value.getEntries()) {
+        for(final String term : value.getEntries()) {
             if(!term.isEmpty() && dictionary.containsKey(term)) {
                 int termid = dictionary.get(term);
                 vector.setQuick(termid, vector.getQuick(termid) + 1);
@@ -88,7 +88,7 @@ public class GenerateDFVectors {
         }
 
         System.out.print("Preparing dictionary... ");
-        HashMap<String, Integer> dictionary;
+        final HashMap<String, Integer> dictionary;
         try {
             dictionary = readDictionary(
                 new SequenceFile.Reader(fs, new Path(dictName), conf));
@@ -163,7 +163,7 @@ public class GenerateDFVectors {
                     final Text key = new Text();
                     final StringTuple val = new StringTuple();
                     while(reader.next(key, val)) {
-                        VectorWritable vectorWritable = processInputPair(val, dictionary);
+                        final VectorWritable vectorWritable = processInputPair(val, dictionary);
                         if(vectorWritable != null) {
                             writer.append(key, vectorWritable);
                         }
@@ -173,7 +173,6 @@ public class GenerateDFVectors {
                 } catch(IOException io) {
                     throw new RuntimeException(io);
                 }
-                int offset = i - start;
                 System.out.format("thread %d completed %d/%d\n",tid,i-start+1,len);
             }
         }
