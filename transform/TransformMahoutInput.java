@@ -25,6 +25,7 @@ public class TransformMahoutInput {
 
     public static void main(String[] args) throws IOException {
         if(args.length != 1) {
+            System.out.println("usage: java TransformMahoutInput 
             System.out.println("usage: java TransformMahoutInput reuters-folder");
             return;
         }

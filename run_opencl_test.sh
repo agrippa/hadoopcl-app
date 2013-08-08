@@ -38,6 +38,9 @@ else
     if [ ${BENCHMARK} == mahout-kmeans ]; then
         EXE_NAME=MahoutKMeans
     fi
+    if [ ${BENCHMARK} == helloworld ]; then
+        EXE_NAME=HelloWorld
+    fi
 
     CPU_GROUP=36
     GPU_GROUP=36
