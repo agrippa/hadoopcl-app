@@ -72,8 +72,12 @@ merge-word-count: MergeWordCount.java
 	javac -cp ${CLASSPATH} MergeWordCount.java
 word-id: GenerateUniqueWordIDs.java
 	javac -cp ${CLASSPATH} GenerateUniqueWordIDs.java
-df-vectors: GenerateDFVectors.java
+tf-vectors: GenerateDFVectors.java
 	javac -cp ${CLASSPATH} GenerateDFVectors.java
+tf-to-df: TFtoDF.java
+	javac -cp ${CLASSPATH} TFtoDF.java
+prune-tf: PruneTF.java
+	javac -cp ${CLASSPATH} PruneTF.java
 
 wiki-word-count:
 	java -Xmx48G -cp ${CLASSPATH} WordCountFromTokenized /scratch/jmg3/wiki-sparse/tokenized-documents/ /scratch/jmg3/wiki-sparse/wordcount/
@@ -87,10 +91,18 @@ wiki-word-id:
 	java -cp ${CLASSPATH} GenerateUniqueWordIDs /scratch/jmg3/wiki-sparse/wordcount/final-counts /scratch/jmg3/wiki-sparse/wordcount/dictionary-file
 asf-word-id:
 	java -cp ${CLASSPATH} GenerateUniqueWordIDs /scratch/jmg3/asf-sparse/wordcount/final-counts /scratch/jmg3/asf-sparse/wordcount/dictionary-file
-wiki-df-vector:
+wiki-tf-vector:
 	java -Xmx48G -cp ${CLASSPATH} GenerateDFVectors /scratch/jmg3/wiki-sparse/tokenized-documents/ /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/wordcount/dictionary-file
-asf-df-vector:
+asf-tf-vector:
 	java -Xmx48G -cp ${CLASSPATH} GenerateDFVectors /scratch/jmg3/asf-sparse/tokenized-documents/ /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/wordcount/dictionary-file
+wiki-df-count:
+	java -Xmx48G -cp ${CLASSPATH} TFtoDF /scratch/jmg3/wiki-sparse/wordcount/final-counts /scratch/jmg3/wiki-sparse/wordcount/dictionary-file /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/df-count/term-counts
+asf-df-count:
+	java -Xmx48G -cp ${CLASSPATH} TFtoDF /scratch/jmg3/asf-sparse/wordcount/final-counts /scratch/jmg3/asf-sparse/wordcount/dictionary-file /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/df-count/term-counts
+wiki-prune-tf:
+	java -Xmx48G -cp ${CLASSPATH} PruneTF /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/df-count/term-counts /scratch/jmg3/wiki-sparse/tf-vectors-pruned/
+asf-prune-tf:
+	java -Xmx48G -cp ${CLASSPATH} PruneTF /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tf-vectors-pruned/
 
 compression-gen-build: CompressedInputGenerator.class
 	javac SortCompressedInputGenerator.java
