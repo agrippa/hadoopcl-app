@@ -175,7 +175,7 @@ CompressedInputGenerator.class: CompressedInputGenerator.java
 	javac CompressedInputGenerator.java
 
 SetupInputCompression.class: SetupInputCompression.java
-	javac SetupInputCompression.java
+	javac -cp ${CLASSPATH} SetupInputCompression.java
 
 blackscholesinput: BlackScholesInputGenerator.java
 	javac -classpath ${CLASSPATH} BlackScholesInputGenerator.java
