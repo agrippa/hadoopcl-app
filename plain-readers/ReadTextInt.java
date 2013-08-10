@@ -19,28 +19,26 @@ import org.apache.hadoop.io.*;
 import java.util.concurrent.*;
 import org.apache.mahout.common.StringTuple;
 
-public class ReadTextInt {
+public class ReadTextInt extends MyReader<Text, IntWritable> {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
             System.out.println("usage: java ReadTextInt file");
             return;
         }
-
-        final String fileName = args[0];
-        final Path path = new Path(fileName);
-
-        Configuration conf = new Configuration();
-        FileSystem fs = FileSystem.get(conf);
-        SequenceFile.Reader reader = new SequenceFile.Reader(fs, path, conf);
-
-        final Text key = new Text();
-        final IntWritable val = new IntWritable();
-
-        long count = 0;
-        while(reader.next(key, val)) {
-            System.out.println(count+": "+key.toString()+" => "+val.get());
-            count++;
-        }
-        reader.close();
+        new ReadTextInt(args[0]).runRead();
     }
+
+    public ReadTextInt(String s) { super(s); }
+    @Override
+    protected String overrideKeyToString(Text key) {
+        return key.toString();
+    }
+    @Override
+    protected String overrideValToString(IntWritable val) {
+        return Integer.toString(val.get());
+    }
+    @Override
+    protected Text getKeyObject() { return new Text(); }
+    @Override
+    protected IntWritable getValObject() { return new IntWritable(); }
 }

@@ -18,28 +18,31 @@ import java.io.File;
 import org.apache.hadoop.io.*;
 import java.util.concurrent.*;
 import org.apache.mahout.common.StringTuple;
-import org.apache.mahout.math.*;
+import org.apache.mahout.clustering.iterator.ClusterWritable;
+import org.apache.mahout.clustering.Cluster;
 
-public class ReadTextVector extends MyReader<Text, VectorWritable> {
+public class ReadIntCluster extends MyReader<IntWritable, ClusterWritable> {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
-            System.out.println("usage: java ReadTextVector file");
+            System.out.println("usage: java ReadIntCluster file");
             return;
         }
-        new ReadTextVector(args[0]).runRead();
+        new ReadIntCluster(args[0]).runRead();
     }
 
-    public ReadTextVector(String s) { super(s); }
+    public ReadIntCluster(String s) { super(s); }
     @Override
-    protected String overrideKeyToString(Text key) {
-        return key.toString();
+    protected String overrideKeyToString(IntWritable key) {
+        return Integer.toString(key.get());
     }
     @Override
-    protected String overrideValToString(VectorWritable val) {
-        return LimitedVectorToString(val.get(), 50);
+    protected String overrideValToString(ClusterWritable val) {
+        Cluster c = val.getValue();
+        org.apache.mahout.math.Vector center = c.getCenter();
+        return LimitedVectorToString(center, 100);
     }
     @Override
-    protected Text getKeyObject() { return new Text(); }
+    protected IntWritable getKeyObject() { return new IntWritable(); }
     @Override
-    protected VectorWritable getValObject() { return new VectorWritable(); }
+    protected ClusterWritable getValObject() { return new ClusterWritable(); }
 }
