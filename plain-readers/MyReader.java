@@ -97,6 +97,10 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
         if(broke) sb.append("... ");
         sb.append("}");
         return sb.toString();
-
     }
+
+    protected String LimitedSparseVectorToString(SparseVectorWritable vec,
+            int maxStringLength) {
+    }
+
 }
