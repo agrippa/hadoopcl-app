@@ -186,15 +186,6 @@ kmeansinput: KMeansInputGenerator.java
 sortinput: SortInputGenerator.java
 	javac -classpath ${CLASSPATH} SortInputGenerator.java
 
-blackscholesoutput: BlackScholesOutputReader.java
-	javac -classpath ${CLASSPATH} BlackScholesOutputReader.java
-pioutput: PiOutputReader.java
-	javac -classpath ${CLASSPATH} PiOutputReader.java
-kmeansoutput: KMeansOutputReader.java
-	javac -classpath ${CLASSPATH} KMeansOutputReader.java
-sortoutput: SortOutputReader.java
-	javac -classpath ${CLASSPATH} SortOutputReader.java
-
 blackscholesgenerate: BlackScholesInputGenerator.java
 	java ${RUN_FLAGS} BlackScholesInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input/input 1 401920000 1004800 seq #200960000
 blackscholesgeneratesmall: BlackScholesInputGenerator.java
@@ -207,14 +198,3 @@ sortgenerate:
 	java ${RUN_FLAGS} SortInputGenerator ${HADOOP_INPUT_DIR}/sort.input/input 1 200000000
 sortcompressgenerate: 
 	java ${RUN_FLAGS} SortCompressedInputGenerator ${HADOOP_INPUT_DIR}/sort.input 50 17000000
-
-blackscholesread: BlackScholesOutputReader.java
-	java ${RUN_FLAGS} BlackScholesOutputReader ${HADOOP_INPUT_DIR}/blackscholes.output/blackscholes.output/part-r-00000
-blackscholesreadsmall: BlackScholesOutputReader.java
-	java ${RUN_FLAGS} BlackScholesOutputReader ${HADOOP_INPUT_DIR}/blackscholes.output.small/blackscholes.output/part-r-00000
-piread: PiOutputReader.java
-	java ${RUN_FLAGS} PiOutputReader ${HADOOP_INPUT_DIR}/pi.output/pi.output/part-r-00000
-kmeansread: KMeansOutputReader.java
-	java ${RUN_FLAGS} KMeansOutputReader ${HADOOP_INPUT_DIR}/kmeans.output/kmeans.output/part-r-00000
-sortread: SortOutputReader.java
-	java ${RUN_FLAGS} SortOutputReader ${HADOOP_INPUT_DIR}/sort.output/sort.output/part-r-00000
