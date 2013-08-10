@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
     int i;
     cl_uint num_platforms;
     cl_platform_id *platforms;
-    cl_platfomr_id *active = NULL;
+    cl_platform_id *active = NULL;
 
     cl_int err = clGetPlatformIDs(0, NULL, &num_platforms);
     platforms = (cl_platform_id *)malloc(sizeof(cl_platform_id) * num_platforms);
@@ -15,11 +15,11 @@ int main(int argc, char **argv) {
     for(i = 0; i < num_platforms; i++) {
         cl_uint num_cpus, num_gpus;
         cl_platform_id *plat = platforms + i;
-        err = clGetDeviceIDs(plat, CL_DEVICE_TYPE_GPU, 0, NULL, &num_gpus);
+        err = clGetDeviceIDs(*plat, CL_DEVICE_TYPE_GPU, 0, NULL, &num_gpus);
         if (err == CL_DEVICE_NOT_FOUND) {
             num_gpus = 0;
         }
-        err = clGetDeviceIDs(plat, CL_DEVICE_TYPE_CPU, 0, NULL, &num_cpus);
+        err = clGetDeviceIDs(*plat, CL_DEVICE_TYPE_CPU, 0, NULL, &num_cpus);
         if (err == CL_DEVICE_NOT_FOUND) {
             num_cpus = 0;
         }
