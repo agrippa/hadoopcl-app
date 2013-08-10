@@ -101,6 +101,24 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
 
     protected String LimitedSparseVectorToString(SparseVectorWritable vec,
             int maxStringLength) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("{ ");
+        boolean broke = false;
+        int[] indices = vec.indices();
+        double[] vals = vec.vals();
+        for(int i = 0; i < vec.size(); i++) {
+            sb.append(indices[i]);
+            sb.append(":");
+            sb.append(vals[i]);
+            sb.append(" ");
+            if(sb.length() > 50) {
+                broke = true;
+                break;
+            }
+        }
+        if(broke) sb.append("... ");
+        sb.append("}");
+        return sb.toString();
     }
 
 }
