@@ -66,7 +66,8 @@ else
         reducer_cpumult=2
     fi
 
-    NODES=`cat $PBS_NODEFILE | sort | uniq`
+    # NODES=`cat $PBS_NODEFILE | sort | uniq`
+    NODES=`cat /opt/hadoop/conf/slaves`
 
     echo Killing
     ./KILL.sh
