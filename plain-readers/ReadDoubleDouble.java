@@ -18,28 +18,29 @@ import java.io.File;
 import org.apache.hadoop.io.*;
 import java.util.concurrent.*;
 import org.apache.mahout.common.StringTuple;
-import org.apache.mahout.math.*;
+import org.apache.mahout.clustering.iterator.ClusterWritable;
+import org.apache.mahout.clustering.Cluster;
 
-public class ReadTextVector extends MyReader<Text, VectorWritable> {
+public class ReadDoubleDouble extends MyReader<DoubleWritable, DoubleWritable> {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
-            System.out.println("usage: java ReadTextVector file");
+            System.out.println("usage: java ReadDoubleDouble file");
             return;
         }
-        new ReadTextVector(args[0]).runRead();
+        new ReadDoubleDouble(args[0]).runRead();
     }
 
-    public ReadTextVector(String s) { super(s); }
+    public ReadDoubleDouble(String s) { super(s); }
     @Override
-    protected String overrideKeyToString(Text key) {
-        return key.toString();
+    protected String overrideKeyToString(DoubleWritable key) {
+        return Double.toString(key.get());
     }
     @Override
-    protected String overrideValToString(VectorWritable val) {
-        return LimitedVectorToString(val.get(), 50);
+    protected String overrideValToString(DoubleWritable val) {
+        return Double.toString(val.get());
     }
     @Override
-    protected Text getKeyObject() { return new Text(); }
+    protected DoubleWritable getKeyObject() { return new DoubleWritable(); }
     @Override
-    protected VectorWritable getValObject() { return new VectorWritable(); }
+    protected DoubleWritable getValObject() { return new DoubleWritable(); }
 }

@@ -19,28 +19,26 @@ import org.apache.hadoop.io.*;
 import java.util.concurrent.*;
 import org.apache.mahout.common.StringTuple;
 
-public class ReadTextLong {
+public class ReadTextLong extends MyReader<Text, LongWritable> {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
             System.out.println("usage: java ReadTextLong file");
             return;
         }
-
-        final String fileName = args[0];
-        final Path path = new Path(fileName);
-
-        Configuration conf = new Configuration();
-        FileSystem fs = FileSystem.get(conf);
-        SequenceFile.Reader reader = new SequenceFile.Reader(fs, path, conf);
-
-        final Text key = new Text();
-        final LongWritable val = new LongWritable();
-
-        long count = 0;
-        while(reader.next(key, val)) {
-            System.out.println(count+": "+key.toString()+" => "+val.get());
-            count++;
-        }
-        reader.close();
+        new ReadTextLong(args[0]).runRead();
     }
+
+    public ReadTextLong(String s) { super(s); }
+    @Override
+    protected String overrideKeyToString(Text key) {
+        return key.toString();
+    }
+    @Override
+    protected String overrideValToString(LongWritable val) {
+        return Long.toString(val.get());
+    }
+    @Override
+    protected Text getKeyObject() { return new Text(); }
+    @Override
+    protected LongWritable getValObject() { return new LongWritable(); }
 }
