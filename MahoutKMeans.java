@@ -27,93 +27,152 @@ public class MahoutKMeans {
     public static class MahoutKMeansReducer 
             extends IntSvecIntSvecHadoopCLReducerKernel {
 
-        protected void swap(int[] indices, double[] vals, int a, int b) {
-            int tmpInd = indices[a];
-            double tmpVal = vals[a];
-            indices[a] = indices[b];
-            vals[a] = vals[b];
-            indices[b] = tmpInd;
-            vals[b] = tmpVal;
+        // Length of a single long
+        protected final int longLength = 64;
+        // represent bloom filter with 4 longs
+        protected final int filterLength = longLength * 4;
+        // 4 longs to build a bloom filter
+        protected long filter1;
+        protected long filter2;
+        protected long filter3;
+        protected long filter4;
+
+        /*
+         * add an element to the bloom filter
+         */
+        protected void addElement(int val) {
+            int bitOffset = val % filterLength;
+            if (bitOffset < longLength) {
+                filter1 |= (1L << bitOffset);
+            } else if (bitOffset < longLength*2) {
+                filter2 |= (1L << (bitOffset - longLength));
+            } else if (bitOffset < longLength*3) {
+                filter3 |= (1L << (bitOffset - (2*longLength)));
+            } else {
+                filter4 |= (1L << (bitOffset - (3*longLength)));
+            }
         }
 
-        protected double searchAndAvg(int startingI, int endingI,
-                int startingJ, int index, int[] valLookAsideBuffer,
-                int[] valIndices, double[] valVals) {
-            double sum = 0.0;
-            int count = 0;
-            for(int i = startingI; i < endingI; i++) {
-                final int startOffset = valLookAsideBuffer[i];
-                final int len = inputVectorLength(i);
-                for(int j = (i == startingI ? startingJ : startOffset); j < startOffset + len; j++) {
-                    if(valIndices[j] == index) {
-                        sum = sum + valVals[j];
-                        valIndices[j] = -1;
-                        count++;
+        /*
+         * Check if an integer is stored in the bloom filter.
+         * If this returns true, it may still not be there and
+         * we need to do an exhaustive search for this val
+         */
+        protected boolean checkElement(int val) {
+            int bitOffset = val % filterLength;
+            if (bitOffset < longLength) {
+                return (filter1 & (1L << bitOffset)) != 0;
+            } else if (bitOffset < longLength*2) {
+                return (filter2 & (1L << (bitOffset - longLength))) != 0;
+            } else if (bitOffset < longLength*3) {
+                return (filter3 & (1L << (bitOffset - (2*longLength)))) != 0;
+            } else {
+                return (filter4 & (1L << (bitOffset - (3*longLength)))) != 0;
+            }
+        }
+
+        /*
+         * Count the number of unique indices in the input sparse vectors
+         * and return that count
+         */
+        int countUniqueIndices(HadoopCLSvecValueIterator valIter) {
+            int countUniques = 0;
+            for (int v = 0; v < valIter.nValues(); v++) {
+                valIter.seekTo(v);
+                int[] currentIndices = valIter.getValIndices();
+                int currentLength = valIter.currentVectorLength();
+
+                for (int i = 0; i < currentLength; i++) {
+                    int currentIndex = currentIndices[i];
+                    if (checkElement(currentIndex)) {
+                        // need to do full check
+                        boolean found = false;
+                        for (int vv = 0; vv < v; vv++) {
+                            valIter.seekTo(vv);
+                            int[] searchingIndices = valIter.getValIndices();
+                            int searchingLength = valIter.currentVectorLength();
+                            for (int ii = 0; ii < searchingLength; ii++) {
+                                if (searchingIndices[ii] == currentIndex) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found) break;
+                        }
+                        if (!found) {
+                            countUniques++;
+                        }
+                    } else {
+                        // no need to do full check, quicker branch
+                        addElement(currentIndex);
+                        countUniques++;
                     }
                 }
             }
-            return sum / count;
+            return countUniques;
+        }
+
+        /*
+         * From the list of offsets in vectorIndices,
+         * find the input sparse vector with the minimum
+         * index value at the corresponding offset
+         */
+        protected int findMinIndexVector(int[] vectorIndices,
+                HadoopCLSvecValueIterator valIter) {
+            int vectorWithMinIndex = -1;
+            int minIndex = -1;
+            for (int i = 0; i < valIter.nValues(); i++) {
+                valIter.seekTo(i);
+                if (vectorIndices[i] < valIter.currentVectorLength() &&
+                        (minIndex == -1 || 
+                             valIter.getValIndices()[vectorIndices[i]] < minIndex)) {
+                    vectorWithMinIndex = i;
+                    minIndex = valIter.getValIndices()[vectorIndices[i]];
+                }
+            }
+            return vectorWithMinIndex;
         }
 
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
-            int countUniqueIndices = 0;
-            for(int v = 0; v < valIter.nValues(); v++) {
-                valIter.seekTo(v);
-                int[] indices = valIter.getValIndices();
-                double[] vals = valIter.getValVals();
-                int currentLength = valIter.currentVectorLength();
+            filter1 = 0L;
+            filter2 = 0L;
+            filter3 = 0L;
+            filter4 = 0L;
 
-                for(int i = 0; i < currentLength; i++) {
-                    if(indices[i] == -1) continue;
-                    int currentIndex = indices[i];
-                    countUniqueIndices++;
+            int uniqueIndices = countUniqueIndices(valIter);
 
-                    for(int vv = v + 1; vv < valIter.nValues(); vv++) {
-                        valIter.seekTo(vv);
-                        int[] tmpIndices = valIter.getValIndices();
-                        double[] tmpVals = valIter.getValVals();
-                        int tmpLength = valIter.currentVectorLength();
+            int[] vectorIndices = allocInt(valIter.nValues());
+            int[] outputIndices = allocInt(uniqueIndices);
+            double[] outputVals = allocDouble(uniqueIndices);
 
-                        for(int j = 0; j < tmpLength; j++) {
-                            if(tmpIndices[j] == currentIndex) {
-                                vals[i] += tmpVals[j];
-                                tmpIndices[j] = -1;
-                            }
-                        }
-                    }
+            for(int i = 0; i < valIter.nValues(); i++) {
+                vectorIndices[i] = 0;
+            }
+
+            int indicesDone = 0;
+            int vectorsDone = 0;
+            while(vectorsDone < valIter.nValues()) {
+                int minIndexVector = findMinIndexVector(vectorIndices, valIter);
+                valIter.seekTo(minIndexVector);
+                int minIndex = valIter.getValIndices()[vectorIndices[minIndexVector]];
+                double correspondingVal = 
+                    valIter.getValVals()[vectorIndices[minIndexVector]];
+                if (indicesDone > 0 && outputIndices[indicesDone-1] == minIndex) {
+                    outputVals[indicesDone-1] += correspondingVal; 
+                } else {
+                    outputIndices[indicesDone] = minIndex;
+                    outputVals[indicesDone] = correspondingVal;
+                    indicesDone++;
+                }
+                vectorIndices[minIndexVector]++;
+                if (vectorIndices[minIndexVector] >=
+                        valIter.vectorLength(minIndexVector)) {
+                    vectorsDone++;
                 }
             }
 
-            int[] outputIndices = allocInt(countUniqueIndices);
-            double[] outputVals = allocDouble(countUniqueIndices);
-
-            for(int u = 0; u < countUniqueIndices; u++) {
-                int minIndex = -1;
-                double minVal = -1.0;
-                int indexOfMinIndex = -1;
-                int vectorOfMinIndex = -1;
-
-                for(int v = 0; v < valIter.nValues(); v++) {
-                    valIter.seekTo(v);
-                    int[] indices = valIter.getValIndices();
-                    int currentLength = valIter.currentVectorLength();
-
-                    for(int i = 0; i < currentLength; i++) {
-                        if(indices[i] == -1) continue;
-                        if(indexOfMinIndex == -1 || indices[i] < minIndex) {
-                            indexOfMinIndex = i;
-                            vectorOfMinIndex = v;
-                            minIndex = indices[i];
-                        }
-                    }
-                }
-                valIter.seekTo(vectorOfMinIndex);
-                double[] vals = valIter.getValVals();
-                outputIndices[u] = minIndex;
-                outputVals[u] = vals[indexOfMinIndex];
-            }
-            write(key, outputIndices, outputVals, countUniqueIndices);
+            write(key, outputIndices, outputVals, uniqueIndices);
         }
 
         public int getOutputPairsPerInput() {
