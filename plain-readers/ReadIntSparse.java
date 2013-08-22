@@ -37,7 +37,7 @@ public class ReadIntSparse extends MyReader<IntWritable, SparseVectorWritable> {
     }
     @Override
     protected String overrideValToString(SparseVectorWritable val) {
-        return LimitedSparseVectorToString(val, 100);
+        return LimitedSparseVectorToString(val, 200);
     }
     @Override
     protected IntWritable getKeyObject() { return new IntWritable(); }

@@ -48,11 +48,13 @@ else
     GPU_THREAD=256
 
     hdfs_chunk_size=268435456
-    mapper=13
+    # mapper=13
+    mapper=5
     if [ ${BENCHMARK} == sort ]; then
         reducer=3
     else
-        reducer=5
+        # reducer=5
+        reducer=1
     fi
 
     mapper_gpumult=12

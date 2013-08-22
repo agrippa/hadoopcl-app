@@ -2,20 +2,20 @@ CLASSPATH = /home/jmg3/commons-io-2.4-src/target/commons-io-2.2-SNAPSHOT.jar:${H
 RUN_FLAGS=-Djava.library.path=${HADOOP_HOME}/lib/native/Linux-amd64-64:${HADOOP_HOME}/build/native/Linux-amd64-64/lib -classpath ${CLASSPATH}:${HADOOP_HOME}/lib/commons-logging-1.1.1.jar:${HADOOP_HOME}/lib/commons-logging-api-1.0.4.jar:${HADOOP_HOME}/lib/commons-configuration-1.6.jar:${HADOOP_HOME}/lib/commons-lang-2.4.jar:.
 
 all: SetupInputCompression.class
-	javac -g:vars -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d opencldynamickmeansclasses/ KMeansDynamicOpenCLVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d javakmeansclasses/ KMeansJavaVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d openclpiclasses/ PiOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javapiclasses/ PiJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javablackscholesclasses/ BlackScholesJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d openclblackscholesclasses/ BlackScholesOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d testmapinputsvecclasses/ TestMapInputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d testmapoutputsvecclasses/ TestMapOutputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
-	javac -g:vars -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d opencldynamickmeansclasses/ KMeansDynamicOpenCLVersion.java -Xlint:deprecation
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d javakmeansclasses/ KMeansJavaVersion.java -Xlint:deprecation
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d openclpiclasses/ PiOpenCLVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d javapiclasses/ PiJavaVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d javablackscholesclasses/ BlackScholesJavaVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d openclblackscholesclasses/ BlackScholesOpenCLVersion.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d testmapinputsvecclasses/ TestMapInputSvec.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d testmapoutputsvecclasses/ TestMapOutputSvec.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
+	javac -g:lines -g:vars -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class

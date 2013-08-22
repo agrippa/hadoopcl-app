@@ -133,6 +133,13 @@ public class MahoutKMeans {
             return vectorWithMinIndex;
         }
 
+        /*
+         * This reducer first counts the number of unique indices present
+         * in the input vectors, allocates sufficiently large output buffers
+         * to store the final merge of all input vectors, and then iterates
+         * through the input vectors in parallel, merging them into the final
+         * output in order to maintain total ordering
+         */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
             filter1 = 0L;
@@ -141,6 +148,8 @@ public class MahoutKMeans {
             filter4 = 0L;
 
             int uniqueIndices = countUniqueIndices(valIter);
+
+            // System.err.println("DIAGNOSTICS: For key "+key+", "+uniqueIndices+" uniques");
 
             int[] vectorIndices = allocInt(valIter.nValues());
             int[] outputIndices = allocInt(uniqueIndices);
@@ -159,6 +168,7 @@ public class MahoutKMeans {
                 double correspondingVal = 
                     valIter.getValVals()[vectorIndices[minIndexVector]];
                 if (indicesDone > 0 && outputIndices[indicesDone-1] == minIndex) {
+                    // System.err.println("DIAGNOSTICS: Adding to index "+minIndex+" at slot "+(indicesDone-1));
                     outputVals[indicesDone-1] += correspondingVal; 
                 } else {
                     outputIndices[indicesDone] = minIndex;
@@ -170,6 +180,7 @@ public class MahoutKMeans {
                         valIter.vectorLength(minIndexVector)) {
                     vectorsDone++;
                 }
+                // System.err.println("DIAGNOSTICS: vectorsDone = "+vectorsDone);
             }
 
             write(key, outputIndices, outputVals, uniqueIndices);

@@ -80,7 +80,9 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
     protected String LimitedVectorToString(org.apache.mahout.math.Vector vec,
             int maxStringLength) {
         StringBuffer sb = new StringBuffer();
-        sb.append("{ ");
+        sb.append("(length = ");
+        sb.append(vec.getNumNonZeroElements());
+        sb.append(") { ");
         boolean broke = false;
         Iterator<org.apache.mahout.math.Vector.Element> iter = vec.nonZeroes().iterator();
         while(iter.hasNext()) {
@@ -89,7 +91,7 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
             sb.append(":");
             sb.append(ele.get());
             sb.append(" ");
-            if(sb.length() > 50) {
+            if(sb.length() > maxStringLength) {
                 broke = true;
                 break;
             }
@@ -102,7 +104,9 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
     protected String LimitedSparseVectorToString(SparseVectorWritable vec,
             int maxStringLength) {
         StringBuffer sb = new StringBuffer();
-        sb.append("{ ");
+        sb.append("(length = ");
+        sb.append(vec.size());
+        sb.append(") { ");
         boolean broke = false;
         int[] indices = vec.indices();
         double[] vals = vec.vals();
@@ -111,7 +115,7 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
             sb.append(":");
             sb.append(vals[i]);
             sb.append(" ");
-            if(sb.length() > 50) {
+            if(sb.length() > maxStringLength) {
                 broke = true;
                 break;
             }
