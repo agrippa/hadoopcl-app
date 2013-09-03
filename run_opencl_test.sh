@@ -49,12 +49,12 @@ else
 
     hdfs_chunk_size=268435456
     # mapper=13
-    mapper=1
+    mapper=8
     if [ ${BENCHMARK} == sort ]; then
         reducer=3
     else
         # reducer=5
-        reducer=1
+        reducer=4
     fi
 
     mapper_gpumult=12
