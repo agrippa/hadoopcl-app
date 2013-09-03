@@ -156,15 +156,21 @@ public class TransformMahoutInput {
                     while(reader.next(inputKey, inputVal)) {
                         final org.apache.mahout.math.Vector vec = inputVal.get();
                         final int length = vec.getNumNonZeroElements();
-                        final int[] indices = new int[length];
-                        final double[] vals = new double[length];
-                        int countEles = 0;
+                        final TreeSet<IntDoublePair> agg = new TreeSet<IntDoublePair>();
                         Iterator<org.apache.mahout.math.Vector.Element> iter = 
                             vec.nonZeroes().iterator();
+                        int countEles = 0;
                         while(iter.hasNext()) {
                             org.apache.mahout.math.Vector.Element ele = iter.next();
-                            indices[countEles] = ele.index();
-                            vals[countEles] = ele.get();
+                            agg.add(new IntDoublePair(ele.index(), ele.get()));
+                            countEles++;
+                        }
+                        final int[] indices = new int[countEles];
+                        final double[] vals = new double[countEles];
+                        countEles = 0;
+                        for(IntDoublePair p : agg) {
+                            indices[countEles] = p.i();
+                            vals[countEles] = p.d();
                             countEles++;
                         }
                         int thisFileId = fileId.getAndAdd(1);
@@ -178,6 +184,28 @@ public class TransformMahoutInput {
                     throw new RuntimeException(io);
                 }
                 System.out.println("Done with "+(i-start+1)+"/"+len);
+            }
+        }
+
+        public static class IntDoublePair implements Comparable<IntDoublePair> {
+            private final int i;
+            private final double d;
+
+            public IntDoublePair(int i, double d) {
+                this.i = i; this.d = d;
+            }
+
+            public int i() { return this.i; }
+            public double d() { return this.d; }
+            @Override
+            public int compareTo(IntDoublePair other) {
+                if (this.i() < other.i()) {
+                    return -1;
+                } else if (this.i() > other.i()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         }
     }

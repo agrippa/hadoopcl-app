@@ -27,47 +27,23 @@ public class MahoutKMeans {
     public static class MahoutKMeansReducer 
             extends IntSvecIntSvecHadoopCLReducerKernel {
 
-        // Length of a single long
-        protected final int longLength = 64;
-        // represent bloom filter with 4 longs
-        protected final int filterLength = longLength * 4;
-        // 4 longs to build a bloom filter
-        protected long filter1;
-        protected long filter2;
-        protected long filter3;
-        protected long filter4;
-
-        /*
-         * add an element to the bloom filter
-         */
-        protected void addElement(int val) {
-            int bitOffset = val % filterLength;
-            if (bitOffset < longLength) {
-                filter1 |= (1L << bitOffset);
-            } else if (bitOffset < longLength*2) {
-                filter2 |= (1L << (bitOffset - longLength));
-            } else if (bitOffset < longLength*3) {
-                filter3 |= (1L << (bitOffset - (2*longLength)));
+        boolean search(int[] list, int start, int end, int val) {
+            if (start == end) {
+                // Empty list
+                return false;
+            } else if (start + 1 == end) {
+                // Single element
+                return list[start] == val;
             } else {
-                filter4 |= (1L << (bitOffset - (3*longLength)));
-            }
-        }
-
-        /*
-         * Check if an integer is stored in the bloom filter.
-         * If this returns true, it may still not be there and
-         * we need to do an exhaustive search for this val
-         */
-        protected boolean checkElement(int val) {
-            int bitOffset = val % filterLength;
-            if (bitOffset < longLength) {
-                return (filter1 & (1L << bitOffset)) != 0;
-            } else if (bitOffset < longLength*2) {
-                return (filter2 & (1L << (bitOffset - longLength))) != 0;
-            } else if (bitOffset < longLength*3) {
-                return (filter3 & (1L << (bitOffset - (2*longLength)))) != 0;
-            } else {
-                return (filter4 & (1L << (bitOffset - (3*longLength)))) != 0;
+                // List length > 1
+                int mid = start + ((end-start)/2);
+                if (val == list[mid]) {
+                    return true;
+                } else if (val < list[mid]) {
+                    return search(list, start, mid, val);
+                } else {
+                    return search(list, mid+1, end, val);
+                }
             }
         }
 
@@ -77,6 +53,7 @@ public class MahoutKMeans {
          */
         int countUniqueIndices(HadoopCLSvecValueIterator valIter) {
             int countUniques = 0;
+            // For each input sparse vector
             for (int v = 0; v < valIter.nValues(); v++) {
                 valIter.seekTo(v);
                 int[] currentIndices = valIter.getValIndices();
@@ -84,27 +61,12 @@ public class MahoutKMeans {
 
                 for (int i = 0; i < currentLength; i++) {
                     int currentIndex = currentIndices[i];
-                    if (checkElement(currentIndex)) {
-                        // need to do full check
-                        boolean found = false;
-                        for (int vv = 0; vv < v; vv++) {
-                            valIter.seekTo(vv);
-                            int[] searchingIndices = valIter.getValIndices();
-                            int searchingLength = valIter.currentVectorLength();
-                            for (int ii = 0; ii < searchingLength; ii++) {
-                                if (searchingIndices[ii] == currentIndex) {
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (found) break;
-                        }
-                        if (!found) {
-                            countUniques++;
-                        }
-                    } else {
-                        // no need to do full check, quicker branch
-                        addElement(currentIndex);
+                    boolean found = false;
+                    for (int vv = 0; vv < v && !found; vv++) {
+                        valIter.seekTo(vv);
+                        found = search(valIter.getValIndices(), 0, valIter.currentVectorLength(), currentIndex);
+                    }
+                    if (!found) {
                         countUniques++;
                     }
                 }
@@ -142,14 +104,47 @@ public class MahoutKMeans {
          */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
-            filter1 = 0L;
-            filter2 = 0L;
-            filter3 = 0L;
-            filter4 = 0L;
+            int totalElements = 0;
+            for (int i = 0; i < valIter.nValues(); i++) {
+                totalElements += valIter.vectorLength(i);
+            }
+            int[] outputIndices = allocInt(totalElements);
+            double[] outputVals = allocDouble(totalElements);
+            int[] vectorIndices = allocInt(valIter.nValues());
 
+            for(int i = 0; i < valIter.nValues(); i++) {
+                vectorIndices[i] = 0;
+            }
+
+            int currentCount = 0;
+            int nProcessed = 0;
+            int nOutput = 0;
+            while (nProcessed < totalElements) {
+                int minVector = findMinIndexVector(vectorIndices, valIter);
+                valIter.seekTo(minVector);
+                int minIndex = valIter.getValIndices()[vectorIndices[minVector]];
+                double minValue = valIter.getValVals()[vectorIndices[minVector]];
+                if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
+                    outputVals[nOutput-1] += minValue;
+                } else {
+                    if (nOutput > 0) outputVals[nOutput-1] /= (double)currentCount;
+                    outputIndices[nOutput] = minIndex;
+                    outputVals[nOutput] = minValue;
+                    nOutput++;
+                    currentCount = 0;
+                }
+
+                vectorIndices[minVector]++;
+                nProcessed++;
+                currentCount++;
+            }
+            outputVals[nOutput-1] /= (double)currentCount;
+            write(key, outputIndices, outputVals, nOutput);
+
+/*
+            long startUniques = System.currentTimeMillis();
             int uniqueIndices = countUniqueIndices(valIter);
-
-            // System.err.println("DIAGNOSTICS: For key "+key+", "+uniqueIndices+" uniques");
+            long stopUniques = System.currentTimeMillis();
 
             int[] vectorIndices = allocInt(valIter.nValues());
             int[] outputIndices = allocInt(uniqueIndices);
@@ -159,6 +154,7 @@ public class MahoutKMeans {
                 vectorIndices[i] = 0;
             }
 
+            long startMerging = System.currentTimeMillis();
             int indicesDone = 0;
             int vectorsDone = 0;
             while(vectorsDone < valIter.nValues()) {
@@ -168,7 +164,6 @@ public class MahoutKMeans {
                 double correspondingVal = 
                     valIter.getValVals()[vectorIndices[minIndexVector]];
                 if (indicesDone > 0 && outputIndices[indicesDone-1] == minIndex) {
-                    // System.err.println("DIAGNOSTICS: Adding to index "+minIndex+" at slot "+(indicesDone-1));
                     outputVals[indicesDone-1] += correspondingVal; 
                 } else {
                     outputIndices[indicesDone] = minIndex;
@@ -180,10 +175,12 @@ public class MahoutKMeans {
                         valIter.vectorLength(minIndexVector)) {
                     vectorsDone++;
                 }
-                // System.err.println("DIAGNOSTICS: vectorsDone = "+vectorsDone);
             }
+            long stopMerging = System.currentTimeMillis();
+            System.out.println("DIAGNOSTICS: Unique calc took "+(stopUniques-startUniques)+" ms, merging took "+(stopMerging-startMerging)+" ms");
 
             write(key, outputIndices, outputVals, uniqueIndices);
+            */
         }
 
         public int getOutputPairsPerInput() {
@@ -229,8 +226,14 @@ public class MahoutKMeans {
                 int thisLen, int[] otherIndices,
                 double[] otherVals, int otherLength) {
 
-            double lengthSquaredv1 = vectorLengthSquared(thisVals, thisLen);
-            double lengthSquaredv2 = vectorLengthSquared(otherVals, otherLength);
+            double lengthSquaredv1 = 0.0;
+            for (int i = 0; i < thisLen; i++) {
+                lengthSquaredv1 += (thisVals[i] * thisVals[i]);
+            }
+            double lengthSquaredv2 = 0.0;
+            for (int i = 0; i < otherLength; i++) {
+                lengthSquaredv2 += (otherVals[i] * otherVals[i]);
+            }
 
             double dotProduct = dot(thisIndices, thisVals, thisLen,
                     otherIndices, otherVals, otherLength);

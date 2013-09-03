@@ -67,7 +67,7 @@ kmeans-generate:
 kmeans-dyn-generate:
 	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/kmeansdyn.input 30 4000000
 svec-map-input-generate:
-	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-input.input 10 1000000
+	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-input.input 10 1000
 svec-map-output-generate:
 	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-output.input 10 1000000
 svec-reduce-output-generate:
