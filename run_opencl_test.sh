@@ -57,17 +57,6 @@ else
         reducer=4
     fi
 
-    mapper_gpumult=12
-    mapper_cpumult=1
-
-    if [ ${BENCHMARK} == sort ]; then
-        reducer_gpumult=10
-        reducer_cpumult=-10
-    else
-        reducer_gpumult=1
-        reducer_cpumult=2
-    fi
-
     NODES=`cat $PBS_NODEFILE | sort | uniq`
 
     echo Killing
@@ -78,7 +67,7 @@ else
     ./KILL.sh
     ./CLEAN.sh
 
-    ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} ${mapper_gpumult} ${mapper_cpumult} ${reducer_gpumult} ${reducer_cpumult} ${java_heap}
+    ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} ${java_heap}
     sleep 60
     echo Putting inputs
     ${HADOOP_HOME}/bin/hadoop fs -put ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} ${BENCHMARK}.input

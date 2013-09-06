@@ -104,6 +104,7 @@ public class MahoutKMeans {
          */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
+            System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
             int totalElements = 0;
             for (int i = 0; i < valIter.nValues(); i++) {
                 totalElements += valIter.vectorLength(i);
@@ -139,6 +140,7 @@ public class MahoutKMeans {
                 currentCount++;
             }
             outputVals[nOutput-1] /= (double)currentCount;
+            System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
 
 /*
