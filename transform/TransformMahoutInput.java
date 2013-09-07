@@ -10,6 +10,13 @@ import org.apache.mahout.common.StringTuple;
 import org.apache.commons.io.FileUtils;
 import java.util.concurrent.atomic.*;
 
+/**
+ * Converts a directory of <Text,VectorWritable> sequence files to
+ * a directory of <Integer,SparseVectorWritable> sequence files with a special
+ * sequence file in the output directory that matches the original Text keys
+ * to the new Integer keys
+ */
+
 public class TransformMahoutInput {
     private static List<File> getInputFiles(String folderName) {
         List<File> inputFiles = new ArrayList<File>();
