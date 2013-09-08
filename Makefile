@@ -45,8 +45,10 @@ output-readers:
 	cd readers && javac -cp ${CLASSPATH} HelloWorldReader.java
 
 transforms: transform/TransformMahoutInput.java transform/MergeIntSparseFiles.java
+	cd transform && javac -cp ${CLASSPATH} FileMerger.java
 	cd transform && javac -cp ${CLASSPATH} TransformMahoutInput.java
 	cd transform && javac -cp ${CLASSPATH} MergeIntSparseFiles.java
+	cd transform && javac -cp ${CLASSPATH} MergeTextVector.java
 
 compression-gen-build:
 	javac -cp ${CLASSPATH} CompressedInputGenerator.java
