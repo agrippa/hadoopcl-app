@@ -283,7 +283,7 @@ public class MahoutKMeans {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.GPU, 10);
+            str.add(Device.TYPE.JAVA, 10);
         }
 
         public Device.TYPE[] validDevices() {
