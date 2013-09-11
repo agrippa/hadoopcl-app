@@ -17,15 +17,6 @@ public class ParseWiki {
             return;
         }
 
-        //File outputDirObject = new File(args[1]);
-        //if(!outputDirObject.exists()) {
-        //    outputDirObject.mkdirs();
-        //} else {
-        //    System.out.println("Cleaning out output directory");
-        //    //FileUtils.cleanDirectory(outputDirObject);
-        //    System.out.println("DONE");
-        //}
-
         final String outputFolder = args[1];
         final int start = Integer.parseInt(args[2]);
         final int length = Integer.parseInt(args[3]);
