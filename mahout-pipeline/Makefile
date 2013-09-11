@@ -1,4 +1,4 @@
-include Makefile.common
+include ../Makefile.common
 
 wiki-parser: ParseWiki.java
 	javac -cp ${CLASSPATH} ParseWiki.java
