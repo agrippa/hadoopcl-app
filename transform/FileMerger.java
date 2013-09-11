@@ -131,7 +131,7 @@ public abstract class FileMerger<KeyType extends Writable, ValueType extends Wri
         try {
             writer = SequenceFile.createWriter(fs, conf,
                     new Path(outputFolder+"/"+this.outputFilePrefix+
-                        String.format("%6d", currentOutputFileIndex)),
+                        String.format("%06d", currentOutputFileIndex)),
                     key.getClass(), val.getClass());
         } catch(IOException io) {
             throw new RuntimeException(io);

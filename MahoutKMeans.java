@@ -125,6 +125,11 @@ public class MahoutKMeans {
                 valIter.seekTo(minVector);
                 int minIndex = valIter.getValIndices()[vectorIndices[minVector]];
                 double minValue = valIter.getValVals()[vectorIndices[minVector]];
+                vectorIndices[minVector]++;
+                nProcessed++;
+
+                if (minValue < 10.0) continue;
+
                 if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
                     outputVals[nOutput-1] += minValue;
                 } else {
@@ -135,13 +140,12 @@ public class MahoutKMeans {
                     currentCount = 0;
                 }
 
-                vectorIndices[minVector]++;
-                nProcessed++;
                 currentCount++;
             }
             outputVals[nOutput-1] /= (double)currentCount;
             System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
+            System.err.println("DIAGNOSTICS: Done!");
 
 /*
             long startUniques = System.currentTimeMillis();
