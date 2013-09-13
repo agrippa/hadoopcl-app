@@ -15,6 +15,7 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	javac -g -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
+	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -29,6 +30,7 @@ all: SetupInputCompression.class
 	jar cvf TestReduceOutputSvec.jar -C testreduceoutputsvecclasses/ . SetupInputCompression.class
 	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ . SetupInputCompression.class
 	jar cvf HelloWorld.jar -C helloworldclasses/ . SetupInputCompression.class
+	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
@@ -57,6 +59,7 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} KMeansCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} TestMapInputSvecCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} HelloWorldCompressedInputGenerator.java
+	javac -cp ${CLASSPATH} MapInputIvecInputGenerator.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
@@ -76,6 +79,8 @@ svec-reduce-output-generate:
 	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-reduce-output.input 10 1000000
 helloworld-generate:
 	java ${RUN_FLAGS} HelloWorldCompressedInputGenerator ${HADOOP_INPUT_DIR}/helloworld.input 10 10000
+ivec-map-input-generate:
+	java ${RUN_FLAGS} MapInputIvecInputGenerator ${HADOOP_INPUT_DIR}/ivec-map-input.input 10 1000
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*

@@ -41,6 +41,9 @@ else
     if [ ${BENCHMARK} == helloworld ]; then
         EXE_NAME=HelloWorld
     fi
+    if [ ${BENCHMARK} == ivec-map-input ]; then
+        EXE_NAME=TestMapInputIvec
+    fi
 
     CPU_GROUP=36
     GPU_GROUP=36
