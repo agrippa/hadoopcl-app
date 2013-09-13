@@ -41,7 +41,7 @@ public class TestMapInputIvec {
             // write(key, (int)vals[1]);
         }
         public int getOutputPairsPerInput() {
-            return 1;
+            return -2;
         }
         public void deviceStrength(DeviceStrength str) {
             str.add(Device.TYPE.GPU, 10);
