@@ -26,9 +26,6 @@ public class MyPruner {
     static private String getFileNameOnly(File f) {
         throw new RuntimeException("Need to implement getFileNameOnly");
     }
-    static private boolean fileExists(String filename) {
-        throw new RuntimeException("Need to implement fileExists!");
-    }
 
     static private List<File> filterOutNonSeqFiles(File[] inputs, Configuration conf,
             FileSystem fs, Writable expectedKey, Writable expectedValue) {
@@ -74,7 +71,7 @@ public class MyPruner {
 
         String existing = args[0];
         String newDir = args[1];
-        String countsFiles = args[2];
+        String countsFile = args[2];
         
         File existingFolder = new File(existing);
         File[] allFiles = existingFolder.listFiles();
@@ -92,7 +89,7 @@ public class MyPruner {
 
         Set<TokenCount> sortedTokens = new TreeSet<TokenCount>();
 
-        if (fileExists(countsFile)) {
+        if (new File(countsFile).exists()) {
             System.out.println("Using pre-existing tokens file "+countsFile);
             SequenceFile.Reader tokenCountReader;
             try {
@@ -103,11 +100,11 @@ public class MyPruner {
             }
             final IntWritable token = new IntWritable();
             final LongWritable count = new LongWritable();
-            while (tokenCountReader.next(token, count)) {
-                // allTokenCounts.put(token.get(), new MutableLong(count.get()));
-                sortedTokens.add(new TokenCount(token.intValue(), count));
-            }
             try {
+                while (tokenCountReader.next(token, count)) {
+                    // allTokenCounts.put(token.get(), new MutableLong(count.get()));
+                    sortedTokens.add(new TokenCount(token.get(), count.get()));
+                }
                 tokenCountReader.close();
             } catch(IOException io) {
                 throw new RuntimeException(io);
@@ -123,7 +120,7 @@ public class MyPruner {
                 int end = start + chunkSize;
                 if (end > inputFiles.size()) end = inputFiles.size();
                 runners[t] = new CountTokens(inputFiles, start, end, end-start, 
-                        tid, conf, fs);
+                        t, conf, fs);
                 threads[t] = new Thread(runners[t]);
                 threads[t].start();
             }
@@ -152,7 +149,7 @@ public class MyPruner {
             SequenceFile.Writer tokenCountWriter;
             try {
                 tokenCountWriter = SequenceFile.createWriter(fs, conf,
-                        new Path(countsFiles), org.apache.hadoop.io.IntWritable.class,
+                        new Path(countsFile), org.apache.hadoop.io.IntWritable.class,
                         org.apache.hadoop.io.LongWritable.class);
             } catch(IOException io) {
                 throw new RuntimeException(io);
@@ -161,15 +158,15 @@ public class MyPruner {
             System.out.println("Writing token counts to disk...");
             final IntWritable key = new IntWritable();
             final LongWritable val = new LongWritable();
-            for (Integer token : allTokenCounts.keySet()) {
-                long count = allTokenCounts.get(token).get();
-                key.set(token);
-                val.set(count);
-                tokenCountWriter.append(key, val);
-                sortedTokens.add(new TokenCount(token.intValue(), count));
-            }
             try {
-                writer.close();
+                for (Integer token : allTokenCounts.keySet()) {
+                    long count = allTokenCounts.get(token).get();
+                    key.set(token);
+                    val.set(count);
+                    tokenCountWriter.append(key, val);
+                    sortedTokens.add(new TokenCount(token.intValue(), count));
+                }
+                tokenCountWriter.close();
             } catch(IOException io) {
                 throw new RuntimeException(io);
             }
@@ -200,7 +197,7 @@ public class MyPruner {
         final private int tid;
         final private Configuration conf;
         final private FileSystem fs;
-        final private HashMap<Integer, Long> tokenCounts;
+        final private HashMap<Integer, MutableLong> tokenCounts;
 
         public HashMap<Integer, MutableLong> tokenCounts() {
             return this.tokenCounts;
@@ -230,28 +227,24 @@ public class MyPruner {
                 try {
                     reader = new SequenceFile.Reader(fs, new Path(f.getAbsolutePath()),
                             conf);
-                } catch(IOException io) {
-                    throw new RuntimeException(io);
-                }
-                while (reader.next(key, val)) {
-                    final org.apache.mahout.math.Vector vec = val.get();
-                    Iterator<org.apache.mahout.math.Vector.Element> iter = 
-                        vec.nonZeroes().iterator();
-                    while(iter.hasNext()) {
-                        org.apache.mahout.math.Vector.Element ele = iter.next();
-                        if (!this.tokenCounts.containsKey(ele.index())) {
-                            tokenCounts.put(ele.index(), new MutableLong());
+                    while (reader.next(key, val)) {
+                        final org.apache.mahout.math.Vector vec = val.get();
+                        Iterator<org.apache.mahout.math.Vector.Element> iter = 
+                            vec.nonZeroes().iterator();
+                        while(iter.hasNext()) {
+                            org.apache.mahout.math.Vector.Element ele = iter.next();
+                            if (!this.tokenCounts.containsKey(ele.index())) {
+                                tokenCounts.put(ele.index(), new MutableLong());
+                            }
+                            tokenCounts.get(ele.index()).incr();
                         }
-                        tokenCounts.get(ele.index()).incr();
+                        int offset = i - start;
+                        if (((offset + 1) % 100) == 0) {
+                            System.out.println("Thread "+tid+
+                                    " done counting tokens for "+(offset+1)+"/"+
+                                    this.length+" files");
+                        }
                     }
-                    int offset = i - start;
-                    if (((offset + 1) % 100) == 0) {
-                        System.out.println("Thread "+tid+
-                                " done counting tokens for "+(offset+1)+"/"+
-                                this.length+" files");
-                    }
-                }
-                try {
                     reader.close();
                 } catch(IOException io) {
                     throw new RuntimeException(io);
@@ -296,10 +289,10 @@ public class MyPruner {
         public void run() {
             for (int i = start; i < end; i++) {
                 File f = files.get(i);
-                String fileName = getFileNameOnly(f);
+                String fileName = f.getName();
 
-                SequenceFileReader reader;
-                SequenceFileWriter writer;
+                SequenceFile.Reader reader;
+                SequenceFile.Writer writer;
                 try {
                     reader = new SequenceFile.Reader(fs, new Path(f.getAbsolutePath()),
                             conf);
@@ -316,25 +309,25 @@ public class MyPruner {
                     new org.apache.mahout.math.VectorWritable();
                 final org.apache.mahout.math.VectorWritable outputVal =
                     new org.apache.mahout.math.VectorWritable();
-                while (reader.next(key, val)) {
-                    final org.apache.mahout.math.Vector originalVec = val.get();
-                    final org.apache.mahout.math.Vector newVec =
-                        new RandomAccessSparseVector(originalVec.size(), 
-                                getNewVectorSize(originalVec));
-
-                    Iterator<org.apache.mahout.math.Vector.Element> iter = 
-                        originalVec.nonZeroes().iterator();
-                    while (iter.hasNext()) {
-                        org.apache.mahout.math.Vector.Element ele = iter.next();
-                        if (this.tokensUsed.contains(ele.index())) {
-                            newVec.seqQuick(ele.index(), ele.get());
-                        }
-                    }
-                    outputVal.set(newVec);
-                    writer.append(key, outputVal);
-                }
-
                 try {
+                    while (reader.next(key, val)) {
+                        final org.apache.mahout.math.Vector originalVec = val.get();
+                        final org.apache.mahout.math.Vector newVec =
+                            new RandomAccessSparseVector(originalVec.size(), 
+                                    getNewVectorSize(originalVec));
+
+                        Iterator<org.apache.mahout.math.Vector.Element> iter = 
+                            originalVec.nonZeroes().iterator();
+                        while (iter.hasNext()) {
+                            org.apache.mahout.math.Vector.Element ele = iter.next();
+                            if (this.tokensUsed.contains(ele.index())) {
+                                newVec.setQuick(ele.index(), ele.get());
+                            }
+                        }
+                        outputVal.set(newVec);
+                        writer.append(key, outputVal);
+                    }
+
                     reader.close();
                     writer.close();
                 } catch(IOException io) {
@@ -360,7 +353,7 @@ public class MyPruner {
         public void incr() {
             this.val++;
         }
-        public void get() {
+        public long get() {
             return this.val;
         }
         public void add(MutableLong other) {
