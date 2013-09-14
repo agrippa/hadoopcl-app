@@ -56,8 +56,8 @@ public class MyPruner {
     }
 
     public static void main(String[] args) {
-        if (args.length != 5) {
-            System.out.println("usage: java MyPruner existing-pruned-dir my-pruned-dir counts-file low-percentile high-percentile");
+        if (args.length != 4) {
+            System.out.println("usage: java MyPruner existing-pruned-dir my-pruned-dir counts-file percent");
             return;
         }
 
@@ -75,8 +75,7 @@ public class MyPruner {
         
         File existingFolder = new File(existing);
         File[] allFiles = existingFolder.listFiles();
-        double lowPerc = Double.parseDouble(args[3]) * 0.01;
-        double highPerc = Double.parseDouble(args[4]) * 0.01;
+        double perc = Double.parseDouble(args[3]) * 0.01;
 
         try {
             FileUtils.cleanDirectory(new File(newDir));
@@ -87,7 +86,9 @@ public class MyPruner {
         List<File> inputFiles = filterOutNonSeqFiles(allFiles, conf, fs,
                 new Text(), new org.apache.mahout.math.VectorWritable());
 
-        Set<TokenCount> sortedTokens = new TreeSet<TokenCount>();
+        TreeSet<TokenCount> sortedTokens = new TreeSet<TokenCount>();
+        int nThreads = 12;
+        int chunkSize = (inputFiles.size() + nThreads - 1) / nThreads;
 
         if (new File(countsFile).exists()) {
             System.out.println("Using pre-existing tokens file "+countsFile);
@@ -100,10 +101,15 @@ public class MyPruner {
             }
             final IntWritable token = new IntWritable();
             final LongWritable count = new LongWritable();
+            int countTokens = 0;
             try {
                 while (tokenCountReader.next(token, count)) {
                     // allTokenCounts.put(token.get(), new MutableLong(count.get()));
                     sortedTokens.add(new TokenCount(token.get(), count.get()));
+                    countTokens++;
+                    if (((countTokens + 1) % 1000000) == 0) {
+                        System.out.println("Done reading "+(countTokens+1)+" from "+countsFile);
+                    }
                 }
                 tokenCountReader.close();
             } catch(IOException io) {
@@ -111,8 +117,6 @@ public class MyPruner {
             }
             System.out.println("Done reading from tokens count file");
         } else {
-            int nThreads = 12;
-            int chunkSize = (inputFiles.size() + nThreads - 1) / nThreads;
             Thread[] threads = new Thread[nThreads];
             CountTokens[] runners = new CountTokens[nThreads];
             for (int t = 0; t < nThreads; t++) {
@@ -174,20 +178,51 @@ public class MyPruner {
         }
 
         // At this point, we have a sorted set of tokens and their counts
-        int lowPercIndex = (int)(lowPerc * ((double)sortedTokens.size()));
-        int highPercIndex = (int)(highPerc * ((double)sortedTokens.size()));
-        System.out.println("Using tokens from index "+lowPercIndex+
-                " to "+highPercIndex+", "+(highPercIndex-lowPercIndex)+" total");
-        Set<Integer> tokensUsed = new HashSet<Integer>(); // For fast lookup
+        // int lowPercIndex = (int)(lowPerc * ((double)sortedTokens.size()));
+        // int highPercIndex = (int)(highPerc * ((double)sortedTokens.size()));
+        // System.out.println("Using tokens from index "+lowPercIndex+
+        //         " to "+highPercIndex+", "+(highPercIndex-lowPercIndex)+" total");
+        // Set<Integer> tokensUsed = new HashSet<Integer>(); // For fast lookup
+        // int index = 0;
+        // for (TokenCount tc : sortedTokens) {
+        //     if (index >= lowPercIndex) {
+        //         tokensUsed.add(tc.token());
+        //     }
+        //     if (index >= highPercIndex) {
+        //         break;
+        //     }
+        //     index++;
+        // }
+        int nToUse = (int)(perc * ((double)sortedTokens.size()));
+        System.out.println("Using "+nToUse+" out of "+sortedTokens.size());
         int index = 0;
-        for (TokenCount tc : sortedTokens) {
-            if (index >= lowPercIndex) {
-                tokensUsed.add(tc.token());
-            }
-            if (index >= highPercIndex) {
-                break;
-            }
+        Set<Integer> tokensUsed = new HashSet<Integer>();
+        Iterator<TokenCount> tcIter = sortedTokens.descendingIterator();
+        while (tcIter.hasNext()) {
+            TokenCount tc = tcIter.next();
+            tokensUsed.add(tc.token());
             index++;
+            if (index >= nToUse) break;
+        }
+
+        Thread[] threads = new Thread[nThreads];
+        PruneVectors[] runners = new PruneVectors[nThreads];
+        for (int t = 0; t < nThreads; t++) {
+            int start = t * chunkSize;
+            int end = start + chunkSize;
+            if (end > inputFiles.size()) end = inputFiles.size();
+
+            runners[t] = new PruneVectors(inputFiles, start, end, t, conf, fs,
+                    tokensUsed, newDir);
+            threads[t] = new Thread(runners[t]);
+            threads[t].start();
+        }
+        try {
+            for (Thread t : threads) {
+                t.join();
+            }
+        } catch(Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -321,7 +356,7 @@ public class MyPruner {
                         while (iter.hasNext()) {
                             org.apache.mahout.math.Vector.Element ele = iter.next();
                             if (this.tokensUsed.contains(ele.index())) {
-                                newVec.setQuick(ele.index(), ele.get());
+                                newVec.set(ele.index(), ele.get());
                             }
                         }
                         outputVal.set(newVec);
@@ -335,7 +370,7 @@ public class MyPruner {
                 }
 
                 int offset = i - start + 1;
-                if (((offset) % 100) == 0) {
+                if (((offset) % 1) == 0) {
                     System.out.println("Thread "+tid+" processed "+offset+"/"+this.length);
                 }
             }
