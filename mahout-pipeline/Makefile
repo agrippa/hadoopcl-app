@@ -33,6 +33,8 @@ prune-tf: PruneTF.java
 	javac -cp ${CLASSPATH} PruneTF.java
 tfidf: TFPrunedtoTFIDF.java
 	javac -cp ${CLASSPATH} TFPrunedtoTFIDF.java
+mypruner: MyPruner.java
+	javac -cp ${CLASSPATH} MyPruner.java
 
 wiki-word-count:
 	java -Xmx48G -cp ${CLASSPATH} WordCountFromTokenized /scratch/jmg3/wiki-sparse/tokenized-documents/ /scratch/jmg3/wiki-sparse/wordcount/
@@ -63,4 +65,6 @@ wiki-tfidf:
 asf-tfidf:
 	java -Xmx48G -cp ${CLASSPATH} TFPrunedtoTFIDF /scratch/jmg3/asf-sparse/tf-vectors-pruned/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tfidf-vectors/ 124993853 36909
 
-
+asf-myprune:
+	# java -Xmx48G -cp ${CLASSPATH} MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors
+wiki-myprune:

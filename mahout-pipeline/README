@@ -78,3 +78,13 @@ then writes the new pair of (filename, pruned vector) out.
 Final stage of the pipeline, taking the pruned vectors from PruneTF and the
 global feature counts from TFtoDF. This just translates the pruned vectors to
 different "TFIDF" values using some functions from Mahout.
+
+10. MyPruner
+
+This pruner is not part of the standard Mahout pipeline, and was added by me
+(Max) when I found that the reducers in Mahout were outputting massive sparse
+vectors (hundreds of millions of elements, or ~0.5GB per vector). This is
+probably due to an error in my port of the pipeline, but rather than hunt down
+the error this function supports basic pruning of the outputs produced by
+TFPrunedToTFIDF based on percentiles, which allows us to play with how large the
+vectors we produce are.
