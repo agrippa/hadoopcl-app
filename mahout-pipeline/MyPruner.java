@@ -166,6 +166,7 @@ public class MyPruner {
             return;
         }
 
+        System.out.println("Reading global counts from "+countsFolder+"/all-counts");
         SequenceFile.Reader totalCountsReader;
         try {
             totalCountsReader = new SequenceFile.Reader(fs,
@@ -179,6 +180,7 @@ public class MyPruner {
         } catch(IOException io) {
             throw new RuntimeException(io);
         }
+        System.out.println("Done reading global counts");
 
         // At this point, we have a sorted set of tokens and their counts
         int nToUse = (int)(perc * ((double)sortedTokens.size()));
