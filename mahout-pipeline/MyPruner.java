@@ -196,6 +196,7 @@ public class MyPruner {
             if (index >= nToUse) break;
         }
 
+        System.out.println("Starting pruning");
         Thread[] threads = new Thread[nThreads];
         PruneVectors[] runners = new PruneVectors[nThreads];
         for (int t = 0; t < nThreads; t++) {
