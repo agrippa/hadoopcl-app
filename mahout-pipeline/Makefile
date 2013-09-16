@@ -66,6 +66,6 @@ asf-tfidf:
 	java -Xmx48G -cp ${CLASSPATH} TFPrunedtoTFIDF /scratch/jmg3/asf-sparse/tf-vectors-pruned/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tfidf-vectors/ 124993853 36909
 
 asf-myprune:
-	java -Xmx48G -cp ${CLASSPATH} MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-merged /scratch/jmg3/asf-sparse/my-pruned /scratch/jmg3/asf-sparse/token-counts 100 
+	java -Xmx48G -cp ${CLASSPATH} MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/asf-sparse/token-counts 50
 wiki-myprune:
-	java -Xmx48G -cp ${CLASSPATH} MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-merged /scratch/jmg3/wiki-sparse/my-pruned /scratch/jmg3/wiki-sparse/token-counts 40 60
+	java -Xmx48G MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/token-counts 50

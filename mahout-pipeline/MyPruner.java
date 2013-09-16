@@ -71,7 +71,7 @@ public class MyPruner {
 
         String existing = args[0];
         String newDir = args[1];
-        String countsFile = args[2];
+        String countsFolder = args[2];
         
         File existingFolder = new File(existing);
         File[] allFiles = existingFolder.listFiles();
@@ -90,35 +90,12 @@ public class MyPruner {
         int nThreads = 12;
         int chunkSize = (inputFiles.size() + nThreads - 1) / nThreads;
 
-        if (new File(countsFile).exists()) {
-            System.out.println("Using pre-existing tokens file "+countsFile);
-            SequenceFile.Reader tokenCountReader;
-            try {
-                tokenCountReader = new SequenceFile.Reader(fs,
-                        new Path(countsFile), conf);
-            } catch(IOException io) {
-                throw new RuntimeException(io);
-            }
-            final IntWritable token = new IntWritable();
-            final LongWritable count = new LongWritable();
-            int countTokens = 0;
-            try {
-                while (tokenCountReader.next(token, count)) {
-                    // allTokenCounts.put(token.get(), new MutableLong(count.get()));
-                    sortedTokens.add(new TokenCount(token.get(), count.get()));
-                    countTokens++;
-                    if (((countTokens + 1) % 1000000) == 0) {
-                        System.out.println("Done reading "+(countTokens+1)+" from "+countsFile);
-                    }
-                }
-                tokenCountReader.close();
-            } catch(IOException io) {
-                throw new RuntimeException(io);
-            }
-            System.out.println("Done reading from tokens count file");
-        } else {
+        // Generate partial dumps of token counts
+        if (!new File(countsFolder+"/counts-0").exists()) {
             Thread[] threads = new Thread[nThreads];
+            Thread[] dumpThread = new Thread[nThreads];
             CountTokens[] runners = new CountTokens[nThreads];
+            DumpPartials[] dumpRunners = new DumpPartials[nThreads];
             for (int t = 0; t < nThreads; t++) {
                 int start = chunkSize * t;
                 int end = start + chunkSize;
@@ -127,72 +104,83 @@ public class MyPruner {
                         t, conf, fs);
                 threads[t] = new Thread(runners[t]);
                 threads[t].start();
+
+                dumpRunners[t] = new DumpPartials(t, threads[t], runners[t],
+                        conf, fs, countsFolder);
+                dumpThread[t] = new Thread(dumpRunners[t]);
+                dumpThread[t].start();
             }
 
-            HashMap<Integer, MutableLong> allTokenCounts =
-                new HashMap<Integer, MutableLong>();
+
             try {
                 for (int t = 0; t < nThreads; t++) {
-                    threads[t].join();
-                    if (t == 0) {
-                        System.out.println("Merging results...");
-                    }
-                    HashMap<Integer, MutableLong> partials = runners[t].tokenCounts();
-                    for (Integer key : partials.keySet()) {
-                        if (!allTokenCounts.containsKey(key)) {
-                            allTokenCounts.put(key, new MutableLong());
-                        }
-                        allTokenCounts.get(key).add(partials.get(key));
-                    }
+                    dumpThread[t].join();
+                    System.out.println("Done dumping results from thread "+t);
                 }
             } catch(Exception e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("Done merging, "+allTokenCounts.keySet().size()+
-                    " total tokens");
-            SequenceFile.Writer tokenCountWriter;
-            try {
-                tokenCountWriter = SequenceFile.createWriter(fs, conf,
-                        new Path(countsFile), org.apache.hadoop.io.IntWritable.class,
-                        org.apache.hadoop.io.LongWritable.class);
-            } catch(IOException io) {
-                throw new RuntimeException(io);
-            }
+            System.out.println("Done dumping partial token counts");
+            return;
+        }
 
-            System.out.println("Writing token counts to disk...");
-            final IntWritable key = new IntWritable();
-            final LongWritable val = new LongWritable();
+        if (!new File(countsFolder+"/all-counts").exists()) {
+            final HashMap<Integer, MutableLong> accum = new HashMap<Integer, MutableLong>();
             try {
-                for (Integer token : allTokenCounts.keySet()) {
-                    long count = allTokenCounts.get(token).get();
-                    key.set(token);
-                    val.set(count);
-                    tokenCountWriter.append(key, val);
-                    sortedTokens.add(new TokenCount(token.intValue(), count));
+                final IntWritable inputKey = new IntWritable();
+                final LongWritable inputVal = new LongWritable();
+                for (int t = 0 ; t < nThreads; t++) {
+                    SequenceFile.Reader reader = new SequenceFile.Reader(fs,
+                            new Path(countsFolder+"/counts-"+t), conf);
+                    System.out.println("Merging from "+t);
+                    while (reader.next(inputKey, inputVal)) {
+                        if (!accum.containsKey(inputKey.get())) {
+                            accum.put(inputKey.get(), new MutableLong(inputVal.get()));
+                        } else {
+                            accum.get(inputKey.get()).add(inputVal.get());
+                        }
+                    }
+                    reader.close();
+                    System.out.println("Done merging from "+t);
                 }
-                tokenCountWriter.close();
-            } catch(IOException io) {
-                throw new RuntimeException(io);
+                SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf,
+                        new Path(countsFolder+"/all-counts"),
+                        org.apache.hadoop.io.IntWritable.class,
+                        org.apache.hadoop.io.LongWritable.class);
+                final Iterator<Map.Entry<Integer, MutableLong>> it = accum.entrySet().iterator();
+                final IntWritable outputKey = new IntWritable();
+                final LongWritable outputVal = new LongWritable();
+                while (it.hasNext()) {
+                    Map.Entry<Integer, MutableLong> pair = it.next();
+                    outputKey.set(pair.getKey().intValue());
+                    outputVal.set(pair.getValue().get());
+                    writer.append(outputKey, outputVal);
+                }
+                writer.close();
+            } catch(Exception e) {
+                throw new RuntimeException(e);
             }
-            System.out.println("Done writing token counts");
+            System.out.println("Done dumping global token counts to "+
+                    countsFolder+"/all-counts");
+            return;
+        }
+
+        SequenceFile.Reader totalCountsReader;
+        try {
+            totalCountsReader = new SequenceFile.Reader(fs,
+                    new Path(countsFolder+"/all-counts"), conf);
+            final HashMap<Integer, Long> tokenCounts = new HashMap<Integer, Long>();
+            final IntWritable inputKey = new IntWritable();
+            final LongWritable inputVal = new LongWritable();
+            while (totalCountsReader.next(inputKey, inputVal)) {
+                sortedTokens.add(new TokenCount(inputKey.get(), inputVal.get()));
+            }
+            totalCountsReader.close();
+        } catch(IOException io) {
+            throw new RuntimeException(io);
         }
 
         // At this point, we have a sorted set of tokens and their counts
-        // int lowPercIndex = (int)(lowPerc * ((double)sortedTokens.size()));
-        // int highPercIndex = (int)(highPerc * ((double)sortedTokens.size()));
-        // System.out.println("Using tokens from index "+lowPercIndex+
-        //         " to "+highPercIndex+", "+(highPercIndex-lowPercIndex)+" total");
-        // Set<Integer> tokensUsed = new HashSet<Integer>(); // For fast lookup
-        // int index = 0;
-        // for (TokenCount tc : sortedTokens) {
-        //     if (index >= lowPercIndex) {
-        //         tokensUsed.add(tc.token());
-        //     }
-        //     if (index >= highPercIndex) {
-        //         break;
-        //     }
-        //     index++;
-        // }
         int nToUse = (int)(perc * ((double)sortedTokens.size()));
         System.out.println("Using "+nToUse+" out of "+sortedTokens.size());
         int index = 0;
@@ -201,6 +189,7 @@ public class MyPruner {
         while (tcIter.hasNext()) {
             TokenCount tc = tcIter.next();
             tokensUsed.add(tc.token());
+            // System.out.println("Using token "+tc.token()+" with count "+tc.count());
             index++;
             if (index >= nToUse) break;
         }
@@ -266,6 +255,7 @@ public class MyPruner {
                         final org.apache.mahout.math.Vector vec = val.get();
                         Iterator<org.apache.mahout.math.Vector.Element> iter = 
                             vec.nonZeroes().iterator();
+                        // System.out.println("Thread "+tid+" processing vector of length "+vec.getNumNonZeroElements()+" from file "+f.getAbsolutePath());
                         while(iter.hasNext()) {
                             org.apache.mahout.math.Vector.Element ele = iter.next();
                             if (!this.tokenCounts.containsKey(ele.index())) {
@@ -273,13 +263,14 @@ public class MyPruner {
                             }
                             tokenCounts.get(ele.index()).incr();
                         }
-                        int offset = i - start;
-                        if (((offset + 1) % 100) == 0) {
-                            System.out.println("Thread "+tid+
-                                    " done counting tokens for "+(offset+1)+"/"+
-                                    this.length+" files");
-                        }
                     }
+                    int offset = i - start;
+                    if (((offset + 1) % 1) == 0) {
+                        System.out.println("Thread "+tid+
+                                " done counting tokens for "+(offset+1)+"/"+
+                                this.length+" files: "+f.getAbsolutePath());
+                    }
+
                     reader.close();
                 } catch(IOException io) {
                     throw new RuntimeException(io);
@@ -377,6 +368,55 @@ public class MyPruner {
         }
     }
 
+    public static class DumpPartials implements Runnable {
+        private final Thread toWaitOn;
+        private final CountTokens toGetFrom;
+        private final int tid;
+        private final Configuration conf;
+        private final FileSystem fs;
+        private final String countsFolder;
+
+        public DumpPartials(int tid, Thread t, CountTokens r, Configuration conf,
+                FileSystem fs, String countsFolder) {
+            this.tid = tid;
+            this.toWaitOn = t;
+            this.toGetFrom = r;
+            this.conf = conf;
+            this.fs = fs;
+            this.countsFolder = countsFolder;
+        }
+
+        @Override
+        public void run() {
+            try {
+                toWaitOn.join();
+            } catch(InterruptedException ie) {
+                throw new RuntimeException(ie);
+            }
+            final IntWritable outputKey = new IntWritable();
+            final LongWritable outputVal = new LongWritable();
+
+            System.out.println("Dumping results from thread "+tid);
+            HashMap<Integer, MutableLong> partials = toGetFrom.tokenCounts();
+            Iterator<Map.Entry<Integer, MutableLong>> it = partials.entrySet().iterator();
+            try {
+                SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf,
+                        new Path(countsFolder+"/counts-"+this.tid),
+                        org.apache.hadoop.io.IntWritable.class,
+                        org.apache.hadoop.io.LongWritable.class);
+                while (it.hasNext()) {
+                    Map.Entry<Integer, MutableLong> pair = it.next();
+                    outputKey.set(pair.getKey().intValue());
+                    outputVal.set(pair.getValue().get());
+                    writer.append(outputKey, outputVal);
+                }
+                writer.close();
+            } catch(IOException io) {
+                throw new RuntimeException(io);
+            }
+        }
+    }
+
     public static class MutableLong {
         private long val;
         public MutableLong() {
@@ -393,6 +433,9 @@ public class MyPruner {
         }
         public void add(MutableLong other) {
             this.val += other.val;
+        }
+        public void add(long l) {
+            this.val += l;
         }
     }
 
@@ -411,9 +454,28 @@ public class MyPruner {
             } else if(this.count > other.count) {
                 return 1;
             } else {
-                return 0;
+                if (this.token < other.token) {
+                    return -1;
+                } else if (this.token > other.token) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
         }
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof TokenCount) {
+                TokenCount other = (TokenCount)obj;
+                return this.token == other.token && this.count == other.count;
+            }
+            return false;
+        }
+        @Override
+        public int hashCode() {
+            return this.token;
+        }
+
     }
 }
 
