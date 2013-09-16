@@ -91,7 +91,8 @@ public class MyPruner {
         int chunkSize = (inputFiles.size() + nThreads - 1) / nThreads;
 
         // Generate partial dumps of token counts
-        if (!new File(countsFolder+"/counts-0").exists()) {
+        if (!new File(countsFolder+"/counts-0").exists() &&
+                !new File(countsFolder+"/all-counts").exists()) {
             Thread[] threads = new Thread[nThreads];
             Thread[] dumpThread = new Thread[nThreads];
             CountTokens[] runners = new CountTokens[nThreads];
@@ -169,7 +170,6 @@ public class MyPruner {
         try {
             totalCountsReader = new SequenceFile.Reader(fs,
                     new Path(countsFolder+"/all-counts"), conf);
-            final HashMap<Integer, Long> tokenCounts = new HashMap<Integer, Long>();
             final IntWritable inputKey = new IntWritable();
             final LongWritable inputVal = new LongWritable();
             while (totalCountsReader.next(inputKey, inputVal)) {
