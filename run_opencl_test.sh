@@ -35,6 +35,9 @@ else
     if [ ${BENCHMARK} == svec-reduce-output ]; then
         EXE_NAME=TestReduceOutputSvec
     fi
+    if [ ${BENCHMARK} == svec-just-reduce-output ]; then
+        EXE_NAME=TestJustReduceOutputSvec
+    fi
     if [ ${BENCHMARK} == mahout-kmeans ]; then
         EXE_NAME=MahoutKMeans
     fi

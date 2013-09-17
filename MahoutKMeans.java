@@ -107,8 +107,11 @@ public class MahoutKMeans {
             System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
             int totalElements = 0;
             for (int i = 0; i < valIter.nValues(); i++) {
+                System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
                 totalElements += valIter.vectorLength(i);
             }
+            System.err.println("DIAGNOSTICS: totalElements="+totalElements);
+
             int[] outputIndices = allocInt(totalElements);
             double[] outputVals = allocDouble(totalElements);
             int[] vectorIndices = allocInt(valIter.nValues());
@@ -121,14 +124,13 @@ public class MahoutKMeans {
             int nProcessed = 0;
             int nOutput = 0;
             while (nProcessed < totalElements) {
+                System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
                 int minVector = findMinIndexVector(vectorIndices, valIter);
                 valIter.seekTo(minVector);
                 int minIndex = valIter.getValIndices()[vectorIndices[minVector]];
                 double minValue = valIter.getValVals()[vectorIndices[minVector]];
                 vectorIndices[minVector]++;
                 nProcessed++;
-
-                if (minValue < 10.0) continue;
 
                 if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
                     outputVals[nOutput-1] += minValue;
