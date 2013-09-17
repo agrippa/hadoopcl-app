@@ -1,3 +1,5 @@
+package merge;
+
 import org.apache.hadoop.io.Text;
 import org.apache.mahout.math.VectorWritable;
 

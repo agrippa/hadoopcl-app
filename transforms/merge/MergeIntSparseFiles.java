@@ -1,3 +1,5 @@
+package merge;
+
 import org.apache.hadoop.io.*;
 import java.io.IOException;
 import org.apache.hadoop.fs.Path;
