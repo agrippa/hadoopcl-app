@@ -1,7 +1,9 @@
 import java.util.List;
+import java.util.ArrayList;
 import java.io.File;
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.commons.io.FileUtils;
 import java.util.Arrays;
@@ -20,16 +22,21 @@ public class ParallelFileIterator {
         this.fs = fs;
     }
 
-    public ParallelFileIterator(List[] inputFiles, Configuration conf,
+    public ParallelFileIterator(File[] inputFiles, Configuration conf,
             FileSystem fs) {
         this(Arrays.asList(inputFiles), conf, fs);
     }
 
     public ParallelFileIterator(File inputFolder, Configuration conf,
             FileSystem fs, Class keyClass, Class valClass) {
-        List[] files = new File(inputFolder).listFiles();
+        this.conf = conf;
+        this.fs = fs;
+
+        File[] files = inputFolder.listFiles();
         FilterNonSeqFiles[] runners = new FilterNonSeqFiles[12];
-        for (int t = 0; t < runners.length; t++) runners[t] = new FilterNonSeqFiles(keyClass, valClass);
+        for (int t = 0; t < runners.length; t++) {
+            runners[t] = new FilterNonSeqFiles(keyClass, valClass);
+        }
         ParallelFileIterator child = new ParallelFileIterator(files, conf, fs);
         child.run(runners);
 
@@ -38,7 +45,8 @@ public class ParallelFileIterator {
             accumFiles.addAll(runners[t].getFiltered());
         }
 
-        this(accumFiles, conf, fs);
+        this.inputFiles = accumFiles;
+        this.nInputFiles = this.inputFiles.size();
     }
 
     public void run(ParallelFileRunner[] runners) {
@@ -66,8 +74,8 @@ public class ParallelFileIterator {
     }
 
     public static abstract class ParallelFileRunner implements Runnable {
-        protected final Configuration conf;
-        protected final FileSystem fs;
+        protected Configuration conf;
+        protected FileSystem fs;
         protected List<File> files;
         protected int start, end, length;
         private int tid, nThreads;
@@ -95,7 +103,7 @@ public class ParallelFileIterator {
         @Override
         public void run() {
             for (this.iter = start; this.iter < end; this.iter++) {
-                this.callback(this.files.get(this.iter), this.iter-this.start);
+                this.callback(this.files.get(this.iter));
             }
         }
 
