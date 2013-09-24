@@ -2,6 +2,8 @@ include ../Makefile.common
 
 transform-mahout-input:
 	javac -cp ${CLASSPATH} TransformMahoutInput.java
+transform-wiki:
+	java TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ /scratch/jmg3/wiki-sparse/hadoopcl-input/
 
 ###########################################################
 ################### Mergers ###############################
@@ -91,7 +93,9 @@ asf-tfidf:
 asf-myprune:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/asf-sparse/token-counts 50
 wiki-myprune:
-	java -Xmx48G -cp${CLASSPATH} pipeline.MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/token-counts 50
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/token-counts 30
+wiki-merge:
+	java merge.MergeTextVector /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ 800 part-r-
 
 ###########################################################
 ################### Utilities #############################

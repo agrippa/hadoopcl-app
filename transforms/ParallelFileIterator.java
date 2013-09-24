@@ -96,8 +96,8 @@ public class ParallelFileIterator {
         }
 
         protected void print(String s) {
-            System.out.println("T"+this.tid+"/"+this.nThreads+" ("+
-                (this.iter+1)+"/"+this.length+" files) | "+s);
+            System.out.println("T"+(this.tid+1)+"/"+this.nThreads+"\t("+
+                (this.iter-this.start+1)+"/"+this.length+" files)\t| "+s);
         }
 
         @Override

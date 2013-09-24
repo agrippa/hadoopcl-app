@@ -27,69 +27,19 @@ public class MahoutKMeans {
     public static class MahoutKMeansReducer 
             extends IntSvecIntSvecHadoopCLReducerKernel {
 
-        boolean search(int[] list, int start, int end, int val) {
-            if (start == end) {
-                // Empty list
-                return false;
-            } else if (start + 1 == end) {
-                // Single element
-                return list[start] == val;
-            } else {
-                // List length > 1
-                int mid = start + ((end-start)/2);
-                if (val == list[mid]) {
-                    return true;
-                } else if (val < list[mid]) {
-                    return search(list, start, mid, val);
-                } else {
-                    return search(list, mid+1, end, val);
-                }
-            }
-        }
-
-        /*
-         * Count the number of unique indices in the input sparse vectors
-         * and return that count
-         */
-        int countUniqueIndices(HadoopCLSvecValueIterator valIter) {
-            int countUniques = 0;
-            // For each input sparse vector
-            for (int v = 0; v < valIter.nValues(); v++) {
-                valIter.seekTo(v);
-                int[] currentIndices = valIter.getValIndices();
-                int currentLength = valIter.currentVectorLength();
-
-                for (int i = 0; i < currentLength; i++) {
-                    int currentIndex = currentIndices[i];
-                    boolean found = false;
-                    for (int vv = 0; vv < v && !found; vv++) {
-                        valIter.seekTo(vv);
-                        found = search(valIter.getValIndices(), 0, valIter.currentVectorLength(), currentIndex);
-                    }
-                    if (!found) {
-                        countUniques++;
-                    }
-                }
-            }
-            return countUniques;
-        }
-
         /*
          * From the list of offsets in vectorIndices,
          * find the input sparse vector with the minimum
          * index value at the corresponding offset
          */
-        protected int findMinIndexVector(int[] vectorIndices,
-                HadoopCLSvecValueIterator valIter) {
-            int vectorWithMinIndex = -1;
-            int minIndex = -1;
-            for (int i = 0; i < valIter.nValues(); i++) {
-                valIter.seekTo(i);
-                if (vectorIndices[i] < valIter.currentVectorLength() &&
-                        (minIndex == -1 || 
-                             valIter.getValIndices()[vectorIndices[i]] < minIndex)) {
+        protected int findMinIndexVector(int[] currentVectorMins,
+                int nValues) {
+            int minIndex = currentVectorMins[0];
+            int vectorWithMinIndex = 0;
+            for (int i = 0; i < nValues; i++) {
+                if (currentVectorMins[i] < minIndex) {
+                    minIndex = currentVectorMins[i];
                     vectorWithMinIndex = i;
-                    minIndex = valIter.getValIndices()[vectorIndices[i]];
                 }
             }
             return vectorWithMinIndex;
@@ -104,32 +54,43 @@ public class MahoutKMeans {
          */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
-            System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
+            // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
             int totalElements = 0;
             for (int i = 0; i < valIter.nValues(); i++) {
-                System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
+                // System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
                 totalElements += valIter.vectorLength(i);
             }
-            System.err.println("DIAGNOSTICS: totalElements="+totalElements);
+            // System.err.println("DIAGNOSTICS: totalElements="+totalElements);
 
             int[] outputIndices = allocInt(totalElements);
             double[] outputVals = allocDouble(totalElements);
             int[] vectorIndices = allocInt(valIter.nValues());
+            int[] currentVectorMins = allocInt(valIter.nValues());
 
             for(int i = 0; i < valIter.nValues(); i++) {
+                valIter.seekTo(i);
                 vectorIndices[i] = 0;
+                currentVectorMins[i] = valIter.getValIndices()[0];
             }
 
             int currentCount = 0;
             int nProcessed = 0;
             int nOutput = 0;
             while (nProcessed < totalElements) {
-                System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
-                int minVector = findMinIndexVector(vectorIndices, valIter);
+                // if ((nProcessed+1) % 1000 == 0) {
+                //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
+                // }
+                int minVector = findMinIndexVector(currentVectorMins,
+                        valIter.nValues());
                 valIter.seekTo(minVector);
-                int minIndex = valIter.getValIndices()[vectorIndices[minVector]];
-                double minValue = valIter.getValVals()[vectorIndices[minVector]];
-                vectorIndices[minVector]++;
+                int newIndex = ++vectorIndices[minVector];
+                int minIndex = valIter.getValIndices()[newIndex-1];
+                double minValue = valIter.getValVals()[newIndex-1];
+                if (newIndex < valIter.currentVectorLength()) {
+                    currentVectorMins[minVector] = valIter.getValIndices()[newIndex];
+                } else {
+                    currentVectorMins[minVector] = Integer.MAX_VALUE;
+                }
                 nProcessed++;
 
                 if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
@@ -145,50 +106,9 @@ public class MahoutKMeans {
                 currentCount++;
             }
             outputVals[nOutput-1] /= (double)currentCount;
-            System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
+            // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
-            System.err.println("DIAGNOSTICS: Done!");
-
-/*
-            long startUniques = System.currentTimeMillis();
-            int uniqueIndices = countUniqueIndices(valIter);
-            long stopUniques = System.currentTimeMillis();
-
-            int[] vectorIndices = allocInt(valIter.nValues());
-            int[] outputIndices = allocInt(uniqueIndices);
-            double[] outputVals = allocDouble(uniqueIndices);
-
-            for(int i = 0; i < valIter.nValues(); i++) {
-                vectorIndices[i] = 0;
-            }
-
-            long startMerging = System.currentTimeMillis();
-            int indicesDone = 0;
-            int vectorsDone = 0;
-            while(vectorsDone < valIter.nValues()) {
-                int minIndexVector = findMinIndexVector(vectorIndices, valIter);
-                valIter.seekTo(minIndexVector);
-                int minIndex = valIter.getValIndices()[vectorIndices[minIndexVector]];
-                double correspondingVal = 
-                    valIter.getValVals()[vectorIndices[minIndexVector]];
-                if (indicesDone > 0 && outputIndices[indicesDone-1] == minIndex) {
-                    outputVals[indicesDone-1] += correspondingVal; 
-                } else {
-                    outputIndices[indicesDone] = minIndex;
-                    outputVals[indicesDone] = correspondingVal;
-                    indicesDone++;
-                }
-                vectorIndices[minIndexVector]++;
-                if (vectorIndices[minIndexVector] >=
-                        valIter.vectorLength(minIndexVector)) {
-                    vectorsDone++;
-                }
-            }
-            long stopMerging = System.currentTimeMillis();
-            System.out.println("DIAGNOSTICS: Unique calc took "+(stopUniques-startUniques)+" ms, merging took "+(stopMerging-startMerging)+" ms");
-
-            write(key, outputIndices, outputVals, uniqueIndices);
-            */
+            // System.err.println("DIAGNOSTICS: Done!");
         }
 
         public int getOutputPairsPerInput() {
@@ -289,7 +209,7 @@ public class MahoutKMeans {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.GPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
