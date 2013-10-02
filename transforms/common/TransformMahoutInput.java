@@ -1,3 +1,5 @@
+package common;
+
 import org.apache.hadoop.fs.*;
 import java.io.*;
 import org.apache.hadoop.io.*;

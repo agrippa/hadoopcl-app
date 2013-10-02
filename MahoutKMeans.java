@@ -54,13 +54,13 @@ public class MahoutKMeans {
          */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
-            // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
+            System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
             int totalElements = 0;
             for (int i = 0; i < valIter.nValues(); i++) {
                 // System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
                 totalElements += valIter.vectorLength(i);
             }
-            // System.err.println("DIAGNOSTICS: totalElements="+totalElements);
+            System.err.println("DIAGNOSTICS: totalElements="+totalElements);
 
             int[] outputIndices = allocInt(totalElements);
             double[] outputVals = allocDouble(totalElements);
@@ -77,9 +77,9 @@ public class MahoutKMeans {
             int nProcessed = 0;
             int nOutput = 0;
             while (nProcessed < totalElements) {
-                // if ((nProcessed+1) % 1000 == 0) {
-                //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
-                // }
+                if ((nProcessed+1) % 1000 == 0) {
+                    System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
+                }
                 int minVector = findMinIndexVector(currentVectorMins,
                         valIter.nValues());
                 valIter.seekTo(minVector);
@@ -106,9 +106,9 @@ public class MahoutKMeans {
                 currentCount++;
             }
             outputVals[nOutput-1] /= (double)currentCount;
-            // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
+            System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
-            // System.err.println("DIAGNOSTICS: Done!");
+            System.err.println("DIAGNOSTICS: Done!");
         }
 
         public int getOutputPairsPerInput() {
@@ -245,7 +245,7 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/mahout-work-jmg3/reuters-kmeans-clusters/part-randomSeed");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/part-randomSeed");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        Text tmpKey = new Text();
        ClusterWritable tmpVal = new ClusterWritable();
