@@ -47,6 +47,21 @@ public class MahoutKMeans {
         }
 
         /*
+         * Already know the first element has been used and is no longer needed
+         */
+        protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
+                int[] queueOfVectors, int queueLength) {
+            int i = 1;
+            while (i < queueLength && queueOfOffsets[i] < newIndex) {
+                queueOfOffsets[i-1] = queueOfOffsets[i];
+                queueOfVectors[i-1] = queueOfVectors[i];
+                i++;
+            }
+            queueOfOffsets[i-1] = newIndex;
+            queueOfvectors[i-1] = newVector;
+        }
+
+        /*
          * This reducer first counts the number of unique indices present
          * in the input vectors, allocates sufficiently large output buffers
          * to store the final merge of all input vectors, and then iterates
@@ -67,13 +82,31 @@ public class MahoutKMeans {
             double[] outputVals = allocDouble(totalElements);
             // Offset into outputIndices for each vector
             int[] vectorIndices = allocInt(valIter.nValues());
-            // The current min for each vector (i.e. what vectorIndices is pointing to)
-            int[] currentVectorMins = allocInt(valIter.nValues());
+            int[] queueOfOffsets = allocInt(valIter.nValues());
+            int[] queueOfVectors = allocInt(valIter.nValues());
 
             for(int i = 0; i < valIter.nValues(); i++) {
                 valIter.seekTo(i);
                 vectorIndices[i] = 0;
-                currentVectorMins[i] = valIter.getValIndices()[0];
+                queueOfOffsets[i] = valIter.getValIndices()[0];
+                queueOfVectors[i] = i;
+            }
+
+            for(int i = 0; i < valIter.nValues(); i++) {
+                int minVal = queueOfOffsets[i];
+                int minIndex = i;
+                for (int j = i+1; j < valIter.nValues(); j++) {
+                    int current = queueOfOffsets[j];
+                    if (current < minVal) {
+                        minVal = current;
+                        minIndex = j;
+                    }
+                }
+                int tmpVal = queueOfOffsets[i]; int tmpVector = queueOfVectors[i];
+                queueOfOffsets[i] = queueOfOffsets[minIndex];
+                queueOfVectors[i] = queueOfVectors[minIndex];
+                queueOfOffsets[minIndex] = tmpVal;
+                queueOfVectors[minIndex] = tmpVector;
             }
 
             int currentCount = 0;
@@ -81,25 +114,20 @@ public class MahoutKMeans {
             int nOutput = 0;
 
             long mainStart = System.currentTimeMillis();
-            long findTime = 0;
             while (nProcessed < totalElements) {
                 // if ((nProcessed+1) % 1000 == 0) {
                 //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
                 // }
 
-                long start=  System.currentTimeMillis();
-                int minVector = findMinIndexVector(currentVectorMins,
-                        valIter.nValues());
-                long stop=  System.currentTimeMillis();
-                findTime += (stop-start);
+                int minVector = queueOfVectors[0];
                 valIter.seekTo(minVector);
                 int newIndex = ++vectorIndices[minVector];
                 int minIndex = valIter.getValIndices()[newIndex-1];
                 double minValue = valIter.getValVals()[newIndex-1];
                 if (newIndex < valIter.currentVectorLength()) {
-                    currentVectorMins[minVector] = valIter.getValIndices()[newIndex];
+                    insert(valIter.getValIndices()[newIndex], minVector, queueOfOffsets, queueOfVectors, valIter.nValues());
                 } else {
-                    currentVectorMins[minVector] = Integer.MAX_VALUE;
+                    insert(Integer.MAX_VALUE, minVector, queueOfOffsets, queueOfVectors, valIter.nValues());
                 }
                 nProcessed++;
 
