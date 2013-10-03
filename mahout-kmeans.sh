@@ -17,7 +17,7 @@ sleep 2
 sleep 60
 
 # ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-merged/ input
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ input
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-merged/ input
 sleep 30
 time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow
 
