@@ -36,9 +36,10 @@ public class MahoutKMeans {
                 int nValues) {
             int minIndex = currentVectorMins[0];
             int vectorWithMinIndex = 0;
-            for (int i = 0; i < nValues; i++) {
-                if (currentVectorMins[i] < minIndex) {
-                    minIndex = currentVectorMins[i];
+            for (int i = 1; i < nValues; i++) {
+                int cvm = currentVectorMins[i];
+                if (cvm < minIndex) {
+                    minIndex = cvm;
                     vectorWithMinIndex = i;
                 }
             }
@@ -54,7 +55,7 @@ public class MahoutKMeans {
          */
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
 
-            // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
+            System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
             int totalElements = 0;
             for (int i = 0; i < valIter.nValues(); i++) {
                 // System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
@@ -64,7 +65,9 @@ public class MahoutKMeans {
 
             int[] outputIndices = allocInt(totalElements);
             double[] outputVals = allocDouble(totalElements);
+            // Offset into outputIndices for each vector
             int[] vectorIndices = allocInt(valIter.nValues());
+            // The current min for each vector (i.e. what vectorIndices is pointing to)
             int[] currentVectorMins = allocInt(valIter.nValues());
 
             for(int i = 0; i < valIter.nValues(); i++) {
@@ -76,12 +79,19 @@ public class MahoutKMeans {
             int currentCount = 0;
             int nProcessed = 0;
             int nOutput = 0;
+
+            long mainStart = System.currentTimeMillis();
+            long findTime = 0;
             while (nProcessed < totalElements) {
                 // if ((nProcessed+1) % 1000 == 0) {
                 //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
                 // }
+
+                long start=  System.currentTimeMillis();
                 int minVector = findMinIndexVector(currentVectorMins,
                         valIter.nValues());
+                long stop=  System.currentTimeMillis();
+                findTime += (stop-start);
                 valIter.seekTo(minVector);
                 int newIndex = ++vectorIndices[minVector];
                 int minIndex = valIter.getValIndices()[newIndex-1];
@@ -105,6 +115,8 @@ public class MahoutKMeans {
 
                 currentCount++;
             }
+            long mainStop = System.currentTimeMillis();
+            System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
             outputVals[nOutput-1] /= (double)currentCount;
             // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
