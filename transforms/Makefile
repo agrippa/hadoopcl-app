@@ -19,7 +19,7 @@ filter-zero-length-wiki:
 select-random-seeds:
 	javac -cp ${CLASSPATH} pipeline/SelectRandomSeeds.java
 select-random-seeds-wiki:
-	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length/ /scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed 20
+	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length/ /scratch/jmg3/wiki-sparse/random-seed/ 20
 
 ###########################################################
 ################### Mergers ###############################
@@ -115,7 +115,7 @@ wiki-myprune:
 asf-prune-for-length:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned/ /scratch/jmg3/asf-sparse/token-counts 32
 wiki-prune-for-length:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned/ /scratch/jmg3/wiki-sparse/token-counts 32
+	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned/ /scratch/jmg3/wiki-sparse/token-counts 128
 
 wiki-merge:
 	java merge.MergeTextVector /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ 800 part-r-

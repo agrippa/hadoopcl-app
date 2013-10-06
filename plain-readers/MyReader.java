@@ -61,6 +61,7 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
             reader.close();
         } catch(Exception e) {
             System.out.println("Possible critical failure, continuing");
+            e.printStackTrace();
             return;
         }
     }

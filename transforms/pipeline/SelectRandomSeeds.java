@@ -16,11 +16,38 @@ import org.apache.hadoop.io.*;
 import org.apache.mahout.common.StringTuple;
 import org.apache.commons.io.FileUtils;
 import java.util.concurrent.atomic.*;
+import org.apache.mahout.clustering.iterator.ClusterWritable;
+import org.apache.mahout.common.distance.CosineDistanceMeasure;
+import org.apache.mahout.math.RandomAccessSparseVector;
+import org.apache.mahout.clustering.kmeans.Kluster;
 
 public class SelectRandomSeeds {
+    private static ClusterWritable sparseToCluster(SparseVectorWritable sparse,
+            int id) {
+        int[] indices = sparse.indices();
+        double[] vals = sparse.vals();
+        int length = sparse.size();
+
+        /*
+         * This is the cardinality for the wiki data set.
+         * If this isn't the correct cardinality for your data set, Mahout 
+         * will throw exceptions which actually tell you the correct cardinality.
+         * So just run a simple Mahout test on some clusters generated with this
+         * script to generate the error messages and get the correct value to
+         * insert here
+         */
+        RandomAccessSparseVector center = new RandomAccessSparseVector(149053452);
+        for (int i = 0; i < length; i++) {
+            center.setQuick(indices[i], vals[i]);
+        }
+        Kluster cluster = new Kluster(center, id, new CosineDistanceMeasure());
+
+        return new ClusterWritable(cluster);
+    }
+
     public static void main(String[] args) {
         if (args.length != 3) {
-            System.out.println("java SelectRandomSeeds input-folder output-file n-seeds");
+            System.out.println("java SelectRandomSeeds input-folder output-folder n-seeds");
             return;
         }
 
@@ -52,7 +79,7 @@ public class SelectRandomSeeds {
         System.out.println("Counted "+nPairs+" total pairs");
 
         HashSet<Integer> selections = new HashSet<Integer>();
-        Random rand = new Random();
+        Random rand = new Random(923842);
         while (selections.size() < nSeeds) {
             selections.add(rand.nextInt(nPairs));
         }
@@ -73,8 +100,8 @@ public class SelectRandomSeeds {
             seeds.addAll(r.selected());
         }
 
-        final Path outputPath = new Path(output);
-        final SequenceFile.Writer writer;
+        Path outputPath = new Path(output+"/sparse-randomSeed");
+        SequenceFile.Writer writer;
         try {
             writer = SequenceFile.createWriter(fs, conf, outputPath,
                     org.apache.hadoop.io.IntWritable.class,
@@ -83,6 +110,20 @@ public class SelectRandomSeeds {
                 writer.append(new IntWritable(i), seeds.get(i));
             }
             writer.close();
+        } catch(IOException io) {
+            throw new RuntimeException(io);
+        }
+
+        outputPath = new Path(output+"/cluster-randomSeed");
+        try {
+            writer = SequenceFile.createWriter(fs, conf, outputPath,
+                    org.apache.hadoop.io.Text.class,
+                    org.apache.mahout.clustering.iterator.ClusterWritable.class);
+            for (int i = 0; i < seeds.size(); i++) {
+                writer.append(new Text(Integer.toString(i)), sparseToCluster(seeds.get(i), i));
+            }
+            writer.close();
+
         } catch(IOException io) {
             throw new RuntimeException(io);
         }

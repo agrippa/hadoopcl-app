@@ -16,10 +16,11 @@ sleep 2
 ./startup.sh ${SLOTS} 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 60
 
-# ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-merged/ input
 ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-merged/ input
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/hadoop-folder/ clusters
 sleep 30
-time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow
+# time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow
+time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -ow
 
 #${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/mahout-work-jmg3/reuters-out-seqdir-sparse-kmeans/ reuters-out-seqdir-sparse-kmeans
 #
