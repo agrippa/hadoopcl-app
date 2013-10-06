@@ -1,6 +1,7 @@
 include Makefile.common
 
 all: SetupInputCompression.class
+	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
 	javac -g -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
 	javac -g -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
@@ -33,6 +34,7 @@ all: SetupInputCompression.class
 	jar cvf HelloWorld.jar -C helloworldclasses/ . SetupInputCompression.class
 	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
 	jar cvf TestJustReduceOutputSvec.jar -C testjustreduceoutputsvecclasses/ . SetupInputCompression.class
+	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
@@ -63,6 +65,8 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} HelloWorldCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} MapInputIvecInputGenerator.java
 	javac -cp ${CLASSPATH} TestJustReduceOutputSvecInputGenerator.java
+	javac -cp ${CLASSPATH} GenerateRandomSvec.java
+	javac -cp ${CLASSPATH} GlobalsOnGpuGenerator.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
@@ -86,6 +90,11 @@ ivec-map-input-generate:
 	java ${RUN_FLAGS} MapInputIvecInputGenerator ${HADOOP_INPUT_DIR}/ivec-map-input.input 10 1000
 svec-just-reduce-output-generate:
 	java ${RUN_FLAGS} TestJustReduceOutputSvecInputGenerator ${HADOOP_INPUT_DIR}/svec-just-reduce-output.input 10 1000
+random-svec-generate:
+	java ${RUN_FLAGS} GenerateRandomSvec ${HADOOP_INPUT_DIR}/random-svec/ 10 1000
+globals-on-gpu-generate:
+	java ${RUN_FLAGS} GlobalsOnGpuGenerator ${HADOOP_INPUT_DIR}/globals-on-gpu.input/ 10 1000
+
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*

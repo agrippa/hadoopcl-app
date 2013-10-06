@@ -16,6 +16,10 @@ filter-zero-length: parallel-file-iterator
 	javac -cp ${CLASSPATH} pipeline/FilterZeroLengthSparseVectors.java
 filter-zero-length-wiki:
 	java -cp ${CLASSPATH} pipeline.FilterZeroLengthSparseVectors /scratch/jmg3/wiki-sparse/hadoopcl-input-length/
+select-random-seeds:
+	javac -cp ${CLASSPATH} pipeline/SelectRandomSeeds.java
+select-random-seeds-wiki:
+	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length/ /scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed 20
 
 ###########################################################
 ################### Mergers ###############################

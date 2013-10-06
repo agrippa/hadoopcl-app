@@ -58,7 +58,7 @@ public class MahoutKMeans {
                 i++;
             }
             queueOfOffsets[i-1] = newIndex;
-            queueOfvectors[i-1] = newVector;
+            queueOfVectors[i-1] = newVector;
         }
 
         /*
@@ -113,7 +113,7 @@ public class MahoutKMeans {
             int nProcessed = 0;
             int nOutput = 0;
 
-            long mainStart = System.currentTimeMillis();
+            // long mainStart = System.currentTimeMillis();
             while (nProcessed < totalElements) {
                 // if ((nProcessed+1) % 1000 == 0) {
                 //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
@@ -143,8 +143,8 @@ public class MahoutKMeans {
 
                 currentCount++;
             }
-            long mainStop = System.currentTimeMillis();
-            System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
+            // long mainStop = System.currentTimeMillis();
+            // System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
             outputVals[nOutput-1] /= (double)currentCount;
             // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
@@ -224,14 +224,14 @@ public class MahoutKMeans {
 
             double minDist = -1.0;
             int closestCluster = -1;
-            for(int i = 0; i < this.nGlobals(); i++) {
+            for (int i = 0; i < this.nGlobals(); i++) {
                 int[] centroidIndices = this.getGlobalIndices(i);
                 double[] centroidVals = this.getGlobalVals(i);
                 int centroidVectorLength = this.globalsLength(i);
 
                 double dist = distance(indices, vals, len,
                         centroidIndices, centroidVals, centroidVectorLength);
-                if(minDist == -1.0 || minDist > dist ){
+                if(closestCluster == -1 || minDist > dist ){
                     minDist = dist;
                     closestCluster = i;
                 }
@@ -285,15 +285,14 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/part-randomSeed");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
-       Text tmpKey = new Text();
-       ClusterWritable tmpVal = new ClusterWritable();
+       IntWritable tmpKey = new IntWritable();
+       SparseVectorWritable tmpVal = new SparseVectorWritable();
 
        int count = 0;
        while(reader.next(tmpKey, tmpVal)) { 
-           SparseVectorWritable translated = clusterToSparseVector(tmpVal);
-           conf.addHadoopCLGlobal(translated.indices(), translated.vals());
+           conf.addHadoopCLGlobal(tmpVal.indices(), tmpVal.vals());
            count++;
        }
 

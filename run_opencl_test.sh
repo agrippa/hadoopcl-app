@@ -47,6 +47,9 @@ else
     if [ ${BENCHMARK} == ivec-map-input ]; then
         EXE_NAME=TestMapInputIvec
     fi
+    if [ ${BENCHMARK} == globals-on-gpu ]; then
+        EXE_NAME=TestGlobalsOnGPU
+    fi
 
     CPU_GROUP=36
     GPU_GROUP=36

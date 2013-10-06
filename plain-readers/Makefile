@@ -2,7 +2,7 @@ include ../Makefile.common
 
 all: ReadTextLong.class ReadTextInt.class ReadTextVector.class ReadIntCluster.class \
 		ReadIntFloat.class ReadDoubleDouble.class ReadIntInt.class ReadIntLong.class \
-		ReadIntSparse.class
+		ReadIntSparse.class ReadTextCluster.class
 
 ReadIntSparse.class: ReadIntSparse.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntSparse.java
@@ -22,6 +22,8 @@ ReadTextVector.class: ReadTextVector.java MyReader.class
 	javac -cp ${CLASSPATH} ReadTextVector.java
 ReadIntCluster.class: ReadIntCluster.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntCluster.java
+ReadTextCluster.class: ReadTextCluster.java MyReader.class
+	javac -cp ${CLASSPATH} ReadTextCluster.java
 MyReader.class: MyReader.java
 	javac -cp ${CLASSPATH} MyReader.java
 
