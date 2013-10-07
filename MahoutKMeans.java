@@ -177,14 +177,14 @@ public class MahoutKMeans {
                 int[] index2, double[] val2, int length2) {
 
             double agg = 0.0;
-            for(int i = 0; i < length1; i++) {
+            int j = 0;
+            for(int i = 0; i < length1 && j < length2; i++) {
                 int currentIndex = index1[i];
-                int j = 0;
-                while(j < length2 && currentIndex != index2[j]) {
+                while(j < length2 && currentIndex < index2[j]) {
                     j++;
                 }
-                if(j != length2) {
-                    agg += val1[i] * val2[j];
+                if (j < length2 && currentIndex == index2[j]) {
+                    agg += (val1[i] * val2[j]);
                 }
             }
             return agg;
@@ -219,6 +219,7 @@ public class MahoutKMeans {
 
         protected void map(int key, int[] indices, double[] vals, int len) {
 
+            // TODO stride allocations?
             int[] outputIndices = allocInt(len);
             double[] outputVals = allocDouble(len);
 
