@@ -177,14 +177,23 @@ public class MahoutKMeans {
                 int[] index2, double[] val2, int length2) {
 
             double agg = 0.0;
+            int i = 0;
             int j = 0;
-            for(int i = 0; i < length1 && j < length2; i++) {
-                int currentIndex = index1[i];
-                while(j < length2 && currentIndex < index2[j]) {
-                    j++;
-                }
-                if (j < length2 && currentIndex == index2[j]) {
+            int iIndex = index1[i];
+            int jIndex = index2[i];
+            while (i < length1 && j < length2) {
+                if (iIndex == jIndex) {
                     agg += (val1[i] * val2[j]);
+                    i++;
+                    j++;
+                    if (i < length1) iIndex = index1[i];
+                    if (j < length2) jIndex = index2[j];
+                } else if (iIndex < jIndex) {
+                    i++;
+                    if (i < length1) iIndex = index1[i];
+                } else {
+                    j++;
+                    if (j < length2) jIndex = index2[j];
                 }
             }
             return agg;

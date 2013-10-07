@@ -301,12 +301,15 @@ public class PruneWithTargetLength {
         @Override
         public void run() {
             int i = start;
-            while (i < end) {
-                File f = files.get(i);
-                if (!f.exists()) break;
-                i++;
-            }
-            i--;
+            // while (i < end) {
+            //     File f = files.get(i);
+            //     if (!f.exists()) break;
+            //     i++;
+            // }
+            if (i != start) i--;
+
+            System.out.println("Thread "+tid+" going from "+i+" to "+end);
+
             for (; i < end; i++) {
                 File f = files.get(i);
                 String fileName = f.getName();
