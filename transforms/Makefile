@@ -21,6 +21,15 @@ select-random-seeds:
 select-random-seeds-wiki:
 	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input/ /scratch/jmg3/wiki-sparse/random-seed/ 20
 
+
+###########################################################
+################### Checkers ##############################
+###########################################################
+sorted-checker:
+	javac -cp ${CLASSPATH} checks/InputsSortedChecker.java
+check-sorted:
+	java -cp ${CLASSPATH} checks.InputsSortedChecker /scratch/jmg3/mahout-kmeans.input/block.none/
+
 ###########################################################
 ################### Mergers ###############################
 ###########################################################
