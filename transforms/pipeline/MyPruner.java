@@ -58,8 +58,8 @@ public class MyPruner {
     }
 
     public static void main(String[] args) {
-        if (args.length != 4) {
-            System.out.println("usage: java MyPruner existing-pruned-dir my-pruned-dir counts-file percent");
+        if (args.length != 5) {
+            System.out.println("usage: java MyPruner existing-pruned-dir my-pruned-dir counts-file perc-or-count percent");
             return;
         }
 
@@ -77,7 +77,10 @@ public class MyPruner {
         
         File existingFolder = new File(existing);
         File[] allFiles = existingFolder.listFiles();
-        double perc = Double.parseDouble(args[3]) * 0.01;
+        if (!args[3].equals("p") && !args[3].equals("c")) {
+            System.out.println("Invalid argument for perc-or-count, must be either p (percent) or c (count)");
+            return;
+        }
 
         try {
             FileUtils.cleanDirectory(new File(newDir));
@@ -185,7 +188,13 @@ public class MyPruner {
         System.out.println("Done reading global counts");
 
         // At this point, we have a sorted set of tokens and their counts
-        int nToUse = (int)(perc * ((double)sortedTokens.size()));
+        int nToUse = -1;
+        if (args[3].equals("p")) {
+            double perc = Double.parseDouble(args[4]) * 0.01;
+            nToUse = (int)(perc * ((double)sortedTokens.size()));
+        } else if (args[3].equals("c")) {
+            nToUse = Integer.parseInt(args[4]);
+        }
         System.out.println("Using "+nToUse+" out of "+sortedTokens.size());
         int index = 0;
         Set<Integer> tokensUsed = new HashSet<Integer>();
@@ -343,9 +352,12 @@ public class MyPruner {
                 try {
                     while (reader.next(key, val)) {
                         final org.apache.mahout.math.Vector originalVec = val.get();
+                        int newSize = getNewVectorSize(originalVec);
+                        if (newSize == 0) continue;
+
                         final org.apache.mahout.math.Vector newVec =
                             new RandomAccessSparseVector(originalVec.size(), 
-                                    getNewVectorSize(originalVec));
+                                    newSize);
 
                         Iterator<org.apache.mahout.math.Vector.Element> iter = 
                             originalVec.nonZeroes().iterator();

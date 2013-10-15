@@ -76,7 +76,7 @@ public class MahoutKMeans {
                 // System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
                 totalElements += valIter.vectorLength(i);
             }
-            // System.err.println("DIAGNOSTICS: totalElements="+totalElements);
+            System.err.println("DIAGNOSTICS: totalElements="+totalElements);
 
             int[] outputIndices = allocInt(totalElements);
             double[] outputVals = allocDouble(totalElements);
@@ -146,9 +146,9 @@ public class MahoutKMeans {
             // long mainStop = System.currentTimeMillis();
             // System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
             outputVals[nOutput-1] /= (double)currentCount;
-            // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
+            System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
             write(key, outputIndices, outputVals, nOutput);
-            // System.err.println("DIAGNOSTICS: Done!");
+            System.err.println("DIAGNOSTICS: Done!");
         }
 
         public int getOutputPairsPerInput() {
@@ -173,6 +173,7 @@ public class MahoutKMeans {
             return agg;
         }
 
+        /*
         protected double dot(int[] index1, double[] val1, int length1,
                 int[] index2, double[] val2, int length2) {
 
@@ -194,6 +195,23 @@ public class MahoutKMeans {
                 } else {
                     j++;
                     if (j < length2) jIndex = index2[j];
+                }
+            }
+            return agg;
+        }
+        */
+        protected double dot(int[] index1, double[] val1, int length1,
+                int[] index2, double[] val2, int length2) {
+
+            double agg = 0.0;
+            for(int i = 0; i < length1; i++) {
+                int currentIndex = index1[i];
+                int j = 0;
+                while(j < length2 && currentIndex != index2[j]) {
+                    j++;
+                }
+                if(j != length2) {
+                    agg += val1[i] * val2[j];
                 }
             }
             return agg;

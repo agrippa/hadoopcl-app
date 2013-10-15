@@ -15,7 +15,7 @@ import com.amd.aparapi.device.Device;
 public class TestMapOutputSvec {
     public static class TestReducer extends IntSvecIntIntHadoopCLReducerKernel {
         protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
-            write(key, valIter.getValIndices()[0]);
+            write(key, valIter.getValIndices()[5]);
         }
         public int getOutputPairsPerInput() {
             return 1;

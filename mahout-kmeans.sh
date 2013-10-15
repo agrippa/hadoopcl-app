@@ -1,6 +1,9 @@
 #!/bin/bash
 
-SLOTS=12
+# MAP_SLOTS=12
+# REDUCE_SLOTS=4
+MAP_SLOTS=4
+REDUCE_SLOTS=1
 JAVA_HEAP=16
 PWD=$(pwd)
 cd ${HADOOP_APP_DIR}
@@ -13,10 +16,10 @@ sleep 2
 ./CLEAN.sh
 sleep 2
 
-./startup.sh ${SLOTS} 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
+./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 60
 
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-merged/ input
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ input
 ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/hadoop-folder/ clusters
 sleep 30
 # time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow

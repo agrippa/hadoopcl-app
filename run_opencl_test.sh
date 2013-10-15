@@ -58,12 +58,14 @@ else
 
     hdfs_chunk_size=268435456
     # mapper=13
-    mapper=10
+    # mapper=8
+    mapper=4
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
         # reducer=5
-        reducer=4
+        # reducer=4
+        reducer=1
     fi
 
     NODES=`cat $PBS_NODEFILE | sort | uniq`
@@ -78,21 +80,21 @@ else
 
     ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} ${java_heap}
     sleep 60
-    echo Putting inputs
+    echo Putting inputs from ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
     ${HADOOP_HOME}/bin/hadoop fs -put ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} ${BENCHMARK}.input
     sleep 60
-    echo Running Application
+    echo Running Application with ${EXE_NAME}.jar
     time ${HADOOP_HOME}/bin/hadoop jar ${EXE_NAME}.jar ${EXE_NAME} ${BENCHMARK}.input ${BENCHMARK}.output ${MAP_OUTPUTFORMAT} 
 
-    sleep 10
-    echo Retrieving Outputs
-    ${HADOOP_HOME}/bin/hadoop fs -get ${BENCHMARK}.output ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
-    
-    echo Grepping Logs
-    for n in ${NODES}; do
-        ssh -o ConnectTimeout=2 ${n} "grep -n -R 'DIAGNOSTICS' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}"
-        ssh -o ConnectTimeout=2 ${n} "grep -n -R 'Exception' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}.exceptions"
-    done
+     sleep 10
+     echo Retrieving Outputs into ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
+     ${HADOOP_HOME}/bin/hadoop fs -get ${BENCHMARK}.output ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
+#     
+#     echo Grepping Logs
+#     for n in ${NODES}; do
+#         ssh -o ConnectTimeout=2 ${n} "grep -n -R 'DIAGNOSTICS' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}"
+#         ssh -o ConnectTimeout=2 ${n} "grep -n -R 'Exception' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}.exceptions"
+#     done
     echo Done, Killing
     ./KILL.sh
 

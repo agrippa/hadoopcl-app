@@ -5,7 +5,7 @@
 # 2: Seconds between profiles
 
 OUT_DIR=$HADOOP_HOME/profile/${PBS_JOBID}.${1}
-DELAY=1
+DELAY=10
 
 NODES=`cat $PBS_NODEFILE | sort | uniq`
 CMD="ps aux | awk '/hadoop/ {print \"\t\t\" \$3 \"\t\" \$4}'"
@@ -30,8 +30,8 @@ do
 		# echo -e "\t$node: " >>$OUT_FILE
 		echo -e "$iter\t$TIME sec:" >>$node
 		ssh -o ConnectTimeout=2 $node $CMD >>$node;
-        echo -e "GPU" >> $node
-		ssh -o ConnectTimeout=2 $node $GPU_CMD >>$node;
+#         echo -e "GPU" >> $node
+# 		ssh -o ConnectTimeout=2 $node $GPU_CMD >>$node;
 	done
 	#echo "" >>$OUT_FILE
 	echo "Logged $TIME sec ($iter iters)"
