@@ -23,6 +23,7 @@ import org.apache.mahout.math.*;
 
 public abstract class MyReader<KeyType extends Writable, ValueType extends Writable> {
     final protected String inputName;
+    protected boolean enablePrinting = true;
 
     public MyReader(String setInputName) {
         this.inputName = setInputName;
@@ -44,9 +45,11 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
             // in case of non-seq files
             return;
         }
-        System.out.println();
-        System.out.println(path.toString());
-        System.out.println();
+        if (enablePrinting) {
+            System.out.println();
+            System.out.println(path.toString());
+            System.out.println();
+        }
 
         final KeyType key = getKeyObject();
         final ValueType val = getValObject();
@@ -54,8 +57,12 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
         try {
             long count = 0;
             while(reader.next(key, val)) {
-                System.out.println(count+": "+overrideKeyToString(key)+" => "+
-                        overrideValToString(val));
+                String keyString = overrideKeyToString(key);
+                String valString = overrideValToString(val);
+                if (enablePrinting) {
+                    System.out.println(count+": "+keyString+" => "+
+                            valString);
+                }
                 count++;
             }
             reader.close();
