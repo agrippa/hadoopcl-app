@@ -1,9 +1,17 @@
 #!/bin/bash
 
+if [ $# -ne 2 ]; then
+    echo usage: mahout-kmeans.sh pruning clusters
+    exit 1
+fi
+
+PRUNING=$1
+CLUSTERS=$2
+
 # MAP_SLOTS=12
 # REDUCE_SLOTS=4
-MAP_SLOTS=4
-REDUCE_SLOTS=1
+MAP_SLOTS=12
+REDUCE_SLOTS=2
 JAVA_HEAP=16
 PWD=$(pwd)
 cd ${HADOOP_APP_DIR}
@@ -19,8 +27,10 @@ sleep 2
 ./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 60
 
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ input
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/hadoop-folder/ clusters
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged.${PRUNING}/ input
+${HADOOP_HOME}/bin/hadoop fs -mkdir clusters
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/cluster-randomSeed.pruned${PRUNING}.${CLUSTERS}clusters clusters/
+
 sleep 30
 # time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow
 time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -ow

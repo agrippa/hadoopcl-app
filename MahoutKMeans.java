@@ -25,142 +25,251 @@ import org.apache.mahout.clustering.iterator.ClusterWritable;
 public class MahoutKMeans {
 
     public static class MahoutKMeansReducer 
-            extends IntSvecIntSvecHadoopCLReducerKernel {
+        extends IntSvecIntSvecHadoopCLReducerKernel {
 
-        /*
-         * From the list of offsets in vectorIndices,
-         * find the input sparse vector with the minimum
-         * index value at the corresponding offset
-         */
-        protected int findMinIndexVector(int[] currentVectorMins,
-                int nValues) {
-            int minIndex = currentVectorMins[0];
-            int vectorWithMinIndex = 0;
-            for (int i = 1; i < nValues; i++) {
-                int cvm = currentVectorMins[i];
-                if (cvm < minIndex) {
-                    minIndex = cvm;
-                    vectorWithMinIndex = i;
+            private void swapHelper(int[] arr, int index1, int index2) {
+                if (index1 != index2) {
+                    arr[index1] += arr[index2];
+                    arr[index2] = arr[index1] - arr[index2];
+                    arr[index1] -= arr[index2];
                 }
             }
-            return vectorWithMinIndex;
-        }
 
-        /*
-         * Already know the first element has been used and is no longer needed
-         */
-        protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
-                int[] queueOfVectors, int queueLength) {
-            int i = 1;
-            while (i < queueLength && queueOfOffsets[i] < newIndex) {
-                queueOfOffsets[i-1] = queueOfOffsets[i];
-                queueOfVectors[i-1] = queueOfVectors[i];
-                i++;
-            }
-            queueOfOffsets[i-1] = newIndex;
-            queueOfVectors[i-1] = newVector;
-        }
-
-        /*
-         * This reducer first counts the number of unique indices present
-         * in the input vectors, allocates sufficiently large output buffers
-         * to store the final merge of all input vectors, and then iterates
-         * through the input vectors in parallel, merging them into the final
-         * output in order to maintain total ordering
-         */
-        protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
-
-            System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
-            int totalElements = 0;
-            for (int i = 0; i < valIter.nValues(); i++) {
-                // System.err.println("DIAGNOSTICS:   value "+i+" has length "+valIter.vectorLength(i));
-                totalElements += valIter.vectorLength(i);
-            }
-            System.err.println("DIAGNOSTICS: totalElements="+totalElements);
-
-            int[] outputIndices = allocInt(totalElements);
-            double[] outputVals = allocDouble(totalElements);
-            // Offset into outputIndices for each vector
-            int[] vectorIndices = allocInt(valIter.nValues());
-            int[] queueOfOffsets = allocInt(valIter.nValues());
-            int[] queueOfVectors = allocInt(valIter.nValues());
-
-            for(int i = 0; i < valIter.nValues(); i++) {
-                valIter.seekTo(i);
-                vectorIndices[i] = 0;
-                queueOfOffsets[i] = valIter.getValIndices()[0];
-                queueOfVectors[i] = i;
+            private void swap(int[] arr, int[] coarr, int index1, int index2) {
+                swapHelper(arr, index1, index2);
+                swapHelper(coarr, index1, index2);
             }
 
-            for(int i = 0; i < valIter.nValues(); i++) {
-                int minVal = queueOfOffsets[i];
-                int minIndex = i;
-                for (int j = i+1; j < valIter.nValues(); j++) {
-                    int current = queueOfOffsets[j];
-                    if (current < minVal) {
-                        minVal = current;
-                        minIndex = j;
+            private int partition(int[] arr, int[] coarr, int left, int right,
+                    int pivotIndex) {
+                int pivotValue = arr[pivotIndex];
+                swap(arr, coarr, pivotIndex, right);
+                int storeIndex = left;
+                int topIndex = right-1;
+                int nPivots = 1;
+                for (int i = left; i <= topIndex; ) {
+                    int curr = arr[i];
+                    if (curr < pivotValue) {
+                        swap(arr, coarr, i, storeIndex);
+                        storeIndex++;
+                        i++;
+                    } else if(curr == pivotValue) {
+                        swap(arr, coarr, i, topIndex);
+                        topIndex--;
+                        nPivots++;
+                    } else {
+                        i++;
                     }
                 }
-                int tmpVal = queueOfOffsets[i]; int tmpVector = queueOfVectors[i];
-                queueOfOffsets[i] = queueOfOffsets[minIndex];
-                queueOfVectors[i] = queueOfVectors[minIndex];
-                queueOfOffsets[minIndex] = tmpVal;
-                queueOfVectors[minIndex] = tmpVector;
+                for (int i = 0; i < nPivots; i++) {
+                    swap(arr, coarr, storeIndex + i, topIndex + 1 + i);
+                }
+                return storeIndex;
             }
 
-            int currentCount = 0;
-            int nProcessed = 0;
-            int nOutput = 0;
+            private void quicksort(int[] arr, int[] coarr, int low, int high) {
+                if (high - low <= 1) {
+                    return;
+                }
+                int baseOfPivot = partition(arr, coarr, low, high, low);
+                int pivot = arr[baseOfPivot];
+                int topOfPivot = baseOfPivot;
+                while (topOfPivot < arr.length && arr[topOfPivot] == pivot) {
+                    topOfPivot++;
+                }
+                quicksort(arr, coarr, low, baseOfPivot-1);
+                quicksort(arr, coarr, topOfPivot, high);
+            }
 
-            // long mainStart = System.currentTimeMillis();
-            while (nProcessed < totalElements) {
-                // if ((nProcessed+1) % 1000 == 0) {
-                //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
+            protected int reverseIterateHelper(int queueHead, int queueLength) {
+                int tmp = queueHead  -1;
+                return tmp < 0 ? queueLength-1 : tmp;
+            }
+
+            protected int forwardIterateHelper(int queueHead, int queueLength) {
+                int tmp = queueHead + 1;
+                return tmp >= queueLength ? 0 : tmp;
+            }
+
+            protected int reverseIterate(int queueHead, int[] q, int queueLength) {
+                return reverseIterateHelper(queueHead, queueLength);
+            }
+
+            protected int forwardIterate(int queueHead, int[] q, int queueLength) {
+                return forwardIterateHelper(queueHead, queueLength);
+            }
+
+            /*
+             * Already know the first element has been used and is no longer needed
+             */
+            protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
+                    int[] queueOfVectors, int queueLength, int queueHead) {
+                int emptySlot = queueHead;
+                int checkingSlot = reverseIterate(emptySlot, queueOfOffsets, queueLength);
+                // System.err.println("Starting at slot "+queueHead);
+
+                // System.err.println("Checking "+newIndex+" against "+queueOfOffsets[checkingSlot]+" at slot "+checkingSlot);
+                while (queueOfOffsets[checkingSlot] > newIndex) {
+                    queueOfOffsets[emptySlot] = queueOfOffsets[checkingSlot];
+                    queueOfVectors[emptySlot] = queueOfVectors[checkingSlot];
+                    emptySlot = checkingSlot;
+                    checkingSlot = reverseIterate(checkingSlot, queueOfOffsets, queueLength);
+                    // System.err.println("Checking "+newIndex+" against "+queueOfOffsets[checkingSlot]+" at slot "+checkingSlot);
+                }
+
+                queueOfOffsets[emptySlot] = newIndex;
+                queueOfVectors[emptySlot] = newVector;
+            }
+
+            class MutableDouble {
+                private double val;
+                public MutableDouble(double v) { this.val = v; }
+                public double get() { return this.val; }
+                public void incr(double i) { this.val = this.val + i; }
+            }
+
+            /*
+             * This reducer first counts the number of unique indices present
+             * in the input vectors, allocates sufficiently large output buffers
+             * to store the final merge of all input vectors, and then iterates
+             * through the input vectors in parallel, merging them into the final
+             * output in order to maintain total ordering
+             */
+            protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
+                /*
+                HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
+
+                for (int i = 0; i < valIter.nValues(); i++) {
+                    valIter.seekTo(i);
+                    int[] indices = valIter.getValIndices();
+                    double[] vals = valIter.getValVals();
+                    int length = valIter.currentVectorLength();
+                    for (int j = 0; j < length; j++) {
+                        if (merged.containsKey(indices[j])) {
+                            merged.get(indices[j]).incr(vals[j]);
+                        } else {
+                            merged.put(indices[j], new MutableDouble(vals[j]));
+                        }
+                    }
+                }
+                
+                List<Integer> indices = new ArrayList<Integer>(merged.size());
+                Collections.sort(indices);
+                int[] outputIndices = allocInt(merged.size());
+                double[] outputVals = allocDouble(merged.size());
+                for (int i = 0; i < indices.size(); i++) {
+                    outputIndices[i] = indices.get(i);
+                    outputVals[i] = merged.get(outputIndices[i]).get();
+                }
+                write(key, outputIndices, outputVals, merged.size());
+                */
+                // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
+                long initStart = System.currentTimeMillis();
+                int totalElements = 0;
+                for (int i = 0; i < valIter.nValues(); i++) {
+                    totalElements += valIter.vectorLength(i);
+                }
+                // System.err.println("DIAGNOSTICS: totalElements="+totalElements);
+
+                int[] outputIndices = allocInt(totalElements);
+                double[] outputVals = allocDouble(totalElements);
+                // Offset into outputIndices for each vector
+                int[] vectorIndices = allocInt(valIter.nValues());
+                int[] queueOfOffsets = allocInt(valIter.nValues());
+                int[] queueOfVectors = allocInt(valIter.nValues());
+
+                for(int i = 0; i < valIter.nValues(); i++) {
+                    valIter.seekTo(i);
+                    vectorIndices[i] = 0;
+                    queueOfOffsets[i] = valIter.getValIndices()[0];
+                    queueOfVectors[i] = i;
+                }
+
+                quicksort(queueOfOffsets, queueOfVectors, 0, valIter.nValues()-1);
+                // System.err.println("After quicksort: ");
+                // for (int i = 0; i < valIter.nValues(); i++) {
+                //     System.err.print(queueOfOffsets[i]+" ");
                 // }
+                // System.err.println();
+                long initStop = System.currentTimeMillis();
 
-                int minVector = queueOfVectors[0];
-                valIter.seekTo(minVector);
-                int newIndex = ++vectorIndices[minVector];
-                int minIndex = valIter.getValIndices()[newIndex-1];
-                double minValue = valIter.getValVals()[newIndex-1];
-                if (newIndex < valIter.currentVectorLength()) {
-                    insert(valIter.getValIndices()[newIndex], minVector, queueOfOffsets, queueOfVectors, valIter.nValues());
-                } else {
-                    insert(Integer.MAX_VALUE, minVector, queueOfOffsets, queueOfVectors, valIter.nValues());
+                int queueHead = 0;
+
+                int currentCount = 0;
+                int nProcessed = 0;
+                int nOutput = 0;
+                int queueLength = valIter.nValues();
+
+                // long mainStart = System.currentTimeMillis();
+                while (nProcessed < totalElements) {
+                    // if ((nProcessed+1) % 1000 == 0) {
+                    //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
+                    // }
+
+                    int minVector = queueOfVectors[queueHead];
+                    boolean dontIncr = false;
+
+                    valIter.seekTo(minVector);
+                    int newIndex = ++vectorIndices[minVector];
+                    int minIndex = valIter.getValIndices()[newIndex-1];
+                    double minValue = valIter.getValVals()[newIndex-1];
+
+                    if (newIndex < valIter.currentVectorLength()) {
+                        int tmp = valIter.getValIndices()[newIndex];
+                        if (tmp <= queueOfOffsets[forwardIterate(queueHead, queueOfOffsets, queueLength)]) {
+                            queueOfOffsets[queueHead] = tmp;
+                            queueOfVectors[queueHead] = minVector;
+                            // because we're going to advance it below
+                            dontIncr = true;
+                        } else {
+                            insert(tmp, minVector,
+                                    queueOfOffsets, queueOfVectors,
+                                    queueLength, queueHead);
+                        }
+                    } else {
+                        for (int i = queueHead + 1; i < queueLength; i++) {
+                            queueOfOffsets[i-1] = queueOfOffsets[i];
+                            queueOfVectors[i-1] = queueOfVectors[i];
+                        }
+                        queueLength--;
+                    }
+                    nProcessed++;
+
+                    if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
+                        outputVals[nOutput-1] += minValue;
+                    } else {
+                        if (nOutput > 0) outputVals[nOutput-1] /= (double)currentCount;
+                        outputIndices[nOutput] = minIndex;
+                        outputVals[nOutput] = minValue;
+                        nOutput++;
+                        currentCount = 0;
+                    }
+
+                    currentCount++;
+                    if (!dontIncr) {
+                        queueHead = forwardIterate(queueHead, queueOfOffsets, queueLength);
+                    }
                 }
-                nProcessed++;
-
-                if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
-                    outputVals[nOutput-1] += minValue;
-                } else {
-                    if (nOutput > 0) outputVals[nOutput-1] /= (double)currentCount;
-                    outputIndices[nOutput] = minIndex;
-                    outputVals[nOutput] = minValue;
-                    nOutput++;
-                    currentCount = 0;
-                }
-
-                currentCount++;
+                long runStop = System.currentTimeMillis();
+                // System.err.println("Reducer init time: "+(initStop-initStart)+" ms, run time "+(runStop-initStop)+" ms");
+                // long mainStop = System.currentTimeMillis();
+                // System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
+                outputVals[nOutput-1] /= (double)currentCount;
+                // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
+                write(key, outputIndices, outputVals, nOutput);
+                // System.err.println("DIAGNOSTICS: Done!");
             }
-            // long mainStop = System.currentTimeMillis();
-            // System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
-            outputVals[nOutput-1] /= (double)currentCount;
-            System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
-            write(key, outputIndices, outputVals, nOutput);
-            System.err.println("DIAGNOSTICS: Done!");
-        }
 
-        public int getOutputPairsPerInput() {
-            return 1;
+            public int getOutputPairsPerInput() {
+                return 1;
+            }
+            public void deviceStrength(DeviceStrength str) {
+                str.add(Device.TYPE.JAVA, 10);
+            }
+            public Device.TYPE[] validDevices() {
+                return new Device.TYPE[] { Device.TYPE.JAVA };
+            }
         }
-        public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
-        }
-        public Device.TYPE[] validDevices() {
-            return new Device.TYPE[] { Device.TYPE.JAVA };
-        }
-    }
 
     public static class MahoutKMeansMapper
             extends IntSvecIntSvecHadoopCLMapperKernel {
@@ -246,7 +355,6 @@ public class MahoutKMeans {
 
         protected void map(int key, int[] indices, double[] vals, int len) {
 
-            // TODO stride allocations?
             int[] outputIndices = allocInt(len);
             double[] outputVals = allocDouble(len);
 
@@ -313,7 +421,7 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.pruned128.512clusters");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
        SparseVectorWritable tmpVal = new SparseVectorWritable();

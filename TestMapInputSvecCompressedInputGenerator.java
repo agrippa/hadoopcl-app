@@ -22,8 +22,8 @@ public class TestMapInputSvecCompressedInputGenerator extends CompressedInputGen
     }
 
     public void writeNextKeyValue(SequenceFile.Writer writer, int globalIndex, int globalTotal) throws IOException {
-        int[] newIndices = {0, 1, 2};
-        double[] newVals = {globalIndex+3.0, globalIndex+4.0, globalIndex+5.0};
+        int[] newIndices = {globalIndex * 3, globalIndex * 3 + 1, globalIndex * 3 + 2};
+        double[] newVals = {globalIndex+0.0, globalIndex+1.0, globalIndex+2.0};
         writer.append(new IntWritable(globalIndex), 
                 new SparseVectorWritable(newIndices, newVals));
     }

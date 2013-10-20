@@ -1,5 +1,18 @@
 package checks;
 
+import java.io.IOException;
+import common.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
+import org.apache.hadoop.io.*;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.commons.io.FileUtils;
+import java.util.Arrays;
+
+
 public class InputsSortedChecker {
     public static void main(String[] args) {
         if (args.length != 1) {
@@ -21,7 +34,7 @@ public class InputsSortedChecker {
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new CheckerRunner();
         }
-        ParallelFileIterator executor = new ParallelFileIterator(new File(intput),
+        ParallelFileIterator executor = new ParallelFileIterator(new File(input),
                 conf, fs, org.apache.hadoop.io.IntWritable.class,
                 org.apache.hadoop.io.SparseVectorWritable.class);
         executor.run(runners);
@@ -61,7 +74,7 @@ public class InputsSortedChecker {
                             sb.append(" ");
                         }
                         this.print("Unsorted vector at offset "+count+
-                                " in file "+currentFile.getAbsolutePath(): "+
+                                " in file "+currentFile.getAbsolutePath()+": "+
                                 sb.toString());
                     }
                     count++;

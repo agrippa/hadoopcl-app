@@ -30,6 +30,18 @@ public class TestMapOutputSvec {
 
     public static class TestMapper extends IntSvecIntSvecHadoopCLMapperKernel {
         protected void map(int key, int[] indices, double[] vals, int len) {
+            int[] outputIndices = allocInt(len);
+            double[] outputVals = allocDouble(len);
+            // for (int i =0 ; i < len; i++) {
+            //     outputIndices[i] = indices[i];
+            //     outputVals[i] = vals[i];
+            // }
+            for (int i = 0; i < len; i++) {
+                outputIndices[i] = indices[i];
+                outputVals[i] = 5.0 + (double)i;
+            }
+            write(key, outputIndices, outputVals, len);
+            /*
             int[] outputIndices = allocInt(6);
             double[] outputVals = allocDouble(6);
             outputIndices[0] = key+0;
@@ -45,6 +57,7 @@ public class TestMapOutputSvec {
             outputVals[0] = 5.0;
             outputVals[0] = 6.0;
             write(key, outputIndices, outputVals, 6);
+            */
         }
         public int getOutputPairsPerInput() {
             return 1;
