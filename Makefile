@@ -18,6 +18,7 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
+	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -35,6 +36,7 @@ all: SetupInputCompression.class
 	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
 	jar cvf TestJustReduceOutputSvec.jar -C testjustreduceoutputsvecclasses/ . SetupInputCompression.class
 	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
+	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
@@ -91,7 +93,7 @@ ivec-map-input-generate:
 svec-just-reduce-output-generate:
 	java ${RUN_FLAGS} TestJustReduceOutputSvecInputGenerator ${HADOOP_INPUT_DIR}/svec-just-reduce-output.input 10 1000
 random-svec-generate:
-	java ${RUN_FLAGS} GenerateRandomSvec ${HADOOP_INPUT_DIR}/random-svec/ 10 1000
+	java ${RUN_FLAGS} GenerateRandomSvec ${HADOOP_INPUT_DIR}/random-svec/ 100 1000000
 globals-on-gpu-generate:
 	java ${RUN_FLAGS} GlobalsOnGpuGenerator ${HADOOP_INPUT_DIR}/globals-on-gpu.input/ 10 1000
 

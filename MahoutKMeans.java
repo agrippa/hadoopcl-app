@@ -136,7 +136,6 @@ public class MahoutKMeans {
              * output in order to maintain total ordering
              */
             protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
-                /*
                 HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
 
                 for (int i = 0; i < valIter.nValues(); i++) {
@@ -154,6 +153,7 @@ public class MahoutKMeans {
                 }
                 
                 List<Integer> indices = new ArrayList<Integer>(merged.size());
+                indices.addAll(merged.keySet());
                 Collections.sort(indices);
                 int[] outputIndices = allocInt(merged.size());
                 double[] outputVals = allocDouble(merged.size());
@@ -162,7 +162,8 @@ public class MahoutKMeans {
                     outputVals[i] = merged.get(outputIndices[i]).get();
                 }
                 write(key, outputIndices, outputVals, merged.size());
-                */
+
+                /*
                 // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
                 long initStart = System.currentTimeMillis();
                 int totalElements = 0;
@@ -257,7 +258,7 @@ public class MahoutKMeans {
                 outputVals[nOutput-1] /= (double)currentCount;
                 // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
                 write(key, outputIndices, outputVals, nOutput);
-                // System.err.println("DIAGNOSTICS: Done!");
+                */
             }
 
             public int getOutputPairsPerInput() {

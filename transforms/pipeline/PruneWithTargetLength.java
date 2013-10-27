@@ -290,23 +290,9 @@ public class PruneWithTargetLength {
             this.targetLength = targetLength;
         }
 
-        private int getNewVectorSize(final org.apache.mahout.math.Vector vec) {
-            if (vec.getNumNonZeroElements() < this.targetLength) {
-                return vec.getNumNonZeroElements();
-            } else {
-                return this.targetLength;
-            }
-        }
-
         @Override
         public void run() {
             int i = start;
-            // while (i < end) {
-            //     File f = files.get(i);
-            //     if (!f.exists()) break;
-            //     i++;
-            // }
-            if (i != start) i--;
 
             System.out.println("Thread "+tid+" going from "+i+" to "+end);
 
@@ -335,8 +321,9 @@ public class PruneWithTargetLength {
                 try {
                     while (reader.next(key, val)) {
                         final org.apache.mahout.math.Vector originalVec = val.get();
-                        int length = getNewVectorSize(originalVec);
-                        if (length == this.targetLength) {
+                        if (originalVec.getNumNonZeroElements() <= this.targetLength) {
+                            writer.append(key, val);
+                        } else {
                             final org.apache.mahout.math.Vector newVec =
                                 new RandomAccessSparseVector(originalVec.size(), 
                                         this.targetLength);
@@ -353,8 +340,6 @@ public class PruneWithTargetLength {
                             }
                             outputVal.set(newVec);
                             writer.append(key, outputVal);
-                        } else {
-                            writer.append(key, val);
                         }
                     }
 
