@@ -20,18 +20,6 @@ import java.util.concurrent.atomic.*;
  */
 
 public class TransformMahoutInput {
-    private static List<File> getInputFiles(String folderName) {
-        List<File> inputFiles = new ArrayList<File>();
-        File folder = new File(folderName);
-
-        File[] containedFiles = folder.listFiles();
-        for(File f : containedFiles) {
-            if(f.getName().indexOf("part-r-") == 0) {
-                inputFiles.add(f);
-            }
-        }
-        return inputFiles;
-    }
 
     public static void main(String[] args) {
         if(args.length != 2) {
@@ -51,8 +39,9 @@ public class TransformMahoutInput {
         }
 
         AtomicInteger fileId = new AtomicInteger(0);
-        int nThreads = 12;
-        TransformRunner[] runners = new TransformRunner[nThreads];
+        final int nThreads = 12;
+        final int nChunks = nThreads * 3;
+        TransformRunner[] runners = new TransformRunner[nChunks];
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new TransformRunner(hadoopclDirName, fileId);
         }
@@ -68,7 +57,7 @@ public class TransformMahoutInput {
                 fileMappingPath, org.apache.hadoop.io.IntWritable.class,
                 org.apache.hadoop.io.Text.class);
 
-            for(int t = 0; t < nThreads; t++) {
+            for(int t = 0; t < nChunks; t++) {
                 HashMap<Integer, String> mapping = runners[t].getFileMapping();
                 for (Map.Entry<Integer, String> pair : mapping.entrySet()) {
                     Integer id = pair.getKey();

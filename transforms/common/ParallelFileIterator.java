@@ -17,7 +17,8 @@ public class ParallelFileIterator {
     private final int nInputFiles;
     private final Configuration conf;
     private final FileSystem fs;
-    
+    public static final int nCores = Runtime.getRuntime().availableProcessors();
+
     public ParallelFileIterator(List<File> inputFiles, Configuration conf,
             FileSystem fs) {
         this.inputFiles = inputFiles;
@@ -31,13 +32,15 @@ public class ParallelFileIterator {
         this(Arrays.asList(inputFiles), conf, fs);
     }
 
+    public List<File> inputFiles() { return this.inputFiles; }
+
     public ParallelFileIterator(File inputFolder, Configuration conf,
             FileSystem fs, Class keyClass, Class valClass) {
         this.conf = conf;
         this.fs = fs;
 
         File[] files = inputFolder.listFiles();
-        FilterNonSeqFiles[] runners = new FilterNonSeqFiles[12];
+        FilterNonSeqFiles[] runners = new FilterNonSeqFiles[nCores * 3];
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new FilterNonSeqFiles(keyClass, valClass);
         }
@@ -54,7 +57,7 @@ public class ParallelFileIterator {
     }
 
     public void run(ParallelFileRunner[] runners) {
-        ExecutorService executor = Executors.newFixedThreadPool(12);
+        ExecutorService executor = Executors.newFixedThreadPool(nCores);
 
         final int nChunks = runners.length;
         final int chunkSize = (nInputFiles + nChunks - 1) / nChunks;

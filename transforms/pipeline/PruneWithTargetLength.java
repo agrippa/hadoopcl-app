@@ -55,7 +55,7 @@ public class PruneWithTargetLength {
         }
 
         final TreeSet<TokenCount> sortedTokens = new TreeSet<TokenCount>();
-        final int nThreads = 12;
+        final int nThreads = ParallelFileIterator.nCores;
         final int nChunks = nThreads * 3;
 
         // Generate partial dumps of token counts

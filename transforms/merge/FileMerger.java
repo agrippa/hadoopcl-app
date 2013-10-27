@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Arrays;
+import common.*;
 
 /**
  * This class merges sequence files together to produce better chunking of Hadoop
@@ -76,44 +77,7 @@ public abstract class FileMerger<KeyType extends Writable, ValueType extends Wri
         return accumCount;
     }
 
-    /**
-     * Filters out any non-sequence files in the input directory. These could be
-     * some user files, Hadoop CRC files, etc. It does this by trying to open each
-     * file as a sequence file and read a single input pair from it of the correct
-     * type.
-     */
-    protected List<File> filterOutNonSeqFiles(File[] inputs) {
-
-        List<File> accumFiltered = new ArrayList<File>(inputs.length);
-        final int nthreads = 12;
-        Thread[] threads = new Thread[nthreads];
-        FilterNonSeqFilesRunner[] runners = new FilterNonSeqFilesRunner[nthreads];
-        for (int i = 0; i < nthreads; i++) {
-            runners[i] = new FilterNonSeqFilesRunner(inputs, i, nthreads,
-                    this);
-            threads[i] = new Thread(runners[i]);
-            threads[i].start();
-        }
-        try {
-            for (int i = 0; i < nthreads; i++) {
-                threads[i].join();
-                accumFiltered.addAll(runners[i].getFiltered());
-            }
-        } catch(InterruptedException ie) {
-            throw new RuntimeException(ie);
-        }
-        return accumFiltered;
-    }
-
     protected void doMerge() {
-        File input = new File(this.inputFolder);
-        File[] allInputFiles = input.listFiles();
-        List<File> seqFiles = filterOutNonSeqFiles(allInputFiles);
-        long totalPairs = countPairs(seqFiles);
-        long elementsPerOutputFile = (totalPairs + this.nOutputFiles - 1) / 
-            this.nOutputFiles;
-        System.out.println(totalPairs + " pairs total, " + elementsPerOutputFile+
-                " per output file");
 
         Configuration conf = new Configuration();
         FileSystem fs;
@@ -122,12 +86,22 @@ public abstract class FileMerger<KeyType extends Writable, ValueType extends Wri
         } catch(IOException io) {
             throw new RuntimeException(io);
         }
+        final KeyType key = instantiateKey();
+        final ValueType val = instantiateValue();
+
+        ParallelFileIterator executor = new ParallelFileIterator(
+                new File(this.inputFolder),
+                conf, fs, key.getClass(), val.getClass());
+        List<File> seqFiles = executor.inputFiles();
+
+        long totalPairs = countPairs(seqFiles);
+        long elementsPerOutputFile = (totalPairs + this.nOutputFiles - 1) / 
+            this.nOutputFiles;
+        System.out.println(totalPairs + " pairs total, " + elementsPerOutputFile+
+                " per output file");
 
         long currentOutputFileIndex = 0;
         long nWrittenToCurrentFile = 0;
-
-        final KeyType key = instantiateKey();
-        final ValueType val = instantiateValue();
 
         SequenceFile.Writer writer;
         try {
