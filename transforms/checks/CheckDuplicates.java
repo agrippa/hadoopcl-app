@@ -30,8 +30,8 @@ public class CheckDuplicates {
             throw new RuntimeException(io);
         }
 
-        int nThreads = 12;
-        DuplicateRunner[] runners = new DuplicateRunner[nThreads];
+        int nChunks = ParallelFileIterator.nCores * 3;
+        DuplicateRunner[] runners = new DuplicateRunner[nChunks];
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new DuplicateRunner();
         }
@@ -110,6 +110,8 @@ public class CheckDuplicates {
 
             this.print("DONE");
         }
+
+        protected void finish() { }
     }
 
     static class MutableInteger {

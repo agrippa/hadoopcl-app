@@ -25,6 +25,8 @@ select-random-seeds-wiki:
 ###########################################################
 ################### Checkers ##############################
 ###########################################################
+all-checks: sorted-checker duplicate-checker quick-duplicate-checker
+
 sorted-checker:
 	javac -cp ${CLASSPATH} checks/InputsSortedChecker.java
 check-sorted:
@@ -144,6 +146,8 @@ wiki-length-merge:
 ###########################################################
 ################### Utilities #############################
 ###########################################################
+all-utilities: parallel-file-iterator take-partial-count mutable-long token-count
+
 parallel-file-iterator: common/ParallelFileIterator.java
 	javac -cp ${CLASSPATH} common/ParallelFileIterator.java
 take-partial-count: pipeline/TakePartialCounts.java
@@ -152,6 +156,7 @@ mutable-long: common/MutableLong.java
 	javac -cp ${CLASSPATH} common/MutableLong.java
 token-count: common/TokenCount.java
 	javac -cp ${CLASSPATH} common/TokenCount.java
+
 clean:
 	rm *.class
 	rm merge/*.class

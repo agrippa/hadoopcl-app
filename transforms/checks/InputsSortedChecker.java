@@ -29,8 +29,8 @@ public class InputsSortedChecker {
             throw new RuntimeException(io);
         }
 
-        int nThreads = 12;
-        CheckerRunner[] runners = new CheckerRunner[nThreads];
+        int nChunks = ParallelFileIterator.nCores * 3;
+        CheckerRunner[] runners = new CheckerRunner[nChunks];
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new CheckerRunner();
         }
@@ -86,5 +86,7 @@ public class InputsSortedChecker {
                 throw new RuntimeException(io);
             }
         }
+
+        protected void finish() { }
     }
 }
