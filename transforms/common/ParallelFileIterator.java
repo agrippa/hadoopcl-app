@@ -1,5 +1,7 @@
 package common;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
@@ -52,23 +54,24 @@ public class ParallelFileIterator {
     }
 
     public void run(ParallelFileRunner[] runners) {
-        final int nThreads = runners.length;
-        final Thread[] threads = new Thread[nThreads];
-        final int chunkSize = (nInputFiles + nThreads - 1) / nThreads;
+        ExecutorService executor = Executors.newFixedThreadPool(12);
+
+        final int nChunks = runners.length;
+        final int chunkSize = (nInputFiles + nChunks - 1) / nChunks;
 
         try {
-            for (int t = 0; t < nThreads; t++) {
+            for (int t = 0; t < nChunks; t++) {
                 int start = chunkSize * t;
                 int end = start + chunkSize;
                 if (end > this.nInputFiles) end = this.nInputFiles;
 
-                runners[t].init(t, nThreads, start, end, this.inputFiles,
+                runners[t].init(t, nChunks, start, end, this.inputFiles,
                         this.conf, this.fs);
-                threads[t] = new Thread(runners[t]);
-                threads[t].start();
-            } 
-            for (int t = 0; t < nThreads; t++) {
-                threads[t].join();
+                executor.execute(runners[t]);
+            }
+            executor.shutdown();
+            while (!executor.isTerminated()) {
+                Thread.sleep(1000);
             }
         } catch(InterruptedException ie) {
             throw new RuntimeException(ie);
@@ -80,12 +83,12 @@ public class ParallelFileIterator {
         protected FileSystem fs;
         protected List<File> files;
         protected int start, end, length;
-        private int tid, nThreads;
+        protected int tid, nChunks;
         private int iter;
-        public void init(int tid, int nThreads,
+        public void init(int tid, int nChunks,
                 int start, int end, List<File> files,
                 Configuration conf, FileSystem fs) {
-            this.tid = tid; this.nThreads = nThreads;
+            this.tid = tid; this.nChunks = nChunks;
             this.start = start; this.end = end; this.length = end - start;
             this.files = files;
             this.conf = conf; this.fs = fs;
@@ -98,7 +101,7 @@ public class ParallelFileIterator {
         }
 
         protected void print(String s) {
-            System.out.println("T"+(this.tid+1)+"/"+this.nThreads+"\t("+
+            System.out.println("T"+(this.tid+1)+"/"+this.nChunks+"\t("+
                 (this.iter-this.start+1)+"/"+this.length+" files)\t| "+s);
         }
 
@@ -107,9 +110,11 @@ public class ParallelFileIterator {
             for (this.iter = start; this.iter < end; this.iter++) {
                 this.callback(this.files.get(this.iter));
             }
+            this.finish();
         }
 
         protected abstract void callback(File f);
+        protected abstract void finish();
     }
 
     public static class FilterNonSeqFiles extends ParallelFileRunner {
@@ -142,6 +147,8 @@ public class ParallelFileIterator {
             }
             this.print("filtering", 40);
         }
+
+        public void finish() { }
 
         public List<File> getFiltered() {
             return this.filtered;

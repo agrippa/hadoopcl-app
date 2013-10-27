@@ -27,9 +27,11 @@ sleep 2
 ./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 60
 
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged.${PRUNING}/ input
+# ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged.${PRUNING}/ input
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-${PRUNING}-merged/ input
 ${HADOOP_HOME}/bin/hadoop fs -mkdir clusters
-${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/cluster-randomSeed.pruned${PRUNING}.${CLUSTERS}clusters clusters/
+# ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/cluster-randomSeed.pruned${PRUNING}.${CLUSTERS}clusters clusters/
+${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed/cluster-randomSeed.length${PRUNING}.${CLUSTERS}clusters clusters/
 
 sleep 30
 # time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -k 20 -ow

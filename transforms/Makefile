@@ -19,7 +19,7 @@ filter-zero-length-wiki:
 select-random-seeds:
 	javac -cp ${CLASSPATH} pipeline/SelectRandomSeeds.java
 select-random-seeds-wiki:
-	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input.1024/ /scratch/jmg3/wiki-sparse/random-seed/ 64
+	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length.32/ /scratch/jmg3/wiki-sparse/random-seed/ 512
 
 
 ###########################################################
@@ -146,7 +146,12 @@ wiki-length-merge:
 ###########################################################
 parallel-file-iterator: common/ParallelFileIterator.java
 	javac -cp ${CLASSPATH} common/ParallelFileIterator.java
-
+take-partial-count: pipeline/TakePartialCounts.java
+	javac -cp ${CLASSPATH} pipeline/TakePartialCounts.java
+mutable-long: common/MutableLong.java
+	javac -cp ${CLASSPATH} common/MutableLong.java
+token-count: common/TokenCount.java
+	javac -cp ${CLASSPATH} common/TokenCount.java
 clean:
 	rm *.class
 	rm merge/*.class
