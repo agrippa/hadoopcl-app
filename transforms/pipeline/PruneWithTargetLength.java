@@ -104,68 +104,6 @@ public class PruneWithTargetLength {
         executor.run(runners);
     }
 
-    public static class CountTokens extends
-            ParallelFileIterator.ParallelFileRunner {
-        final private HashMap<Integer, MutableLong> tokenCounts =
-            new HashMap<Integer, MutableLong>();
-        final private String countsFolder;
-
-        public CountTokens(String countsFolder) { this.countsFolder = countsFolder; }
-
-        protected void callback(File currentFile) {
-            final Text key = new Text();
-            final org.apache.mahout.math.VectorWritable val =
-                new org.apache.mahout.math.VectorWritable();
-
-            try {
-                final SequenceFile.Reader reader =
-                    new SequenceFile.Reader(fs, new Path(currentFile.getAbsolutePath()), conf);
-                while (reader.next(key, val)) {
-                    final org.apache.mahout.math.Vector vec = val.get();
-                    Iterator<org.apache.mahout.math.Vector.Element> iter = 
-                        vec.nonZeroes().iterator();
-                    while(iter.hasNext()) {
-                        org.apache.mahout.math.Vector.Element ele = iter.next();
-                        if (!this.tokenCounts.containsKey(ele.index())) {
-                            tokenCounts.put(ele.index(), new MutableLong());
-                        }
-                        tokenCounts.get(ele.index()).incr();
-                    }
-                }
-                this.print("Done");
-
-                reader.close();
-            } catch(IOException io) {
-                throw new RuntimeException(io);
-            }
-        }
-
-        protected void finish() {
-            final IntWritable outputKey = new IntWritable();
-            final LongWritable outputVal = new LongWritable();
-
-            this.print("Dumping partial results");
-
-            Iterator<Map.Entry<Integer, MutableLong>> it = this.tokenCounts.entrySet().iterator();
-            try {
-                SequenceFile.Writer writer = SequenceFile.createWriter(this.fs, this.conf,
-                        new Path(this.countsFolder+"/counts-"+this.tid),
-                        org.apache.hadoop.io.IntWritable.class,
-                        org.apache.hadoop.io.LongWritable.class);
-                while (it.hasNext()) {
-                    Map.Entry<Integer, MutableLong> pair = it.next();
-                    outputKey.set(pair.getKey().intValue());
-                    outputVal.set(pair.getValue().get());
-                    writer.append(outputKey, outputVal);
-                }
-                writer.close();
-            } catch(IOException io) {
-                throw new RuntimeException(io);
-            }
-            this.print("Done dumping partials");
-        }
-    }
-
     public static class PruneVectors extends
             ParallelFileIterator.ParallelFileRunner {
         private final TreeSet<TokenCount> sortedTokens;
