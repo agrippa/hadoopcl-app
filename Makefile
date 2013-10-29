@@ -2,6 +2,7 @@ CLASSPATH = /home/jmg3/commons-io-2.4-src/target/commons-io-2.2-SNAPSHOT.jar:${H
 RUN_FLAGS=-Djava.library.path=${HADOOP_HOME}/lib/native/Linux-amd64-64:${HADOOP_HOME}/build/native/Linux-amd64-64/lib -classpath ${CLASSPATH}:${HADOOP_HOME}/lib/commons-logging-1.1.1.jar:${HADOOP_HOME}/lib/commons-logging-api-1.0.4.jar:${HADOOP_HOME}/lib/commons-configuration-1.6.jar:${HADOOP_HOME}/lib/commons-lang-2.4.jar:.
 
 all: SetupInputCompression.class
+	javac -g:vars -classpath ${CLASSPATH} -d pairsclasses/ Pairs.java
 	javac -g:vars -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
 	javac -g:vars -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
 	javac -g:vars -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
@@ -16,6 +17,7 @@ all: SetupInputCompression.class
 	javac -g:vars -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
 	javac -g:vars -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	javac -g:vars -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
+	jar cvf Pairs.jar -C pairsclasses/ .
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -43,6 +45,7 @@ output-readers:
 	cd readers && javac -cp ${CLASSPATH} SvecMapInputReader.java
 	cd readers && javac -cp ${CLASSPATH} SvecReduceOutputReader.java
 	cd readers && javac -cp ${CLASSPATH} HelloWorldReader.java
+	cd readers && javac -cp ${CLASSPATH} PairsReader.java
 
 transforms: transform/TransformMahoutInput.java
 	cd transform && javac -cp ${CLASSPATH} TransformMahoutInput.java
@@ -55,6 +58,7 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} KMeansCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} TestMapInputSvecCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} HelloWorldCompressedInputGenerator.java
+	javac -cp ${CLASSPATH} PairsCompressedInputGenerator.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
