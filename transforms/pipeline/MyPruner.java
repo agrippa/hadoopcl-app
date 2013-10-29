@@ -57,8 +57,8 @@ public class MyPruner {
 
             SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf,
                     new Path(countsFolder+"/all-counts"),
-                    org.apache.hadoop.io.IntWritable.class,
-                    org.apache.hadoop.io.LongWritable.class);
+                    org.apache.hadoop.io.Text.class,
+                    org.apache.mahout.math.VectorWritable.class);
             final Iterator<Map.Entry<Integer, MutableLong>> it =
                 accum.entrySet().iterator();
             final IntWritable outputKey = new IntWritable();
@@ -111,7 +111,7 @@ public class MyPruner {
 
         final TreeSet<TokenCount> sortedTokens = new TreeSet<TokenCount>();
         final int nThreads = ParallelFileIterator.nCores;
-        final int nChunks = nThreads * 3;
+        final int nChunks = nThreads;
 
         // Generate partial dumps of token counts
         if (!new File(countsFolder+"/counts-0").exists() &&
@@ -162,15 +162,16 @@ public class MyPruner {
             if (index >= nToUse) break;
         }
 
-        System.out.println("Starting pruning");
+        System.out.println("Starting pruning of "+existing);
+        System.out.println("Outputting to "+newDir);
         PruneVectors[] runners = new PruneVectors[nChunks];
         for (int t = 0; t < runners.length; t++) {
             runners[t] = new PruneVectors(tokensUsed, newDir);
         }
 
         ParallelFileIterator executor = new ParallelFileIterator(new File(existing),
-            conf, fs, org.apache.hadoop.io.IntWritable.class,
-            org.apache.hadoop.io.SparseVectorWritable.class);
+            conf, fs, org.apache.hadoop.io.Text.class,
+            org.apache.mahout.math.VectorWritable.class);
         executor.run(runners);
     }
 

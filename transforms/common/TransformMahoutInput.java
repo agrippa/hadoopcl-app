@@ -145,6 +145,8 @@ public class TransformMahoutInput {
             this.print("Done");
         }
 
+        protected void finish() { }
+
         public static class IntDoublePair implements Comparable<IntDoublePair> {
             private final int i;
             private final double d;

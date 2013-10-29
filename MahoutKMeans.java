@@ -422,7 +422,8 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.pruned128.512clusters");
+       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.pruned128.512clusters");
+       Path path = new Path("/scratch/jmg3/asf-sparse/random-seed/sparse-randomSeed");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
        SparseVectorWritable tmpVal = new SparseVectorWritable();

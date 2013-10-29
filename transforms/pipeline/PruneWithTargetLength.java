@@ -56,7 +56,7 @@ public class PruneWithTargetLength {
 
         final TreeSet<TokenCount> sortedTokens = new TreeSet<TokenCount>();
         final int nThreads = ParallelFileIterator.nCores;
-        final int nChunks = nThreads * 3;
+        final int nChunks = nThreads;
 
         // Generate partial dumps of token counts
         if (!new File(countsFolder+"/counts-0").exists() &&
@@ -99,8 +99,8 @@ public class PruneWithTargetLength {
         }
 
         ParallelFileIterator executor = new ParallelFileIterator(new File(existing),
-            conf, fs, org.apache.hadoop.io.IntWritable.class,
-            org.apache.hadoop.io.SparseVectorWritable.class);
+            conf, fs, org.apache.hadoop.io.Text.class,
+            org.apache.mahout.math.VectorWritable.class);
         executor.run(runners);
     }
 

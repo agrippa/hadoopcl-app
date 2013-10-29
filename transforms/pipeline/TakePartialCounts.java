@@ -40,8 +40,8 @@ public class TakePartialCounts {
             runners[t] = new CountTokens(countsFolder);
         }
         ParallelFileIterator executor = new ParallelFileIterator(new File(existing),
-            conf, fs, org.apache.hadoop.io.IntWritable.class,
-            org.apache.hadoop.io.SparseVectorWritable.class);
+            conf, fs, org.apache.hadoop.io.Text.class,
+            org.apache.mahout.math.VectorWritable.class);
         executor.run(runners);
 
         System.out.println("Done dumping partial token counts");

@@ -29,14 +29,16 @@ public class SelectRandomSeeds {
         int length = sparse.size();
 
         /*
-         * This is the cardinality for the wiki data set.
          * If this isn't the correct cardinality for your data set, Mahout 
          * will throw exceptions which actually tell you the correct cardinality.
          * So just run a simple Mahout test on some clusters generated with this
          * script to generate the error messages and get the correct value to
          * insert here
+         *
+         * wiki = 149053452
+         * asf = 124993853
          */
-        RandomAccessSparseVector center = new RandomAccessSparseVector(149053452);
+        RandomAccessSparseVector center = new RandomAccessSparseVector(124993853);
         for (int i = 0; i < length; i++) {
             center.setQuick(indices[i], vals[i]);
         }
@@ -157,6 +159,8 @@ public class SelectRandomSeeds {
                 throw new RuntimeException(io);
             }
         }
+
+        protected void finish() { }
     }
 
     public static class FindRunner extends
@@ -199,5 +203,7 @@ public class SelectRandomSeeds {
                 throw new RuntimeException(io);
             }
         }
+
+        protected void finish() { }
     }
 }

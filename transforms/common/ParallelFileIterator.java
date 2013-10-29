@@ -57,8 +57,9 @@ public class ParallelFileIterator {
     }
 
     public void run(ParallelFileRunner[] runners) {
-        ExecutorService executor = Executors.newFixedThreadPool(nCores);
+        // ExecutorService executor = Executors.newFixedThreadPool(nCores);
 
+        Thread[] threads = new Thread[runners.length];
         final int nChunks = runners.length;
         final int chunkSize = (nInputFiles + nChunks - 1) / nChunks;
 
@@ -70,11 +71,11 @@ public class ParallelFileIterator {
 
                 runners[t].init(t, nChunks, start, end, this.inputFiles,
                         this.conf, this.fs);
-                executor.execute(runners[t]);
+                threads[t] = new Thread(runners[t]);
+                threads[t].start();
             }
-            executor.shutdown();
-            while (!executor.isTerminated()) {
-                Thread.sleep(1000);
+            for (int t = 0; t < nChunks; t++) {
+                threads[t].join();
             }
         } catch(InterruptedException ie) {
             throw new RuntimeException(ie);

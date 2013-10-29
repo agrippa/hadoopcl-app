@@ -5,7 +5,7 @@ transform-mahout-input:
 transform-wiki:
 	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged.1024/ /scratch/jmg3/wiki-sparse/hadoopcl-input.1024/
 transform-wiki-length:
-	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-32-merged/ /scratch/jmg3/wiki-sparse/hadoopcl-input-length.32/
+	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-64-merged/ /scratch/jmg3/wiki-sparse/hadoopcl-input-length.64/
 random-seed:
 	javac -cp ${CLASSPATH} common/CreateRandomSeed.java
 # create-wiki-seed:
@@ -20,12 +20,14 @@ select-random-seeds:
 	javac -cp ${CLASSPATH} pipeline/SelectRandomSeeds.java
 select-random-seeds-wiki:
 	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length.32/ /scratch/jmg3/wiki-sparse/random-seed/ 512
+select-random-seeds-asf:
+	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/asf-sparse/hadoopcl-input.lengthpruned-32/ /scratch/jmg3/asf-sparse/random-seed/ 64
 
 
 ###########################################################
 ################### Checkers ##############################
 ###########################################################
-all-checks: sorted-checker duplicate-checker quick-duplicate-checker
+all-checks: sorted-checker duplicate-checker quick-duplicate-checker num-unique-tokens
 
 sorted-checker:
 	javac -cp ${CLASSPATH} checks/InputsSortedChecker.java
@@ -41,6 +43,11 @@ quick-duplicate-checker:
 	javac -cp ${CLASSPATH} checks/QuickCheckDuplicates.java
 quick-check-duplicates:
 	java -cp ${CLASSPATH} checks.QuickCheckDuplicates /scratch/jmg3/mahout-kmeans.input/block.none/
+
+num-unique-tokens:
+	javac -cp ${CLASSPATH} checks/NumUniqueTokens.java
+get-num-unique-tokens-asf:
+	java -cp ${CLASSPATH} checks.NumUniqueTokens /scratch/jmg3/asf-sparse/hadoopcl-input.lengthpruned-96/ true /scratch/jmg3/asf-sparse/token-counts-96
 
 ###########################################################
 ################### Mergers ###############################
@@ -130,18 +137,34 @@ asf-tfidf:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.TFPrunedtoTFIDF /scratch/jmg3/asf-sparse/tf-vectors-pruned/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tfidf-vectors/ 124993853 36909
 
 asf-myprune:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/asf-sparse/token-counts 50
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-pruned.4096/ /scratch/jmg3/asf-sparse/token-counts c 4096
 wiki-myprune:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/token-counts c 1024
 asf-prune-for-length:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned/ /scratch/jmg3/asf-sparse/token-counts 32
+	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96/ /scratch/jmg3/asf-sparse/token-counts 96
 wiki-prune-for-length:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-32/ /scratch/jmg3/wiki-sparse/token-counts 32
+	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-96/ /scratch/jmg3/wiki-sparse/token-counts 96
 
+asf-merge:
+	java merge.MergeTextVector /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96-merged/ 13 part-r-
 wiki-merge:
 	java merge.MergeTextVector /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged/ 230 part-r-
 wiki-length-merge:
-	java merge.MergeTextVector /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-32/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-32-merged/ 130 part-r-
+	java merge.MergeTextVector /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-96/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-96-merged/ 250 part-r-
+
+
+###########################################################
+################### Generator #############################
+###########################################################
+
+generate-fake:
+	javac -cp ${CLASSPATH} pipeline/GenerateFake.java
+asf-generate-fake-32:
+	java -cp ${CLASSPATH} pipeline.GenerateFake /scratch/jmg3/asf-sparse/token-counts-96 /scratch/jmg3/asf-sparse/fake-tfidf-vectors-32/ 32 10000000 200
+asf-generate-fake-64:
+	java -cp ${CLASSPATH} pipeline.GenerateFake /scratch/jmg3/asf-sparse/token-counts-96 /scratch/jmg3/asf-sparse/fake-tfidf-vectors-64/ 64 7000000 300
+asf-generate-fake-128:
+	java -cp ${CLASSPATH} pipeline.GenerateFake /scratch/jmg3/asf-sparse/token-counts-96 /scratch/jmg3/asf-sparse/fake-tfidf-vectors-128/ 128 4000000 300
 
 ###########################################################
 ################### Utilities #############################
