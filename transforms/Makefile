@@ -61,6 +61,14 @@ merge-text-vector: file-merger merge/MergeTextVector.java
 file-merger:
 	javac -cp ${CLASSPATH} merge/FileMerger.java
 
+
+###########################################################
+################### For Xiangyu ###########################
+###########################################################
+
+pairwise: pipeline/ConvertPairwiseSimilarity.java
+	javac -cp ${CLASSPATH} pipeline/ConvertPairwiseSimilarity.java
+
 ###########################################################
 ################### Mahout Pipeline++ #####################
 ###########################################################
@@ -87,6 +95,7 @@ wiki-txt-to-tokens:
 	java -cp ${CLASSPATH} pipeline.TextToTokens /scratch/jmg3/wiki-seq-merged/ /scratch/jmg3/wiki-sparse/tokenized-documents
 asf-txt-to-tokens:
 	java -cp ${CLASSPATH} pipeline.TextToTokens /scratch/jmg3/asf-seq-merged/ /scratch/jmg3/asf-sparse/tokenized-documents
+
 
 word-count: pipeline/WordCountFromTokenized.java
 	javac -cp ${CLASSPATH} pipeline/WordCountFromTokenized.java
