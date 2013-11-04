@@ -33,7 +33,12 @@ public class TestMapInputSvec {
 
     public static class TestMapper extends IntSvecIntIntHadoopCLMapperKernel {
         protected void map(int key, int[] indices, double[] vals, int len) {
-            write(key, (int)vals[1]);
+            double sum = vals[1];
+            // sum = sum + vals[1];
+            // sum = sum + vals[2];
+            write(key, (int)sum);
+            // write(key, (int)(vals[0] + vals[1] + vals[2]));
+            // write(key, (int)vals[1]);
         }
         public int getOutputPairsPerInput() {
             return 1;

@@ -1,0 +1,13 @@
+#PBS -o /home/jmg3/app/pbs/ivec-map-input_opencl_uncompressed/out
+#PBS -e /home/jmg3/app/pbs/ivec-map-input_opencl_uncompressed/err
+#PBS -M jmg3@rice.edu
+#PBS -m bae
+#PBS -l nodes=2:ppn=12
+#PBS -l walltime=3:00:00
+#PBS -q graphics
+#PBS -V
+#PBS -N ivec-map-input-opencl-uncompressed
+cd ${HADOOP_APP_DIR}
+for t in {1..1}; do
+    ./run_ivec-map-input_opencl.sh none none 1048576 24
+done

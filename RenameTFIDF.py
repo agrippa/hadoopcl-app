@@ -3,6 +3,8 @@ import sys
 from os import listdir
 from os.path import isfile, join
 
+# This seems to just copy files from the tfidf-dir to tfidf-transformed-dir
+# with a slight rename. In addition it filters out CRC files.
 
 if len(sys.argv) != 3:
     print 'usage: python RenameTFIDF.py tfidf-dir tfidf-transformed-dir'

@@ -1,8 +1,8 @@
-CLASSPATH = /home/jmg3/commons-io-2.4-src/target/commons-io-2.2-SNAPSHOT.jar:${HADOOP_HOME}/lib/commons-io-2.1.jar:${MAHOUT_HOME}/integration/target/dependency/mahout-math-0.9-SNAPSHOT.jar:${MAHOUT_HOME}/integration/target/dependency/guava-14.0.1.jar:${MAHOUT_HOME}/core/target/mahout-core-0.9-SNAPSHOT.jar:${HADOOP_HOME}/lib/commons-lang-2.4.jar:${HADOOP_HOME}/lib/commons-configuration-1.6.jar:${HADOOP_HOME}/lib/commons-logging-1.1.1.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:build/hadoop-core-1.0.4-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar::${MAHOUT_HOME}/integration/target/mahout-integration-0.9-SNAPSHOT.jar:.
+include ../Makefile.common
 
 all: ReadTextLong.class ReadTextInt.class ReadTextVector.class ReadIntCluster.class \
 		ReadIntFloat.class ReadDoubleDouble.class ReadIntInt.class ReadIntLong.class \
-		ReadIntSparse.class
+		ReadIntSparse.class ReadTextCluster.class ReadIntDouble.class
 
 ReadIntSparse.class: ReadIntSparse.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntSparse.java
@@ -22,6 +22,10 @@ ReadTextVector.class: ReadTextVector.java MyReader.class
 	javac -cp ${CLASSPATH} ReadTextVector.java
 ReadIntCluster.class: ReadIntCluster.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntCluster.java
+ReadTextCluster.class: ReadTextCluster.java MyReader.class
+	javac -cp ${CLASSPATH} ReadTextCluster.java
+ReadIntDouble.class: ReadIntDouble.java MyReader.class
+	javac -cp ${CLASSPATH} ReadIntDouble.java
 MyReader.class: MyReader.java
 	javac -cp ${CLASSPATH} MyReader.java
 

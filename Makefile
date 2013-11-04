@@ -1,5 +1,4 @@
-CLASSPATH = /home/jmg3/commons-io-2.4-src/target/commons-io-2.2-SNAPSHOT.jar:${HADOOP_HOME}/lib/commons-io-2.1.jar:${MAHOUT_HOME}/integration/target/dependency/mahout-math-0.9-SNAPSHOT.jar:${MAHOUT_HOME}/integration/target/dependency/guava-14.0.1.jar:${MAHOUT_HOME}/core/target/mahout-core-0.9-SNAPSHOT.jar:${HADOOP_HOME}/lib/commons-lang-2.4.jar:${HADOOP_HOME}/lib/commons-configuration-1.6.jar:${HADOOP_HOME}/lib/commons-logging-1.1.1.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:build/hadoop-core-1.0.4-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar::${MAHOUT_HOME}/integration/target/mahout-integration-0.9-SNAPSHOT.jar:${MAHOUT_HOME}/integration/target/dependency/lucene-core-4.3.0.jar:.
-RUN_FLAGS=-Djava.library.path=${HADOOP_HOME}/lib/native/Linux-amd64-64:${HADOOP_HOME}/build/native/Linux-amd64-64/lib -classpath ${CLASSPATH}:${HADOOP_HOME}/lib/commons-logging-1.1.1.jar:${HADOOP_HOME}/lib/commons-logging-api-1.0.4.jar:${HADOOP_HOME}/lib/commons-configuration-1.6.jar:${HADOOP_HOME}/lib/commons-lang-2.4.jar:.
+include Makefile.common
 
 all: SetupInputCompression.class
 	javac -g:vars -classpath ${CLASSPATH} -d pairsclasses/ Pairs.java
@@ -17,6 +16,10 @@ all: SetupInputCompression.class
 	javac -g:vars -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
 	javac -g:vars -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	javac -g:vars -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
+	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
+	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
+	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
+	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
 	jar cvf Pairs.jar -C pairsclasses/ .
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
@@ -32,6 +35,10 @@ all: SetupInputCompression.class
 	jar cvf TestReduceOutputSvec.jar -C testreduceoutputsvecclasses/ . SetupInputCompression.class
 	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ . SetupInputCompression.class
 	jar cvf HelloWorld.jar -C helloworldclasses/ . SetupInputCompression.class
+	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
+	jar cvf TestJustReduceOutputSvec.jar -C testjustreduceoutputsvecclasses/ . SetupInputCompression.class
+	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
+	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
@@ -47,8 +54,11 @@ output-readers:
 	cd readers && javac -cp ${CLASSPATH} HelloWorldReader.java
 	cd readers && javac -cp ${CLASSPATH} PairsReader.java
 
-transforms: transform/TransformMahoutInput.java
+transforms: transform/TransformMahoutInput.java transform/MergeIntSparseFiles.java
+	cd transform && javac -cp ${CLASSPATH} FileMerger.java
 	cd transform && javac -cp ${CLASSPATH} TransformMahoutInput.java
+	cd transform && javac -cp ${CLASSPATH} MergeIntSparseFiles.java
+	cd transform && javac -cp ${CLASSPATH} MergeTextVector.java
 
 compression-gen-build:
 	javac -cp ${CLASSPATH} CompressedInputGenerator.java
@@ -59,6 +69,10 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} TestMapInputSvecCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} HelloWorldCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} PairsCompressedInputGenerator.java
+	javac -cp ${CLASSPATH} MapInputIvecInputGenerator.java
+	javac -cp ${CLASSPATH} TestJustReduceOutputSvecInputGenerator.java
+	javac -cp ${CLASSPATH} GenerateRandomSvec.java
+	javac -cp ${CLASSPATH} GlobalsOnGpuGenerator.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
@@ -71,13 +85,22 @@ kmeans-generate:
 kmeans-dyn-generate:
 	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/kmeansdyn.input 30 4000000
 svec-map-input-generate:
-	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-input.input 10 1000000
+	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-input.input 10 1000
 svec-map-output-generate:
-	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-output.input 10 1000000
+	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-map-output.input 10 1000
 svec-reduce-output-generate:
 	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/svec-reduce-output.input 10 1000000
 helloworld-generate:
 	java ${RUN_FLAGS} HelloWorldCompressedInputGenerator ${HADOOP_INPUT_DIR}/helloworld.input 10 10000
+ivec-map-input-generate:
+	java ${RUN_FLAGS} MapInputIvecInputGenerator ${HADOOP_INPUT_DIR}/ivec-map-input.input 10 1000
+svec-just-reduce-output-generate:
+	java ${RUN_FLAGS} TestJustReduceOutputSvecInputGenerator ${HADOOP_INPUT_DIR}/svec-just-reduce-output.input 10 1000
+random-svec-generate:
+	java ${RUN_FLAGS} GenerateRandomSvec ${HADOOP_INPUT_DIR}/random-svec/ 100 1000000
+globals-on-gpu-generate:
+	java ${RUN_FLAGS} GlobalsOnGpuGenerator ${HADOOP_INPUT_DIR}/globals-on-gpu.input/ 10 1000
+
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*
@@ -116,7 +139,7 @@ CompressedInputGenerator.class: CompressedInputGenerator.java
 	javac CompressedInputGenerator.java
 
 SetupInputCompression.class: SetupInputCompression.java
-	javac -cp ${CLASSPATH} SetupInputCompression.java
+	javac -g -cp ${CLASSPATH} SetupInputCompression.java
 
 blackscholesinput: BlackScholesInputGenerator.java
 	javac -classpath ${CLASSPATH} BlackScholesInputGenerator.java
