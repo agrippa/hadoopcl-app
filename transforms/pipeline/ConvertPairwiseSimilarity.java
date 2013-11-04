@@ -1,5 +1,6 @@
 package pipeline;
 
+import java.util.Iterator;
 import org.apache.mahout.math.RandomAccessSparseVector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Random;
@@ -59,8 +60,8 @@ public class ConvertPairwiseSimilarity {
 
         protected void callback(File currentFile) {
             try {
-                SequenceFile.Reader reader = new SequenceFile.Reader(fs, conf,
-                        currentFile.getPath());
+                SequenceFile.Reader reader = new SequenceFile.Reader(fs,
+                        new Path(currentFile.getAbsolutePath()), conf);
                 SequenceFile.Writer writer = SequenceFile.createWriter(
                         fs, conf,
                         new Path(this.outputFolder+"/"+currentFile.getName()),
@@ -84,7 +85,7 @@ public class ConvertPairwiseSimilarity {
                     while (iter.hasNext()) {
                         org.apache.mahout.math.Vector.Element ele = iter.next();
                         indices[index] = ele.index();
-                        vals[index] = ele.get();
+                        vals[index] = (float)ele.get();
                         index++;
                     }
 
