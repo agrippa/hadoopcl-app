@@ -68,7 +68,8 @@ file-merger:
 
 pairwise: pipeline/ConvertPairwiseSimilarity.java
 	javac -cp ${CLASSPATH} pipeline/ConvertPairwiseSimilarity.java
-
+pairwise-run:
+	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity /home/yiskylee/mahout/allTempFiles/weights /home/yiskylee/mahout/allTempFiles/weights-hadoopcl
 ###########################################################
 ################### Mahout Pipeline++ #####################
 ###########################################################
