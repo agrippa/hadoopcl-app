@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class ConvertPairwiseSimilarity {
 
     public static void main(String[] args) {
-        if (args.length != 5) {
+        if (args.length != 2) {
             System.out.println("usage: java ConvertPairwiseSimilarity input-folder output-folder");
             return;
         }
