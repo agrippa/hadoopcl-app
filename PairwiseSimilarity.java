@@ -290,9 +290,8 @@ public class PairwiseSimilarity {
 
             int similaritySoFar = 0;
             for (int i = 0; i < soFar; i++) {
-                double similarityValue = similarity_similarity(dotsVals[i], normA,
-                        getFromSparseVector(dotsIndices[i], normsIndices, normsVals, normsLen),
-                        numberOfColumns);
+                // similarity_similarity collapses to 'return arg0;'
+                double similarityValue = dotsVals[i];
                 if (similarityValue >= threshold) {
                     dotsIndices[similaritySoFar] = dotsIndices[i];
                     dotsVals[similaritySoFar] = dotsVals[i];
