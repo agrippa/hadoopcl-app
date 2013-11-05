@@ -62,7 +62,7 @@ else
     hdfs_chunk_size=268435456
     # mapper=13
     # mapper=8
-    mapper=12
+    mapper=10
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
