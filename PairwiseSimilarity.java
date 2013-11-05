@@ -200,6 +200,120 @@ public class PairwiseSimilarity {
         }
     }
 
+    public static class SimilarityReducer extends HadoopCLIntFsvecIntFsvecReducer {
+
+        /*
+           private VectorSimilarityMeasure similarity;
+           private int numberOfColumns;
+           private boolean excludeSelfSimilarity;
+           private Vector norms;
+           private double treshold;
+
+           @Override
+           protected void setup(Context ctx) throws IOException, InterruptedException {
+           similarity = ClassUtils.instantiateAs(ctx.getConfiguration().get(SIMILARITY_CLASSNAME),
+           VectorSimilarityMeasure.class);
+           numberOfColumns = ctx.getConfiguration().getInt(NUMBER_OF_COLUMNS, -1);
+           Preconditions.checkArgument(numberOfColumns > 0, "Incorrect number of columns!");
+           excludeSelfSimilarity = ctx.getConfiguration().getBoolean(EXCLUDE_SELF_SIMILARITY, false);
+           norms = Vectors.read(new Path(ctx.getConfiguration().get(NORMS_PATH)), ctx.getConfiguration());
+           treshold = Double.parseDouble(ctx.getConfiguration().get(THRESHOLD));
+           }
+           */
+
+        private int findInSortedArr(int searchFor, int[] arr, int arrLength) {
+            int i;
+            while (i < arrLength && searchFor < arr[i]) {
+                i++;
+            }
+            if (arr[i] == searchFor) {
+                return i;
+            } else {
+                return -1;
+            }
+        }
+
+        private double getFromSparseVector(int index, int[] indices,
+                double[] vals, int len) {
+            int offset = findInSortedArr(index, indices, len);
+            if (offset == -1) {
+                return 0.0;
+            } else {
+                return vals[offset];
+            }
+        }
+
+        protected int contains(int searchFor, int[] arr, int arrLength) {
+            int i;
+            for (i = 0; i < arrLength; i++) {
+                if (arr[i] == searchFor) return i;
+            }
+            return -1;
+        }
+
+        protected void reduce(int row, HadoopCLFsvecIterator valsIter) {
+            int totalNValues = 0;
+            for (int i = 0; i < valsIter.nValues(); i++) {
+                totalNValues += valsIter.vectorLength(i);
+            }
+
+            int[] dotsIndices = allocInt(totalNValues);
+            float[] dotsVals = allocFloat(totalNValues);
+            int soFar = 0;
+
+            /*
+             * Aggregate all input value vectors into the dotsIndices and dotsVals,
+             * probably not filling the whole arrays.
+             */
+            for (int i = 0; i < valsIter.nValues(); i++) {
+                valsIter.seekTo(i);
+                int[] indices = valsIter.getValIndices();
+                float[] vals = valsIter.getValVals();
+                int len = valsIter.currentVectorLength();
+
+                for (int j = 0; j < len; j++) {
+                    int offset = contains(indices[j], dotsIndices, soFar);
+                    if (offset >= 0) {
+                        dotsVals[offset] += vals[j];
+                    } else {
+                        dotsVals[soFar] = indices[j];
+                        dotsVals[soFar++] = vals[j];
+                    }
+                }
+            }
+
+            int[] normsIndices = this.getGlobalIndices(0);
+            double[] normsVals = this.getGlobalVals(0);
+            int normsLen = this.globalsLength(0);
+            double normA = getFromSparseVector(row, normsIndices,
+                    normsVals, normsLen);
+
+            int similaritySoFar = 0;
+            for (int i = 0; i < soFar; i++) {
+                double similarityValue = similarity_similarity(dotsVals[i], normA,
+                        getFromSparseVector(dotsIndices[i], normsIndices, normsVals, normsLen),
+                        numberOfColumns);
+                if (similarityValue >= threshold) {
+                    dotsIndices[similaritySoFar] = dotsIndices[i];
+                    dotsVals[similaritySoFar] = dotsVals[i];
+                    similaritySoFar++;
+                }
+            }
+
+            if (excludeSelfSimilarity) {
+                int i;
+                for (i = 0; i < similaritySoFar; i++) {
+                    if (dotsIndices[i] == row) {
+                        dotsVals[i] = 0.0;
+                        break;
+                    }
+                }
+            }
+
+            write(row, dotsIndices, dotsVals, similaritySoFar);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
