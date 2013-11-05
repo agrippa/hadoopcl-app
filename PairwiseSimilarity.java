@@ -200,7 +200,7 @@ public class PairwiseSimilarity {
         }
     }
 
-    public static class SimilarityReducer extends HadoopCLIntFsvecIntFsvecReducer {
+    public static class PairwiseReducer extends HadoopCLIntFsvecIntFsvecReducer {
 
         /*
            private VectorSimilarityMeasure similarity;
@@ -276,7 +276,7 @@ public class PairwiseSimilarity {
                     if (offset >= 0) {
                         dotsVals[offset] += vals[j];
                     } else {
-                        dotsVals[soFar] = indices[j];
+                        dotsIndices[soFar] = indices[j];
                         dotsVals[soFar++] = vals[j];
                     }
                 }
@@ -314,6 +314,48 @@ public class PairwiseSimilarity {
         }
     }
 
+    public static class PairwiseCombiner extends
+            HadoopCLIntFsvecIntFsvecReducer {
+
+        protected int contains(int searchFor, int[] arr, int arrLength) {
+            int i;
+            for (i = 0; i < arrLength; i++) {
+                if (arr[i] == searchFor) return i;
+            }
+            return -1;
+        }
+
+        protected void reduce(int key, HadoopCLFsvecValueIterator valsIter) {
+            int totalNValues = 0;
+            for (int i = 0; i < valsIter.nValues(); i++) {
+                totalNValues += valsIter.vectorLength(i);
+            }
+
+            int[] combinedIndices = allocInt(totalNValues);
+            float[] combinedVals = allocFloat(totalNValues);
+            int soFar = 0;
+
+            for (int i = 0; i < valsIter.nValues(); i++) {
+                valsIter.seekTo(i);
+                int[] indices = valsIter.getValIndices();
+                float[] vals = valsIter.getValVals();
+                int len = valsIter.currentVectorLength();
+
+                for (int j = 0; j < len; j++) {
+                    int offset = contains(indices[j], combinedIndices, soFar);
+                    if (offset >= 0) {
+                        combinedVals[offset] += vals[j];
+                    } else {
+                        combinedIndices[soFar] = indices[j];
+                        combinedVals[soFar++] = vals[j];
+                    }
+                }
+            }
+
+            write(key, combinedIndices, combinedVals, soFar);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
@@ -332,6 +374,9 @@ public class PairwiseSimilarity {
        
        job.setReducerClass(OpenCLReducer.class);
        job.setOCLReducerClass(PairwiseReducer.class);
+
+       job.setCombinerClass(OpenCLReducer.class);
+       job.setOCLCombinerClass(PairwiseCombiner.class);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
