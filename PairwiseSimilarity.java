@@ -205,6 +205,7 @@ public class PairwiseSimilarity {
     public static class PairwiseReducer extends HadoopCLIntFsvecIntFsvecReducer {
 
         private final double threshold = Double.MIN_VALUE;
+        private final boolean excludeSelfSimilarity = false;
         /*
            private VectorSimilarityMeasure similarity;
            private int numberOfColumns;
