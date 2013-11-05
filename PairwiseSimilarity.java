@@ -26,6 +26,8 @@ public class PairwiseSimilarity {
 
     public static class PairwiseMapper extends
             HadoopCLIntFsvecIntFsvecMapper {
+
+        private final double threshold = Double.MIN_VALUE;
         /*
         // TODO: replace with hard-coded functions, CooccurenceCountSimilarity
         private VectorSimilarityMeasure similarity;
@@ -202,6 +204,7 @@ public class PairwiseSimilarity {
 
     public static class PairwiseReducer extends HadoopCLIntFsvecIntFsvecReducer {
 
+        private final double threshold = Double.MIN_VALUE;
         /*
            private VectorSimilarityMeasure similarity;
            private int numberOfColumns;
