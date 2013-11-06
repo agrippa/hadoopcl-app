@@ -1,6 +1,8 @@
 import java.util.*;
 import java.lang.*;
 
+import org.apache.mahout.math.map.OpenIntIntHashMap;
+import org.apache.mahout.math.hadoop.similarity.cooccurrence.Vectors;
 import org.apache.hadoop.fs.FileSystem;
 import java.io.IOException;
 import org.apache.hadoop.mapreduce.OpenCLMapper;
@@ -24,20 +26,15 @@ import org.apache.mahout.clustering.iterator.ClusterWritable;
 
 public class PairwiseSimilarity {
 
+    public static final GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX = 0;
+    public static final GLOBAL_NORMS_INDEX = 1;
+
     public static class PairwiseMapper extends
             HadoopCLIntFsvecIntFsvecMapper {
 
         private final double threshold = Double.MIN_VALUE;
         /*
-        // TODO: replace with hard-coded functions, CooccurenceCountSimilarity
-        private VectorSimilarityMeasure similarity;
-
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.nonZeroEntriesPath
         private OpenIntIntHashMap numNonZeroEntries;
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.maxWeightsPath
-        private Vector maxValues;
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.threshold
-        private double threshold;
 
         @Override
         protected void setup(Context ctx) throws IOException, InterruptedException {
@@ -88,9 +85,9 @@ public class PairwiseSimilarity {
         private boolean consider(int indexA, float valA,
                 int indexB, float valB) {
             int i;
-            int numNonZeroEntriesLength = this.globalsLength(0);
-            int[] numNonZeroEntriesIndices = this.getGlobalIndices(0);
-            double[] numNonZeroEntriesVals = this.getGlobalVals(0);
+            int numNonZeroEntriesLength = this.globalsLength(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
+            int[] numNonZeroEntriesIndices = this.getGlobalIndices(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
+            double[] numNonZeroEntriesVals = this.getGlobalVals(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
 
             double numNonZeroEntriesA = getFromSparseVector(indexA,
                     numNonZeroEntriesIndices, numNonZeroEntriesVals,
@@ -207,11 +204,7 @@ public class PairwiseSimilarity {
         private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
         /*
-           private VectorSimilarityMeasure similarity;
-           private int numberOfColumns;
-           private boolean excludeSelfSimilarity;
            private Vector norms;
-           private double treshold;
 
            @Override
            protected void setup(Context ctx) throws IOException, InterruptedException {
@@ -286,9 +279,9 @@ public class PairwiseSimilarity {
                 }
             }
 
-            int[] normsIndices = this.getGlobalIndices(0);
-            double[] normsVals = this.getGlobalVals(0);
-            int normsLen = this.globalsLength(0);
+            int[] normsIndices = this.getGlobalIndices(GLOBAL_NORMS_INDEX);
+            double[] normsVals = this.getGlobalVals(GLOBAL_NORMS_INDEX);
+            int normsLen = this.globalsLength(GLOBAL_NORMS_INDEX);
             double normA = getFromSparseVector(row, normsIndices,
                     normsVals, normsLen);
 
@@ -362,6 +355,36 @@ public class PairwiseSimilarity {
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
+
+       String numNonZeroEntriesPath = args[3];
+       String normsPath = args[4];
+       OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
+       Vector norms = Vectors.read(new Path(normsPath), conf);
+
+       int normSoFar = 0;
+       int[] normIndices = new int[norms.getNumNonZeroElements()];
+       double[] normVals = new double[norms.getNumNonZeroElements()];
+       Iterator<Vector.Element> normsIter = norms.nonZeroes().iterator();
+       while (normsIter.hasNext()) {
+           Vector.Element ele = normsIter.next();
+           normIndices[normSoFar] = ele.index();
+           normVals[normSoFar] = ele.get();
+           normSoFar++;
+       }
+
+       int numNonZeroEntriesSoFar = 0;
+       int[] numNonZeroEntriesIndices = new int[numNonZeroEntries.size()];
+       double[] numNonZeroEntriesVals = new double[numNonZeroEntries.size()];
+       Iterator<OpenIntIntHashMap.MapElement> nonZeroEntriesIter = numNonZeroEntries.iterator();
+       while (nonZeroEntriesIter.hasNext()) {
+           OpenIntIntHashMap.MapElement ele = nonZeroEntriesIter.next();
+           numNonZeroEntriesIndices[numNonZeroEntriesSoFar] = ele.index();
+           numNonZeroEntriesVals[numNonZeroEntriesSoFar] = ele.get();
+           numNonZeroEntriesSoFar++;
+       }
+
+       conf.addHadoopCLGlobal(numNonZeroEntriesIndices, numNonZeroEntriesVals);
+       conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
        job.setJarByClass(PairwiseSimilarity.class);
