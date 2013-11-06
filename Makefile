@@ -1,6 +1,7 @@
 include Makefile.common
 
 all: SetupInputCompression.class
+	javac -g -classpath ${CLASSPATH} -d pairwiseclasses/ PairwiseSimilarity.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
 	javac -g -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
@@ -19,6 +20,7 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
+	jar cvf PairwiseSimilarity.jar -C pairwiseclasses/ . SetupInputCompression.class
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
