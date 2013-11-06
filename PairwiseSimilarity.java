@@ -1,16 +1,18 @@
 import java.util.*;
 import java.lang.*;
 
+import org.apache.mahout.math.map.OpenIntIntHashMap;
+import org.apache.mahout.math.hadoop.similarity.cooccurrence.Vectors;
 import org.apache.hadoop.fs.FileSystem;
 import java.io.IOException;
 import org.apache.hadoop.mapreduce.OpenCLMapper;
 import org.apache.hadoop.mapreduce.OpenCLReducer;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntFsvecIntFsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLMapperKernel;
-import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
+import org.apache.hadoop.mapreduce.IntFsvecIntFsvecHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.HadoopCLFsvecValueIterator;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -24,20 +26,15 @@ import org.apache.mahout.clustering.iterator.ClusterWritable;
 
 public class PairwiseSimilarity {
 
+    public static final int GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX = 0;
+    public static final int GLOBAL_NORMS_INDEX = 1;
+
     public static class PairwiseMapper extends
-            HadoopCLIntFsvecIntFsvecMapper {
+            IntFsvecIntFsvecHadoopCLMapperKernel {
 
         private final double threshold = Double.MIN_VALUE;
         /*
-        // TODO: replace with hard-coded functions, CooccurenceCountSimilarity
-        private VectorSimilarityMeasure similarity;
-
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.nonZeroEntriesPath
         private OpenIntIntHashMap numNonZeroEntries;
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.maxWeightsPath
-        private Vector maxValues;
-        //class org.apache.mahout.math.hadoop.similarity.cooccurrence.RowSimilarityJob.threshold
-        private double threshold;
 
         @Override
         protected void setup(Context ctx) throws IOException, InterruptedException {
@@ -54,7 +51,7 @@ public class PairwiseSimilarity {
         */
 
         private int findInSortedArr(int searchFor, int[] arr, int arrLength) {
-            int i;
+            int i = 0;
             while (i < arrLength && searchFor < arr[i]) {
                 i++;
             }
@@ -82,15 +79,15 @@ public class PairwiseSimilarity {
         }
 
         private float similarity_aggregate(float valA, float valB) {
-            return 1.0;
+            return 1.0f;
         }
 
         private boolean consider(int indexA, float valA,
                 int indexB, float valB) {
             int i;
-            int numNonZeroEntriesLength = this.globalsLength(0);
-            int[] numNonZeroEntriesIndices = this.getGlobalIndices(0);
-            double[] numNonZeroEntriesVals = this.getGlobalVals(0);
+            int numNonZeroEntriesLength = this.globalsLength(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
+            int[] numNonZeroEntriesIndices = this.getGlobalIndices(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
+            double[] numNonZeroEntriesVals = this.getGlobalVals(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
 
             double numNonZeroEntriesA = getFromSparseVector(indexA,
                     numNonZeroEntriesIndices, numNonZeroEntriesVals,
@@ -99,7 +96,7 @@ public class PairwiseSimilarity {
                     numNonZeroEntriesIndices, numNonZeroEntriesVals,
                     numNonZeroEntriesLength);
 
-            return similarity_consider(numNonZeroEntriesA, numNonZeroEntriesB);
+            return similarity_consider((int)numNonZeroEntriesA, (int)numNonZeroEntriesB);
         }
 
         private void swapHelper(float[] arr, int index1, int index2) {
@@ -164,54 +161,65 @@ public class PairwiseSimilarity {
             quicksort(arr, coarr, topOfPivot, high);
         }
 
-        protected void map(int column, int[] occurenceIndices,
-                float[] occurenceVals, int occurenceLen) {
+        protected void map(int column, int[] occurrenceIndices,
+                float[] occurrenceVals, int occurrenceLen) {
             int cooccurrences = 0;
             int prunedCooccurrences = 0;
 
-            quicksort(occurenceIndices, occurenceVals, 0, occurenceLen-1);
+            quicksort(occurrenceIndices, occurrenceVals, 0, occurrenceLen-1);
 
-            for (int n = 0; n < occurenceLen; n++) {
-                int occurenceAIndex = occurenceIndices[n];
-                float occurenceAVal = occurenceVals[n];
+            for (int n = 0; n < occurrenceLen; n++) {
+                int occurrenceAIndex = occurrenceIndices[n];
+                float occurrenceAVal = occurrenceVals[n];
 
                 int dotsSoFar = 0;
-                int[] dotsIndices = allocInt(occurenceLen);
-                float[] dotsVals = allocFloat(occurenceLen);
+                int[] dotsIndices = allocInt(occurrenceLen);
+                float[] dotsVals = allocFloat(occurrenceLen);
 
-                for (int m = n; m < occurencesLen; m++) {
-                    int occurrenceBIndex = occurenceIndices[m];
-                    float occurrenceBVal = occurenceVals[m];
-                    if (threshold == NO_THRESHOLD ||
-                            consider(occurenceAIndex, occurenceAVal,
-                                occurenceBIndex, occurenceBVal)) {
-                        dotsIndices[dotsSoFar] = occurenceBIndex;
+                for (int m = n; m < occurrenceLen; m++) {
+                    int occurrenceBIndex = occurrenceIndices[m];
+                    float occurrenceBVal = occurrenceVals[m];
+                    // if (threshold == NO_THRESHOLD ||
+                    //         consider(occurrenceAIndex, occurrenceAVal,
+                    //             occurrenceBIndex, occurrenceBVal))
+                    {
+                        dotsIndices[dotsSoFar] = occurrenceBIndex;
                         dotsVals[dotsSoFar] = similarity_aggregate(
-                                occurenceAVal, occurenceBVal);
+                                occurrenceAVal, occurrenceBVal);
                         dotsSoFar++;
                         cooccurrences++; // unused
-                    } else {
-                        prunedCooccurrences++; // unused
                     }
+                    // else {
+                    //     prunedCooccurrences++; // unused
+                    // }
                 }
 
                 if (dotsSoFar > 0) {
-                    write(dotsIndices, dotsVals, dotsSoFar);
+                    write(column, dotsIndices, dotsVals, dotsSoFar);
                 }
             }
         }
+
+        public int getOutputPairsPerInput() {
+            return 1;
+        }
+
+        public void deviceStrength(DeviceStrength str) {
+            str.add(Device.TYPE.GPU, 10);
+        }
+
+        public Device.TYPE[] validDevices() {
+            return null;
+        }
     }
 
-    public static class PairwiseReducer extends HadoopCLIntFsvecIntFsvecReducer {
+    public static class PairwiseReducer extends
+        IntFsvecIntFsvecHadoopCLReducerKernel {
 
         private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
         /*
-           private VectorSimilarityMeasure similarity;
-           private int numberOfColumns;
-           private boolean excludeSelfSimilarity;
            private Vector norms;
-           private double treshold;
 
            @Override
            protected void setup(Context ctx) throws IOException, InterruptedException {
@@ -226,7 +234,7 @@ public class PairwiseSimilarity {
            */
 
         private int findInSortedArr(int searchFor, int[] arr, int arrLength) {
-            int i;
+            int i = 0;
             while (i < arrLength && searchFor < arr[i]) {
                 i++;
             }
@@ -255,7 +263,7 @@ public class PairwiseSimilarity {
             return -1;
         }
 
-        protected void reduce(int row, HadoopCLFsvecIterator valsIter) {
+        protected void reduce(int row, HadoopCLFsvecValueIterator valsIter) {
             int totalNValues = 0;
             for (int i = 0; i < valsIter.nValues(); i++) {
                 totalNValues += valsIter.vectorLength(i);
@@ -286,9 +294,9 @@ public class PairwiseSimilarity {
                 }
             }
 
-            int[] normsIndices = this.getGlobalIndices(0);
-            double[] normsVals = this.getGlobalVals(0);
-            int normsLen = this.globalsLength(0);
+            int[] normsIndices = this.getGlobalIndices(GLOBAL_NORMS_INDEX);
+            double[] normsVals = this.getGlobalVals(GLOBAL_NORMS_INDEX);
+            int normsLen = this.globalsLength(GLOBAL_NORMS_INDEX);
             double normA = getFromSparseVector(row, normsIndices,
                     normsVals, normsLen);
 
@@ -307,7 +315,7 @@ public class PairwiseSimilarity {
                 int i;
                 for (i = 0; i < similaritySoFar; i++) {
                     if (dotsIndices[i] == row) {
-                        dotsVals[i] = 0.0;
+                        dotsVals[i] = 0.0f;
                         break;
                     }
                 }
@@ -315,10 +323,20 @@ public class PairwiseSimilarity {
 
             write(row, dotsIndices, dotsVals, similaritySoFar);
         }
+
+        public int getOutputPairsPerInput() {
+            return 1;
+        }
+        public void deviceStrength(DeviceStrength str) {
+            str.add(Device.TYPE.JAVA, 10);
+        }
+        public Device.TYPE[] validDevices() {
+            return new Device.TYPE[] { Device.TYPE.JAVA };
+        }
     }
 
     public static class PairwiseCombiner extends
-            HadoopCLIntFsvecIntFsvecReducer {
+            IntFsvecIntFsvecHadoopCLReducerKernel {
 
         protected int contains(int searchFor, int[] arr, int arrLength) {
             int i;
@@ -357,11 +375,54 @@ public class PairwiseSimilarity {
 
             write(key, combinedIndices, combinedVals, soFar);
         }
+
+        public int getOutputPairsPerInput() {
+            return 1;
+        }
+        public void deviceStrength(DeviceStrength str) {
+            str.add(Device.TYPE.JAVA, 10);
+        }
+        public Device.TYPE[] validDevices() {
+            return new Device.TYPE[] { Device.TYPE.JAVA };
+        }
     }
 
     public static void main(String[] args) throws Exception {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
+
+       String numNonZeroEntriesPath = args[3];
+       String normsPath = args[4];
+       OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
+       Vector norms = Vectors.read(new Path(normsPath), conf);
+
+       int normSoFar = 0;
+       int[] normIndices = new int[norms.getNumNonZeroElements()];
+       double[] normVals = new double[norms.getNumNonZeroElements()];
+       Iterator<Vector.Element> normsIter = norms.nonZeroes().iterator();
+       while (normsIter.hasNext()) {
+           Vector.Element ele = normsIter.next();
+           normIndices[normSoFar] = ele.index();
+           normVals[normSoFar] = ele.get();
+           normSoFar++;
+       }
+
+       int numNonZeroEntriesSoFar = 0;
+       int[] numNonZeroEntriesIndices = new int[numNonZeroEntries.size()];
+       double[] numNonZeroEntriesVals = new double[numNonZeroEntries.size()];
+       Iterator<OpenIntIntHashMap.MapElement> nonZeroEntriesIter = numNonZeroEntries.iterator();
+       while (nonZeroEntriesIter.hasNext()) {
+           OpenIntIntHashMap.MapElement ele = nonZeroEntriesIter.next();
+           numNonZeroEntriesIndices[numNonZeroEntriesSoFar] = ele.index();
+           numNonZeroEntriesVals[numNonZeroEntriesSoFar] = ele.get();
+           numNonZeroEntriesSoFar++;
+       }
+
+       System.out.println("Norms length = "+normSoFar);
+       System.out.println("numNonZeroEntriesIndices length = "+numNonZeroEntriesSoFar);
+
+       conf.addHadoopCLGlobal(numNonZeroEntriesIndices, numNonZeroEntriesVals);
+       conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
        job.setJarByClass(PairwiseSimilarity.class);

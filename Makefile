@@ -1,25 +1,28 @@
 include Makefile.common
 
 all: SetupInputCompression.class
-	javac -g:vars -classpath ${CLASSPATH} -d pairsclasses/ Pairs.java
-	javac -g:vars -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d opencldynamickmeansclasses/ KMeansDynamicOpenCLVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d javakmeansclasses/ KMeansJavaVersion.java -Xlint:deprecation
-	javac -g:vars -classpath ${CLASSPATH} -d openclpiclasses/ PiOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javapiclasses/ PiJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d javablackscholesclasses/ BlackScholesJavaVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d openclblackscholesclasses/ BlackScholesOpenCLVersion.java
-	javac -g:vars -classpath ${CLASSPATH} -d testmapinputsvecclasses/ TestMapInputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d testmapoutputsvecclasses/ TestMapOutputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
-	javac -g:vars -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
-	javac -g:vars -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
+	javac -g -classpath ${CLASSPATH} -d pairwiseclasses/ PairwiseSimilarity.java
+	javac -g -classpath ${CLASSPATH} -d pairsclasses/ Pairs.java
+	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
+	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
+	javac -g -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
+	javac -g -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
+	javac -g -classpath ${CLASSPATH} -d opencldynamickmeansclasses/ KMeansDynamicOpenCLVersion.java -Xlint:deprecation
+	javac -g -classpath ${CLASSPATH} -d javakmeansclasses/ KMeansJavaVersion.java -Xlint:deprecation
+	javac -g -classpath ${CLASSPATH} -d openclpiclasses/ PiOpenCLVersion.java
+	javac -g -classpath ${CLASSPATH} -d javapiclasses/ PiJavaVersion.java
+	javac -g -classpath ${CLASSPATH} -d javablackscholesclasses/ BlackScholesJavaVersion.java
+	javac -g -classpath ${CLASSPATH} -d openclblackscholesclasses/ BlackScholesOpenCLVersion.java
+	javac -g -classpath ${CLASSPATH} -d testmapinputsvecclasses/ TestMapInputSvec.java
+	javac -g -classpath ${CLASSPATH} -d testmapoutputsvecclasses/ TestMapOutputSvec.java
+	javac -g -classpath ${CLASSPATH} -d testreduceoutputsvecclasses/ TestReduceOutputSvec.java
+	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
+	javac -g -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
+	jar cvf PairwiseSimilarity.jar -C pairwiseclasses/ . SetupInputCompression.class
 	jar cvf Pairs.jar -C pairsclasses/ .
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
