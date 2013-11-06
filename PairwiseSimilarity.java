@@ -418,6 +418,9 @@ public class PairwiseSimilarity {
            numNonZeroEntriesSoFar++;
        }
 
+       System.out.println("Norms length = "+normSoFar);
+       System.out.println("numNonZeroEntriesIndices length = "+numNonZeroEntriesSoFar);
+
        conf.addHadoopCLGlobal(numNonZeroEntriesIndices, numNonZeroEntriesVals);
        conf.addHadoopCLGlobal(normIndices, normVals);
 
