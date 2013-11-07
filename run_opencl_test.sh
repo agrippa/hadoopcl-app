@@ -53,6 +53,9 @@ else
     if [ ${BENCHMARK} == test-strided ]; then
         EXE_NAME=TestStridedPerf
     fi
+    if [ ${BENCHMARK} == pairwise ]; then
+        EXE_NAME=PairwiseSimilarity
+    fi
 
     CPU_GROUP=36
     GPU_GROUP=36
