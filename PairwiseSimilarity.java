@@ -99,7 +99,7 @@ public class PairwiseSimilarity {
             return similarity_consider((int)numNonZeroEntriesA, (int)numNonZeroEntriesB);
         }
 
-        private void swapHelper(float[] arr, int index1, int index2) {
+        private void swapHelperFloat(float[] arr, int index1, int index2) {
             if (index1 != index2) {
                 float tmp = arr[index1];
                 arr[index1] = arr[index2];
@@ -107,7 +107,7 @@ public class PairwiseSimilarity {
             }
         }
 
-        private void swapHelper(int[] arr, int index1, int index2) {
+        private void swapHelperInt(int[] arr, int index1, int index2) {
             if (index1 != index2) {
                 arr[index1] += arr[index2];
                 arr[index2] = arr[index1] - arr[index2];
@@ -116,8 +116,8 @@ public class PairwiseSimilarity {
         }
 
         private void swap(int[] arr, float[] coarr, int index1, int index2) {
-            swapHelper(arr, index1, index2);
-            swapHelper(coarr, index1, index2);
+            swapHelperInt(arr, index1, index2);
+            swapHelperFloat(coarr, index1, index2);
         }
 
         private int partition(int[] arr, float[] coarr, int left, int right,
