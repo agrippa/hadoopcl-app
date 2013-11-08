@@ -32,7 +32,7 @@ public class PairwiseSimilarity {
     public static class PairwiseMapper extends
             IntFsvecIntFsvecHadoopCLMapperKernel {
 
-        private final double threshold = Double.MIN_VALUE;
+        private final float threshold = Float.MIN_VALUE;
         /*
         private OpenIntIntHashMap numNonZeroEntries;
 
@@ -62,11 +62,11 @@ public class PairwiseSimilarity {
             }
         }
 
-        private double getFromSparseVector(int index, int[] indices,
-                double[] vals, int len) {
+        private float getFromSparseVector(int index, int[] indices,
+                float[] vals, int len) {
             int offset = findInSortedArr(index, indices, len);
             if (offset == -1) {
-                return 0.0;
+                return 0.0f;
             } else {
                 return vals[offset];
             }
@@ -87,12 +87,12 @@ public class PairwiseSimilarity {
             int i;
             int numNonZeroEntriesLength = this.globalsLength(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
             int[] numNonZeroEntriesIndices = this.getGlobalIndices(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
-            double[] numNonZeroEntriesVals = this.getGlobalVals(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
+            float[] numNonZeroEntriesVals = this.getGlobalFVals(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX);
 
-            double numNonZeroEntriesA = getFromSparseVector(indexA,
+            float numNonZeroEntriesA = getFromSparseVector(indexA,
                     numNonZeroEntriesIndices, numNonZeroEntriesVals,
                     numNonZeroEntriesLength);
-            double numNonZeroEntriesB = getFromSparseVector(indexB,
+            float numNonZeroEntriesB = getFromSparseVector(indexB,
                     numNonZeroEntriesIndices, numNonZeroEntriesVals,
                     numNonZeroEntriesLength);
 
@@ -216,7 +216,7 @@ public class PairwiseSimilarity {
     public static class PairwiseReducer extends
         IntFsvecIntFsvecHadoopCLReducerKernel {
 
-        private final double threshold = Double.MIN_VALUE;
+        private final float threshold = Float.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
         /*
            private Vector norms;
@@ -245,11 +245,11 @@ public class PairwiseSimilarity {
             }
         }
 
-        private double getFromSparseVector(int index, int[] indices,
-                double[] vals, int len) {
+        private float getFromSparseVector(int index, int[] indices,
+                float[] vals, int len) {
             int offset = findInSortedArr(index, indices, len);
             if (offset == -1) {
-                return 0.0;
+                return 0.0f;
             } else {
                 return vals[offset];
             }
@@ -295,15 +295,15 @@ public class PairwiseSimilarity {
             }
 
             int[] normsIndices = this.getGlobalIndices(GLOBAL_NORMS_INDEX);
-            double[] normsVals = this.getGlobalVals(GLOBAL_NORMS_INDEX);
+            float[] normsVals = this.getGlobalFVals(GLOBAL_NORMS_INDEX);
             int normsLen = this.globalsLength(GLOBAL_NORMS_INDEX);
-            double normA = getFromSparseVector(row, normsIndices,
+            float normA = getFromSparseVector(row, normsIndices,
                     normsVals, normsLen);
 
             int similaritySoFar = 0;
             for (int i = 0; i < soFar; i++) {
                 // similarity_similarity collapses to 'return arg0;'
-                double similarityValue = dotsVals[i];
+                float similarityValue = dotsVals[i];
                 if (similarityValue >= threshold) {
                     dotsIndices[similaritySoFar] = dotsIndices[i];
                     dotsVals[similaritySoFar] = dotsVals[i];
