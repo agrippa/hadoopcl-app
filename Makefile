@@ -71,7 +71,6 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} KMeansCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} TestMapInputSvecCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} HelloWorldCompressedInputGenerator.java
-	javac -cp ${CLASSPATH} PairsCompressedInputGenerator.java
 	javac -cp ${CLASSPATH} MapInputIvecInputGenerator.java
 	javac -cp ${CLASSPATH} TestJustReduceOutputSvecInputGenerator.java
 	javac -cp ${CLASSPATH} GenerateRandomSvec.java

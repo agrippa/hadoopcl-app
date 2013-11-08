@@ -391,8 +391,8 @@ public class PairwiseSimilarity {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
 
-       String numNonZeroEntriesPath = "/home/yiskylee/mahout/allTempFiles/numNonZeroEntries.bin";
-       String normsPath = "/home/yiskylee/mahout/allTempFiles/norms.bin";
+       String numNonZeroEntriesPath = "file:///home/yiskylee/mahout/allTempFiles/numNonZeroEntries.bin";
+       String normsPath = "file:///home/yiskylee/mahout/allTempFiles/norms.bin";
        OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
        Vector norms = Vectors.read(new Path(normsPath), conf);
 
