@@ -147,10 +147,51 @@ public class PairwiseSimilarity {
             return storeIndex;
         }
 
-        private void quicksort(int[] arr, float[] coarr, int low, int high) {
-            if (high - low <= 1) {
-                return;
+        private void quicksort(int[] arr, float[] coarr, int len, int[] partitions1,
+                int[] partitions2) {
+
+            int[] currentPartitions = partitions1;
+            int[] otherPartitions = partitions2;
+            int currentNpartitions = 1;
+            int otherNpartitions;
+            currentPartitions[0] = 0;
+            currentPartitions[1] = len-1;
+
+            while (currentNpartitions > 0) {
+                otherNpartitions = 0;
+
+                for (int i = 0; i < currentNpartitions; i++) {
+                    int low = currentPartitions[2*i];
+                    int high = currentPartitions[2*i+1];
+                    int baseOfPivot = partition(arr, coarr, low, high, low);
+                    int pivot = arr[baseOfPivot];
+                    int topOfPivot = baseOfPivot;
+                    while (topOfPivot <= high && arr[topOfPivot] == pivot) {
+                        topOfPivot++;
+                    }
+
+                    if (baseOfPivot > low) {
+                        otherPartitions[2*otherNpartitions] = low;
+                        otherPartitions[2*otherNpartitions] = baseOfPivot-1;
+                        otherNpartitions++;
+                    }
+                    if (topOfPivot <= high) {
+                        otherPartitions[2 * otherNpartitions + 1] = topOfPivot;
+                        otherPartitions[2 * otherNpartitions + 1] = high;
+                        otherNpartitions++;
+                    }
+                }
+
+                int tmpNPartitions = currentNpartitions;
+                currentNpartitions = otherNpartitions;
+                otherNpartitions = tmpNPartitions;
+
+                int[] tmpPartitions = currentPartitions;
+                currentPartitions = otherPartitions;
+                otherPartitions = currentPartitions;
             }
+
+            /*
             int baseOfPivot = partition(arr, coarr, low, high, low);
             int pivot = arr[baseOfPivot];
             int topOfPivot = baseOfPivot;
@@ -159,6 +200,7 @@ public class PairwiseSimilarity {
             }
             quicksort(arr, coarr, low, baseOfPivot-1);
             quicksort(arr, coarr, topOfPivot, high);
+            */
         }
 
         protected void map(int column, int[] occurrenceIndices,
@@ -166,7 +208,11 @@ public class PairwiseSimilarity {
             int cooccurrences = 0;
             int prunedCooccurrences = 0;
 
-            quicksort(occurrenceIndices, occurrenceVals, 0, occurrenceLen-1);
+            int[] partitions1 = allocInt(occurrenceLen * 2);
+            int[] partitions2 = allocInt(occurrenceLen * 2);
+
+            quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
+                    partitions1, partitions2);
 
             for (int n = 0; n < occurrenceLen; n++) {
                 int occurrenceAIndex = occurrenceIndices[n];
