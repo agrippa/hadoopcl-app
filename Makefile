@@ -2,8 +2,8 @@ include Makefile.common
 
 all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwiseclasses/ PairwiseSimilarity.java
-	javac -g -classpath ${CLASSPATH} -d pairsclasses/ Pairs.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
+	javac -g -classpath ${CLASSPATH} -d testfglobalsongpuclasses/ TestFGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
 	javac -g -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
 	javac -g -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
@@ -20,10 +20,8 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d helloworldclasses/ HelloWorld.java
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
-	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
 	jar cvf PairwiseSimilarity.jar -C pairwiseclasses/ . SetupInputCompression.class
-	jar cvf Pairs.jar -C pairsclasses/ .
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -41,6 +39,7 @@ all: SetupInputCompression.class
 	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
 	jar cvf TestJustReduceOutputSvec.jar -C testjustreduceoutputsvecclasses/ . SetupInputCompression.class
 	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
+	jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
 
 clean:
