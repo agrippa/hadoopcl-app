@@ -50,6 +50,9 @@ else
     if [ ${BENCHMARK} == globals-on-gpu ]; then
         EXE_NAME=TestGlobalsOnGPU
     fi
+    if [ ${BENCHMARK} == fglobals-on-gpu ]; then
+        EXE_NAME=TestFGlobalsOnGPU
+    fi
     if [ ${BENCHMARK} == test-strided ]; then
         EXE_NAME=TestStridedPerf
     fi
