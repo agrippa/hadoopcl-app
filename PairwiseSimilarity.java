@@ -146,62 +146,61 @@ public class PairwiseSimilarity {
             }
             return storeIndex;
         }
+  private void quicksort(int[] arr, float[] coarr, int len, int[] partitions1,
+          int[] partitions2) {
 
-        private void quicksort(int[] arr, float[] coarr, int len, int[] partitions1,
-                int[] partitions2) {
+      int[] currentPartitions = partitions1;
+      int[] otherPartitions = partitions2;
+      int currentNpartitions = 1;
+      int otherNpartitions;
+      currentPartitions[0] = 0;
+      currentPartitions[1] = len-1;
 
-            int[] currentPartitions = partitions1;
-            int[] otherPartitions = partitions2;
-            int currentNpartitions = 1;
-            int otherNpartitions;
-            currentPartitions[0] = 0;
-            currentPartitions[1] = len-1;
+      while (currentNpartitions > 0) {
+          otherNpartitions = 0;
 
-            while (currentNpartitions > 0) {
-                otherNpartitions = 0;
+          for (int i = 0; i < currentNpartitions; i++) {
+              int low = currentPartitions[2*i];
+              int high = currentPartitions[2*i+1];
+              int baseOfPivot = partition(arr, coarr, low, high, low);
+              int pivot = arr[baseOfPivot];
+              int topOfPivot = baseOfPivot;
+              while (topOfPivot <= high && arr[topOfPivot] == pivot) {
+                  topOfPivot++;
+              }
 
-                for (int i = 0; i < currentNpartitions; i++) {
-                    int low = currentPartitions[2*i];
-                    int high = currentPartitions[2*i+1];
-                    int baseOfPivot = partition(arr, coarr, low, high, low);
-                    int pivot = arr[baseOfPivot];
-                    int topOfPivot = baseOfPivot;
-                    while (topOfPivot <= high && arr[topOfPivot] == pivot) {
-                        topOfPivot++;
-                    }
+              if (baseOfPivot > low) {
+                  otherPartitions[2*otherNpartitions] = low;
+                  otherPartitions[2*otherNpartitions + 1] = baseOfPivot-1;
+                  otherNpartitions++;
+              }
+              if (topOfPivot <= high) {
+                  otherPartitions[2 * otherNpartitions] = topOfPivot;
+                  otherPartitions[2 * otherNpartitions + 1] = high;
+                  otherNpartitions++;
+              }
+          }
 
-                    if (baseOfPivot > low) {
-                        otherPartitions[2*otherNpartitions] = low;
-                        otherPartitions[2*otherNpartitions] = baseOfPivot-1;
-                        otherNpartitions++;
-                    }
-                    if (topOfPivot <= high) {
-                        otherPartitions[2 * otherNpartitions + 1] = topOfPivot;
-                        otherPartitions[2 * otherNpartitions + 1] = high;
-                        otherNpartitions++;
-                    }
-                }
+          int tmpNPartitions = currentNpartitions;
+          currentNpartitions = otherNpartitions;
+          otherNpartitions = tmpNPartitions;
 
-                int tmpNPartitions = currentNpartitions;
-                currentNpartitions = otherNpartitions;
-                otherNpartitions = tmpNPartitions;
+          int[] tmpPartitions = currentPartitions;
+          currentPartitions = otherPartitions;
+          otherPartitions = tmpPartitions;
+      }
 
-                int[] tmpPartitions = currentPartitions;
-                currentPartitions = otherPartitions;
-                otherPartitions = currentPartitions;
-            }
-
-            /*
-            int baseOfPivot = partition(arr, coarr, low, high, low);
-            int pivot = arr[baseOfPivot];
-            int topOfPivot = baseOfPivot;
-            while (topOfPivot < arr.length && arr[topOfPivot] == pivot) {
-                topOfPivot++;
-            }
-            quicksort(arr, coarr, low, baseOfPivot-1);
-            quicksort(arr, coarr, topOfPivot, high);
-            */
-        }
+      /*
+      int baseOfPivot = partition(arr, coarr, low, high, low);
+      int pivot = arr[baseOfPivot];
+      int topOfPivot = baseOfPivot;
+      while (topOfPivot < arr.length && arr[topOfPivot] == pivot) {
+          topOfPivot++;
+      }
+      quicksort(arr, coarr, low, baseOfPivot-1);
+      quicksort(arr, coarr, topOfPivot, high);
+      */
+  }
 
         protected void map(int column, int[] occurrenceIndices,
                 float[] occurrenceVals, int occurrenceLen) {
