@@ -230,15 +230,15 @@ public class PairwiseSimilarity {
 
             // quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
             //         partitions1, partitions2);
-            bubbleSort(occurrenceIndices, occurernceVals, occurrenceLen);
+            bubbleSort(occurrenceIndices, occurrenceVals, occurrenceLen);
 
             for (int n = 0; n < occurrenceLen; n++) {
                 int occurrenceAIndex = occurrenceIndices[n];
                 float occurrenceAVal = occurrenceVals[n];
 
                 int dotsSoFar = 0;
-                int[] dotsIndices = allocInt(occurrenceLen - m);
-                float[] dotsVals = allocFloat(occurrenceLen - m);
+                int[] dotsIndices = allocInt(occurrenceLen - n);
+                float[] dotsVals = allocFloat(occurrenceLen - n);
 
                 for (int m = n; m < occurrenceLen; m++) {
                     int occurrenceBIndex = occurrenceIndices[m];
