@@ -146,6 +146,24 @@ public class PairwiseSimilarity {
             }
             return storeIndex;
         }
+
+        private void bubbleSort(int[] arr, float[] coarr, int len) {
+            boolean change = false;
+            do {
+                for (int i = 1; i < len; i++) {
+                    if (arr[i] < arr[i-1]) {
+                        int tmp = arr[i];
+                        arr[i] = arr[i-1];
+                        arr[i-1] = tmp;
+                        float tmpf = coarr[i];
+                        coarr[i] = coarr[i-1];
+                        coarr[i-1] = tmpf;
+                        change = true;
+                    }
+                }
+            } while (change);
+        }
+
   private void quicksort(int[] arr, float[] coarr, int len, int[] partitions1,
           int[] partitions2) {
 
@@ -207,19 +225,20 @@ public class PairwiseSimilarity {
             int cooccurrences = 0;
             int prunedCooccurrences = 0;
 
-            int[] partitions1 = allocInt(occurrenceLen * 2);
-            int[] partitions2 = allocInt(occurrenceLen * 2);
+            // int[] partitions1 = allocInt(occurrenceLen * 2);
+            // int[] partitions2 = allocInt(occurrenceLen * 2);
 
-            quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
-                    partitions1, partitions2);
+            // quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
+            //         partitions1, partitions2);
+            bubbleSort(occurrenceIndices, occurernceVals, occurrenceLen);
 
             for (int n = 0; n < occurrenceLen; n++) {
                 int occurrenceAIndex = occurrenceIndices[n];
                 float occurrenceAVal = occurrenceVals[n];
 
                 int dotsSoFar = 0;
-                int[] dotsIndices = allocInt(occurrenceLen);
-                float[] dotsVals = allocFloat(occurrenceLen);
+                int[] dotsIndices = allocInt(occurrenceLen - m);
+                float[] dotsVals = allocFloat(occurrenceLen - m);
 
                 for (int m = n; m < occurrenceLen; m++) {
                     int occurrenceBIndex = occurrenceIndices[m];
