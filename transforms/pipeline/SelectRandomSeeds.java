@@ -49,7 +49,7 @@ public class SelectRandomSeeds {
 
     public static void main(String[] args) {
         if (args.length != 3) {
-            System.out.println("java SelectRandomSeeds input-folder output-folder n-seeds");
+            System.out.println("java SelectRandomSeeds input-folder output-file n-seeds");
             return;
         }
 
@@ -102,7 +102,7 @@ public class SelectRandomSeeds {
             seeds.addAll(r.selected());
         }
 
-        Path outputPath = new Path(output+"/sparse-randomSeed");
+        Path outputPath = new Path(output+"-sparse");
         SequenceFile.Writer writer;
         try {
             writer = SequenceFile.createWriter(fs, conf, outputPath,
@@ -116,7 +116,7 @@ public class SelectRandomSeeds {
             throw new RuntimeException(io);
         }
 
-        outputPath = new Path(output+"/cluster-randomSeed");
+        outputPath = new Path(output+"-cluster");
         try {
             writer = SequenceFile.createWriter(fs, conf, outputPath,
                     org.apache.hadoop.io.Text.class,
