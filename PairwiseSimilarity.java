@@ -150,6 +150,7 @@ public class PairwiseSimilarity {
         private void bubbleSort(int[] arr, float[] coarr, int len) {
             boolean change = false;
             do {
+                change = false;
                 for (int i = 1; i < len; i++) {
                     if (arr[i] < arr[i-1]) {
                         int tmp = arr[i];
