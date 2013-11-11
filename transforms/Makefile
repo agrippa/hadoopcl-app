@@ -70,6 +70,16 @@ pairwise: pipeline/ConvertPairwiseSimilarity.java
 	javac -cp ${CLASSPATH} pipeline/ConvertPairwiseSimilarity.java
 pairwise-run:
 	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity /home/yiskylee/mahout/allTempFiles/weights /home/yiskylee/mahout/allTempFiles/weights-hadoopcl
+
+###########################################################
+################### Compression ###########################
+###########################################################
+compression: compress/MyCompressor.java compress/CompressIntSparse.java compress/CompressTextCluster.java
+	javac -cp ${CLASSPATH} compress/MyCompressor.java
+	javac -cp ${CLASSPATH} compress/CompressIntSparse.java
+	javac -cp ${CLASSPATH} compress/CompressTextCluster.java
+
+
 ###########################################################
 ################### Mahout Pipeline++ #####################
 ###########################################################
