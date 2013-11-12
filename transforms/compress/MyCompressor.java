@@ -66,6 +66,7 @@ public abstract class MyCompressor {
                 }
                 reader.close();
                 writer.close();
+                print("Done");
             } catch(Exception io) {
                 throw new RuntimeException(io);
             }
