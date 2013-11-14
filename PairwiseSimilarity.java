@@ -30,9 +30,9 @@ public class PairwiseSimilarity {
     public static final int GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX = 0;
     public static final int GLOBAL_NORMS_INDEX = 1;
 
-    public static class Util {
+    public static class Utils {
 
-        private void stupidSort(int[] arr, int[] coarr, int len) {
+        private static void stupidSort(int[] arr, int[] coarr, int len) {
           for (int i = 0; i < len; i++) {
             int minIndex = i;
             int minVal = arr[i];
@@ -51,28 +51,28 @@ public class PairwiseSimilarity {
           }
         }
 
-        protected int reverseIterateHelper(int queueHead, int queueLength) {
+        protected static int reverseIterateHelper(int queueHead, int queueLength) {
             int tmp = queueHead  -1;
             return tmp < 0 ? queueLength-1 : tmp;
         }
 
-        protected int forwardIterateHelper(int queueHead, int queueLength) {
+        protected static int forwardIterateHelper(int queueHead, int queueLength) {
             int tmp = queueHead + 1;
             return tmp >= queueLength ? 0 : tmp;
         }
 
-        protected int reverseIterate(int queueHead, int[] q, int queueLength) {
+        protected static int reverseIterate(int queueHead, int[] q, int queueLength) {
             return reverseIterateHelper(queueHead, queueLength);
         }
 
-        protected int forwardIterate(int queueHead, int[] q, int queueLength) {
+        protected static int forwardIterate(int queueHead, int[] q, int queueLength) {
             return forwardIterateHelper(queueHead, queueLength);
         }
 
         /*
          * Already know the first element has been used and is no longer needed
          */
-        protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
+        protected static void insert(int newIndex, int newVector, int[] queueOfOffsets,
             int[] queueOfVectors, int queueLength, int queueHead) {
           int emptySlot = queueHead;
           int checkingSlot = reverseIterate(emptySlot, queueOfOffsets, queueLength);
@@ -89,26 +89,8 @@ public class PairwiseSimilarity {
         }
 
         public static int merge(HadoopCLFsvecValueIterator valsIter,
-                int[] outputIndices, float[] outputVals, int totalNElements) {
-
-            int totalNElements = 0;
-            for (int i = 0; i < valsIter.nValues(); i++) {
-                totalNElements += valsIter.vectorLength(i);
-            }
-
-            // Arrays to merge input values into
-            int[] dotsIndices = allocInt(totalNElements);
-            float[] dotsVals = allocFloat(totalNElements);
-
-            // Stores an index indicating how far we've incremented into each
-            // input vector so far.
-            int[] vectorIndices = allocInt(valsIter.nValues());
-            // Stores actual index values from the vectors, the current
-            // minimum for that vector that hasn't been merged into the
-            // output vector.
-            int[] queueOfOffsets = allocInt(valsIter.nValues());
-            // Stores ID for vector associated with index in queueOfOffsets.
-            int[] queueOfVectors = allocInt(valsIter.nValues());
+                int[] outputIndices, float[] outputVals, int totalNElements,
+                int[] vectorIndices, int[] queueOfOffsets, int[] queueOfVectors) {
 
             for (int i = 0; i < valsIter.nValues(); i++) {
               valsIter.seekTo(i);
@@ -180,11 +162,11 @@ public class PairwiseSimilarity {
 
               // Write the values we just extracted to the output combined
               // values.
-              if (nOutput > 0 && dotIndices[nOutput-1] == minIndex) {
-                dotVals[nOutput-1] += minValue;
+              if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
+                outputVals[nOutput-1] += minValue;
               } else {
-                dotIndices[nOutput] = minIndex;
-                dotVals[nOutput] = minValue;
+                outputIndices[nOutput] = minIndex;
+                outputVals[nOutput] = minValue;
                 nOutput++;
               }
 
@@ -567,7 +549,18 @@ public class PairwiseSimilarity {
             int[] dotsIndices = allocInt(totalNElements);
             float[] dotsVals = allocFloat(totalNElements);
 
-            int nOutput = merge(valsIter, dotsIndices, dotsVals, totalNElements);
+            // Stores an index indicating how far we've incremented into each
+            // input vector so far.
+            int[] vectorIndices = allocInt(valsIter.nValues());
+            // Stores actual index values from the vectors, the current
+            // minimum for that vector that hasn't been merged into the
+            // output vector.
+            int[] queueOfOffsets = allocInt(valsIter.nValues());
+            // Stores ID for vector associated with index in queueOfOffsets.
+            int[] queueOfVectors = allocInt(valsIter.nValues());
+
+            int nOutput = Utils.merge(valsIter, dotsIndices, dotsVals, totalNElements,
+                vectorIndices, queueOfOffsets, queueOfVectors);
 
             int[] normsIndices = this.getGlobalIndices(GLOBAL_NORMS_INDEX);
             float[] normsVals = this.getGlobalFVals(GLOBAL_NORMS_INDEX);
@@ -679,8 +672,18 @@ public class PairwiseSimilarity {
             int[] combinedIndices = allocInt(totalNElements);
             float[] combinedVals = allocFloat(totalNElements);
 
-            int nOutput = Utils.merge(valsIter, combinedIndices, combinedVals,
-                    totalNElements);
+            // Stores an index indicating how far we've incremented into each
+            // input vector so far.
+            int[] vectorIndices = allocInt(valsIter.nValues());
+            // Stores actual index values from the vectors, the current
+            // minimum for that vector that hasn't been merged into the
+            // output vector.
+            int[] queueOfOffsets = allocInt(valsIter.nValues());
+            // Stores ID for vector associated with index in queueOfOffsets.
+            int[] queueOfVectors = allocInt(valsIter.nValues());
+
+            int nOutput = Utils.merge(valsIter, combinedIndices, combinedVals, totalNElements,
+                vectorIndices, queueOfOffsets, queueOfVectors);
 
             write(key, combinedIndices, combinedVals, nOutput);
         }

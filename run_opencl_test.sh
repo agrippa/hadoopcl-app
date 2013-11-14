@@ -69,13 +69,13 @@ else
     hdfs_chunk_size=268435456
     # mapper=13
     # mapper=8
-    mapper=1
+    mapper=2
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
         # reducer=5
         # reducer=4
-        reducer=1
+        reducer=2
     fi
 
     # NODES=`cat $PBS_NODEFILE | sort | uniq`
