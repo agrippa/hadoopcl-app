@@ -8,7 +8,8 @@ else
     buffer=${4}
     java_heap=${5}
 
-    echo run_opencl_test.sh: Running ${BENCHMARK} with input compression ${FORMAT}, intermediate compression ${MAP_OUTPUTFORMAT}
+    echo run_opencl_test.sh: Running ${BENCHMARK} with input compression \
+        ${FORMAT}, intermediate compression ${MAP_OUTPUTFORMAT}
     echo     Buffer size ${buffer} bytes, Java heap size ${java_heap}G
 
     if [ ${BENCHMARK} == sort ]; then
@@ -87,17 +88,25 @@ else
     ./KILL.sh
     ./CLEAN.sh
 
-    ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} ${java_heap}
+    ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} \
+        ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} \
+        ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} \
+        ${java_heap}
     sleep 60
-    echo Putting inputs from ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
-    ${HADOOP_HOME}/bin/hadoop fs -put ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} ${BENCHMARK}.input
+    echo Putting inputs from \
+        ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
+    ${HADOOP_HOME}/bin/hadoop fs -put \
+        ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} \
+        ${BENCHMARK}.input
     sleep 60
     echo Running Application with ${EXE_NAME}.jar
-    time ${HADOOP_HOME}/bin/hadoop jar ${EXE_NAME}.jar ${EXE_NAME} ${BENCHMARK}.input ${BENCHMARK}.output ${MAP_OUTPUTFORMAT} 
+    time ${HADOOP_HOME}/bin/hadoop jar ${EXE_NAME}.jar ${EXE_NAME} \
+        ${BENCHMARK}.input ${BENCHMARK}.output ${MAP_OUTPUTFORMAT} 
 
      sleep 10
      echo Retrieving Outputs into ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
-     ${HADOOP_HOME}/bin/hadoop fs -get ${BENCHMARK}.output ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
+     ${HADOOP_HOME}/bin/hadoop fs -get ${BENCHMARK}.output \
+         ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
 #     
 #     echo Grepping Logs
 #     NODES=`cat ${HADOOP_HOME}/conf/slaves ${HADOOP_HOME}/conf/masters`
