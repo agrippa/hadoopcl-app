@@ -352,35 +352,148 @@ public class PairwiseSimilarity {
             return -1;
         }
 
+        protected int reverseIterateHelper(int queueHead, int queueLength) {
+            int tmp = queueHead  -1;
+            return tmp < 0 ? queueLength-1 : tmp;
+        }
+
+        protected int forwardIterateHelper(int queueHead, int queueLength) {
+            int tmp = queueHead + 1;
+            return tmp >= queueLength ? 0 : tmp;
+        }
+
+        protected int reverseIterate(int queueHead, int[] q, int queueLength) {
+            return reverseIterateHelper(queueHead, queueLength);
+        }
+
+        protected int forwardIterate(int queueHead, int[] q, int queueLength) {
+            return forwardIterateHelper(queueHead, queueLength);
+        }
+
+        /*
+         * Already know the first element has been used and is no longer needed
+         */
+        protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
+            int[] queueOfVectors, int queueLength, int queueHead) {
+          int emptySlot = queueHead;
+          int checkingSlot = reverseIterate(emptySlot, queueOfOffsets, queueLength);
+
+          while (queueOfOffsets[checkingSlot] > newIndex) {
+            queueOfOffsets[emptySlot] = queueOfOffsets[checkingSlot];
+            queueOfVectors[emptySlot] = queueOfVectors[checkingSlot];
+            emptySlot = checkingSlot;
+            checkingSlot = reverseIterate(checkingSlot, queueOfOffsets, queueLength);
+          }
+
+          queueOfOffsets[emptySlot] = newIndex;
+          queueOfVectors[emptySlot] = newVector;
+        }
+
+
+
         protected void reduce(int row, HadoopCLFsvecValueIterator valsIter) {
-            int totalElements = 0;
+            int totalNElements = 0;
             for (int i = 0; i < valsIter.nValues(); i++) {
-                totalElements += valsIter.vectorLength(i);
+                totalNElements += valsIter.vectorLength(i);
             }
 
-            int[] dotsIndices = allocInt(totalElements);
-            float[] dotsVals = allocFloat(totalElements);
-            int soFar = 0;
+            // Arrays to merge input values into
+            int[] dotsIndices = allocInt(totalNElements);
+            float[] dotsVals = allocFloat(totalNElements);
 
-            /*
-             * Aggregate all input value vectors into the dotsIndices and dotsVals,
-             * probably not filling the whole arrays.
-             */
+            // Stores an index indicating how far we've incremented into each
+            // input vector so far.
+            int[] vectorIndices = allocInt(valsIter.nValues());
+            // Stores actual index values from the vectors, the current
+            // minimum for that vector that hasn't been merged into the
+            // output vector.
+            int[] queueOfOffsets = allocInt(valsIter.nValues());
+            // Stores ID for vector associated with index in queueOfOffsets.
+            int[] queueOfVectors = allocInt(valsIter.nValues());
+
             for (int i = 0; i < valsIter.nValues(); i++) {
-                valsIter.seekTo(i);
-                int[] indices = valsIter.getValIndices();
-                float[] vals = valsIter.getValVals();
-                int len = valsIter.currentVectorLength();
+              valsIter.seekTo(i);
+              vectorIndices[i] = 0;
+              queueOfOffsets[i] = valsIter.getValIndices()[0];
+              queueOfVectors[i] = i;
+            }
 
-                for (int j = 0; j < len; j++) {
-                    int offset = contains(indices[j], dotsIndices, soFar);
-                    if (offset >= 0) {
-                        dotsVals[offset] += vals[j];
-                    } else {
-                        dotsIndices[soFar] = indices[j];
-                        dotsVals[soFar++] = vals[j];
-                    }
+            // Sort queueOfOffsets so that the vectors with the smallest minimum
+            // index is at the front of the queue (i.e. index 0)
+            stupidSort(queueOfOffsets, queueOfVectors, valsIter.nValues());
+
+            // Current queue head, incremented as we pass through the queue
+            int queueHead = 0;
+
+            // The number of individual input elements we've passed over so far.
+            int nProcessed = 0;
+            // The number of individual output elements we've written so far.
+            // This may be less than nProcessed if there are duplicated indices
+            // in different input vectors.
+            int nOutput = 0;
+            // Current length of the queue
+            int queueLength = valsIter.nValues();
+
+            // While we haven't processed all input elements.
+            while (nProcessed < totalNElements) {
+
+              // Retrieve the vector ID in the input vals which has the
+              // smallest minimum index that hasn't been processed so far.
+              int minVector = queueOfVectors[queueHead];
+              boolean dontIncr = false;
+
+              valsIter.seekTo(minVector);
+              int newIndex = ++vectorIndices[minVector];
+              int minIndex = valsIter.getValIndices()[newIndex-1];
+              float minValue = valsIter.getValVals()[newIndex-1];
+
+              if (newIndex < valsIter.currentVectorLength()) {
+                // If there are still elements to be processed in the current
+                // vector, start by grabbing the value of the next smallest
+                // index.
+                int tmp = valsIter.getValIndices()[newIndex];
+                if (tmp <= queueOfOffsets[forwardIterate(queueHead,
+                            queueOfOffsets, queueLength)]) {
+                  // If the next element in the current vector is also smaller
+                  // than any of the current elements in the queue, just place
+                  // it back at our current location in the circular queue and
+                  // don't increment the queueHead below.
+                  queueOfOffsets[queueHead] = tmp;
+                  dontIncr = true;
+                } else {
+                  // Otherwise, we need to insert our newly discovered min for
+                  // the current vector back into the appropriate place in the
+                  // queue.
+                  insert(tmp, minVector,
+                      queueOfOffsets, queueOfVectors,
+                      queueLength, queueHead);
                 }
+              } else {
+                // We've finished all of the elements in the current vector, so
+                // the queue can be resized down.
+                for (int i = queueHead + 1; i < queueLength; i++) {
+                  queueOfOffsets[i-1] = queueOfOffsets[i];
+                  queueOfVectors[i-1] = queueOfVectors[i];
+                }
+                queueLength--;
+              }
+              nProcessed++;
+
+              // Write the values we just extracted to the output combined
+              // values.
+              if (nOutput > 0 && dotIndices[nOutput-1] == minIndex) {
+                dotVals[nOutput-1] += minValue;
+              } else {
+                dotIndices[nOutput] = minIndex;
+                dotVals[nOutput] = minValue;
+                nOutput++;
+              }
+
+              // If we didn't find the next smallest index in the same vector,
+              // need to iterate the queueHead to the next location.
+              if (!dontIncr) {
+                queueHead = forwardIterate(queueHead, queueOfOffsets, queueLength);
+              }
             }
 
             int[] normsIndices = this.getGlobalIndices(GLOBAL_NORMS_INDEX);
@@ -390,7 +503,7 @@ public class PairwiseSimilarity {
                     normsVals, normsLen);
 
             int similaritySoFar = 0;
-            for (int i = 0; i < soFar; i++) {
+            for (int i = 0; i < nOutput; i++) {
                 // similarity_similarity collapses to 'return arg0;'
                 float similarityValue = dotsVals[i];
                 if (similarityValue >= threshold) {
