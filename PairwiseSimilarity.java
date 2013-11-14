@@ -88,6 +88,19 @@ public class PairwiseSimilarity {
           queueOfVectors[emptySlot] = newVector;
         }
 
+        /*
+         * 1. outputIndices and outputVals should be as long as the number of
+         *    unique indices in the vectors referenced by valsIter.
+         * 2. totalNElements should be the sum of all the vector lengths in
+         *    valsIter.
+         * 3. vectorIndices, queueOfOffsets, and queueOfVectors should all be as
+         *    long as the number of vectors in valIters.
+         *
+         * The output of this function will be a merged sparse vector in
+         * outputIndices and outputVals where for index i the value v is the sum
+         * of all elements in the input vectors that are associated with index
+         * i. This will also return the length of the merged vector.
+         */
         public static int merge(HadoopCLFsvecValueIterator valsIter,
                 int[] outputIndices, float[] outputVals, int totalNElements,
                 int[] vectorIndices, int[] queueOfOffsets, int[] queueOfVectors) {
