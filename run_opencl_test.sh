@@ -78,7 +78,6 @@ else
     fi
 
     # NODES=`cat $PBS_NODEFILE | sort | uniq`
-    NODES=`cat /opt/hadoop/conf/slaves`
 
     echo Killing
     ./KILL.sh
@@ -101,6 +100,7 @@ else
      ${HADOOP_HOME}/bin/hadoop fs -get ${BENCHMARK}.output ${HADOOP_OUTPUT_DIR}/${BENCHMARK}.output
 #     
 #     echo Grepping Logs
+#     NODES=`cat ${HADOOP_HOME}/conf/slaves ${HADOOP_HOME}/conf/masters`
 #     for n in ${NODES}; do
 #         ssh -o ConnectTimeout=2 ${n} "grep -n -R 'DIAGNOSTICS' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}"
 #         ssh -o ConnectTimeout=2 ${n} "grep -n -R 'Exception' /tmp/${PBS_JOBID}/* > ${HADOOP_LOG_DIR}/diagnostics.${BENCHMARK}.${FORMAT}.${MAP_OUTPUTFORMAT}.opencl.${PBS_JOBID}.${mapper}.${n}.exceptions"

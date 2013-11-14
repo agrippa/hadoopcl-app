@@ -1,6 +1,7 @@
 import java.util.*;
 import java.lang.*;
 
+import org.apache.hadoop.mapred.JobConf;
 import org.apache.mahout.math.map.OpenIntIntHashMap;
 import org.apache.mahout.math.hadoop.similarity.cooccurrence.Vectors;
 import org.apache.hadoop.fs.FileSystem;
@@ -165,6 +166,25 @@ public class PairwiseSimilarity {
             } while (change);
         }
 
+        private void stupidSort(int[] arr, float[] coarr, int len) {
+          for (int i = 0; i < len; i++) {
+            int minIndex = i;
+            int minVal = arr[i];
+            for (int j = i + 1; j < len; j++) {
+              if (arr[j] < minVal) {
+                minIndex = j;
+                minVal = arr[j];
+            }
+          }
+          arr[minIndex] = arr[i];
+          arr[i] = minVal;
+
+          float tmp = coarr[i];
+          coarr[i] = coarr[minIndex];
+          coarr[minIndex] = tmp;
+        }
+      }
+
   private void quicksort(int[] arr, float[] coarr, int len, int[] partitions1,
           int[] partitions2) {
 
@@ -223,16 +243,11 @@ public class PairwiseSimilarity {
 
         protected void map(int column, int[] occurrenceIndices,
                 float[] occurrenceVals, int occurrenceLen) {
+
             int cooccurrences = 0;
             int prunedCooccurrences = 0;
 
-            // int[] partitions1 = allocInt(occurrenceLen * 2);
-            // int[] partitions2 = allocInt(occurrenceLen * 2);
-
-            // quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
-            //         partitions1, partitions2);
-            bubbleSort(occurrenceIndices, occurrenceVals, occurrenceLen);
-
+            stupidSort(occurrenceIndices, occurrenceVals, occurrenceLen);
             for (int n = 0; n < occurrenceLen; n++) {
                 int occurrenceAIndex = occurrenceIndices[n];
                 float occurrenceAVal = occurrenceVals[n];
@@ -244,25 +259,34 @@ public class PairwiseSimilarity {
                 for (int m = n; m < occurrenceLen; m++) {
                     int occurrenceBIndex = occurrenceIndices[m];
                     float occurrenceBVal = occurrenceVals[m];
-                    // if (threshold == NO_THRESHOLD ||
-                    //         consider(occurrenceAIndex, occurrenceAVal,
-                    //             occurrenceBIndex, occurrenceBVal))
-                    {
-                        dotsIndices[dotsSoFar] = occurrenceBIndex;
-                        dotsVals[dotsSoFar] = similarity_aggregate(
-                                occurrenceAVal, occurrenceBVal);
-                        dotsSoFar++;
-                        cooccurrences++; // unused
-                    }
-                    // else {
-                    //     prunedCooccurrences++; // unused
-                    // }
+                    dotsIndices[dotsSoFar] = occurrenceBIndex;
+                    dotsVals[dotsSoFar] = similarity_aggregate(
+                            occurrenceAVal, occurrenceBVal);
+                    dotsSoFar++;
+                    cooccurrences++; // unused
                 }
 
                 if (dotsSoFar > 0) {
                     write(column, dotsIndices, dotsVals, dotsSoFar);
                 }
             }
+
+            // int[] indices = allocInt(3);
+            // float[] vals = allocFloat(3);
+            // indices[0] = 0; indices[1] = 1; indices[2] = 2;
+            // vals[0] = 0; vals[1] = 1; vals[2] = 2;
+            // write(column, indices, vals, 3);
+
+            // int[] partitions1 = allocInt(occurrenceLen * 2);
+            // int[] partitions2 = allocInt(occurrenceLen * 2);
+
+            // quicksort(occurrenceIndices, occurrenceVals, occurrenceLen,
+            //         partitions1, partitions2);
+
+            /*
+            bubbleSort(occurrenceIndices, occurrenceVals, occurrenceLen);
+            
+            */
         }
 
         public int getOutputPairsPerInput() {
@@ -490,7 +514,9 @@ public class PairwiseSimilarity {
        conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
-       job.setJarByClass(PairwiseSimilarity.class);
+       ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
+       // job.setJarByClass(PairwiseSimilarity.class);
+       // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(FSparseVectorWritable.class);
