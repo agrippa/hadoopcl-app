@@ -42,6 +42,11 @@ all: SetupInputCompression.class
 	jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
 
+cpu-pairwise:
+	javac -g -classpath ${CLASSPATH} -d cpu-pairwise-classes/ pairwiseSimilarityCpu.java
+	jar cvf pairwiseSimilarityCpu.jar -C cpu-pairwise-classes/ . SetupInputCompression.class
+
+
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
 
