@@ -42,10 +42,36 @@ all: SetupInputCompression.class
 	jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
 
-cpu-pairwise:
+cpu-pairwise: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d cpu-pairwise-classes/ pairwiseSimilarityCpu.java
-	jar cvf pairwiseSimilarityCpu.jar -C cpu-pairwise-classes/ . SetupInputCompression.class
-
+	jar cvf pairwiseSimilarityCpu.jar -C cpu-pairwise-classes/ . SetupInputCompression.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/Vector.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/Vector$$Element.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/VectorWritable.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/AbstractVector.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/LengthCachingVector.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/SequentialAccessSparseVector.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/RandomAccessSparseVector.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/RowSimilarityJob.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/common/AbstractJob.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/VectorSimilarityMeasure.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/CooccurrenceCountSimilarity.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/common/ClassUtils.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/CountbasedMeasure.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/Vectors.class \
+	  -C /home/yiskylee/mahout/trunk/core/target/classes org/apache/mahout/math/Varint.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/map/OpenIntIntHashMap.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/map/AbstractIntIntMap.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/set/AbstractSet.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/PersistentObject.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/function/IntIntProcedure.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/function/IntProcedure.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/Swapper.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/function/IntComparator.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/map/PrimeFinder.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/IndexException.class \
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/CardinalityException.class \
+	  -C /home/yiskylee/hadoopcl/build/classes org/apache/hadoop/io/compress/GzipCodec.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*

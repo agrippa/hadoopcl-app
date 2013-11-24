@@ -34,6 +34,8 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
     abstract protected KeyType getKeyObject();
     abstract protected ValueType getValObject();
 
+    protected void finish() { }
+
     private void runReadOfFile(Path path) throws IOException {
 
         Configuration conf = new Configuration();
@@ -83,13 +85,16 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
         } else {
             runReadOfFile(new Path(file.getAbsolutePath()));
         }
+        finish();
     }
 
     protected String LimitedVectorToString(org.apache.mahout.math.Vector vec,
             int maxStringLength) {
         StringBuffer sb = new StringBuffer();
-        sb.append("(length = ");
+        sb.append("(nonzeros = ");
         sb.append(vec.getNumNonZeroElements());
+        sb.append(", size=");
+        sb.append(vec.size());
         sb.append(") { ");
         boolean broke = false;
         Iterator<org.apache.mahout.math.Vector.Element> iter = vec.nonZeroes().iterator();
@@ -118,6 +123,30 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
         boolean broke = false;
         int[] indices = vec.indices();
         double[] vals = vec.vals();
+        for(int i = 0; i < vec.size(); i++) {
+            sb.append(indices[i]);
+            sb.append(":");
+            sb.append(vals[i]);
+            sb.append(" ");
+            if(sb.length() > maxStringLength) {
+                broke = true;
+                break;
+            }
+        }
+        if(broke) sb.append("... ");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    protected String LimitedFSparseVectorToString(FSparseVectorWritable vec,
+            int maxStringLength) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("(length = ");
+        sb.append(vec.size());
+        sb.append(") { ");
+        boolean broke = false;
+        int[] indices = vec.indices();
+        float[] vals = vec.vals();
         for(int i = 0; i < vec.size(); i++) {
             sb.append(indices[i]);
             sb.append(":");

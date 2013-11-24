@@ -24,10 +24,11 @@ import org.apache.mahout.math.Vector;
 public class TestGlobalsOnGPU {
     public static class TestMapper extends IntIntIntIntHadoopCLMapperKernel {
         protected void map(int key, int val) {
-            int[] indices = this.getGlobalIndices(0);
-            double[] vals = this.getGlobalVals(0);
-            int length = this.globalsLength(0);
-            write(key, indices[key % length] );
+            write(key, (int)referenceGlobalFval(0, val));
+            // int[] indices = this.getGlobalIndices(0);
+            // double[] vals = this.getGlobalVals(0);
+            // int length = this.globalsLength(0);
+            // write(key, indices[key % length] );
         }
         public int getOutputPairsPerInput() {
             return 1;
