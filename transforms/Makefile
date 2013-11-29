@@ -70,8 +70,12 @@ file-merger:
 
 pairwise: pipeline/ConvertPairwiseSimilarity.java
 	javac -cp ${CLASSPATH} pipeline/ConvertPairwiseSimilarity.java
+pairwise64: pipeline/ConvertPairwiseSimilarity.java
+	javac -cp ${CLASSPATH} pipeline/ConvertPairwiseSimilarity64.java
 pairwise-run:
 	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-hadoopcl-small
+pairwise64-run:
+	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity64 /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-hadoopcl-small-64
 
 ###########################################################
 ################### Compression ###########################

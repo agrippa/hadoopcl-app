@@ -61,6 +61,10 @@ else
         EXE_NAME=PairwiseSimilarity
     fi
 
+    if [ ${BENCHMARK} == pairwise64 ]; then
+        EXE_NAME=PairwiseSimilarity64
+    fi
+
     CPU_GROUP=36
     GPU_GROUP=36
     CPU_THREAD=256
@@ -69,7 +73,7 @@ else
     hdfs_chunk_size=268435456
     # mapper=13
     # mapper=8
-    mapper=4
+    mapper=1
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
