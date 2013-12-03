@@ -36,8 +36,9 @@ ReadIntMap.class: ReadIntMap.java
 ReadIntFSparse.class: ReadIntFSparse.java
 	javac -cp ${CLASSPATH} ReadIntFSparse.java
 
-read-int-vector:
-	java -cp ${CLASSPATH} ReadIntVector ../pairwise.small.correct &> mahout.out
+read:
+	java -cp ${CLASSPATH} ReadIntSparse ../part-r-00000.hadoopcl | less
+	# java -cp ${CLASSPATH} ReadIntVector ../part-r-00000 | less
 
 clean:
 	rm *.class

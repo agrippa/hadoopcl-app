@@ -65,7 +65,7 @@ else
         EXE_NAME=PairwiseSimilarity64
     fi
 
-    CPU_GROUP=36
+    CPU_GROUP=1
     GPU_GROUP=36
     CPU_THREAD=256
     GPU_THREAD=256

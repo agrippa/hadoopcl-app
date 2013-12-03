@@ -102,11 +102,7 @@ public class PairwiseSimilarity64 {
             double numNonZeroEntriesA = referenceGlobalVal(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX,
                 occurrenceAIndex);
 
-            /* CooccurrenceCountSimilarity */
             if (threshold != NO_THRESHOLD && numNonZeroEntriesA < threshold) continue;
-            /* CosineSimilarity */
-            // double maxValueA = referenceGlobalVal(GLOBAL_MAX_VALUES_INDEX,
-            //     occurrenceAIndex);
 
             int dotsSoFar = 0;
             if (dotsIndices == null) {
@@ -119,17 +115,10 @@ public class PairwiseSimilarity64 {
 
               double numNonZeroEntriesB = referenceGlobalVal(GLOBAL_NUM_NON_ZERO_ENTRIES_INDEX,
                   occurrenceBIndex);
-              /* CosineSimilarity */
-              // double maxValueB = referenceGlobalVal(GLOBAL_MAX_VALUES_INDEX,
-              //     occurrenceBIndex);
 
               if (threshold == NO_THRESHOLD ||
                   similarity_consider(numNonZeroEntriesA, numNonZeroEntriesB)) {
 
-              /* CosineSimilarity */
-              // if (threshold == NO_THRESHOLD ||
-              //     similarity_consider(numNonZeroEntriesB, numNonZeroEntriesB,
-              //       maxValueA, maxValueB)) {
                 dotsIndices[dotsSoFar] = occurrenceBIndex;
                 dotsVals[dotsSoFar] = similarity_aggregate(
                     occurrenceAVal, occurrenceVals[m]);
@@ -137,14 +126,12 @@ public class PairwiseSimilarity64 {
               }
             }
 
-            // if (dotsSoFar > 0) {
-            //   write(occurrenceAIndex, dotsIndices, dotsVals, dotsSoFar);
-            //   dotsIndices = null;
-            //   dotsVals = null;
-            // }
+            if (dotsSoFar > 0) {
+              write(occurrenceAIndex, dotsIndices, dotsVals, dotsSoFar);
+              dotsIndices = null;
+              dotsVals = null;
+            }
           }
-
-          return;
         }
 
         public int getOutputPairsPerInput() {
@@ -152,7 +139,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.GPU, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -203,11 +190,11 @@ public class PairwiseSimilarity64 {
             // minimum for that vector that hasn't been merged into the
             // output vector.
             int[] queueOfOffsets = allocInt(valsIter.nValues());
-            // Stores ID for vector associated with index in queueOfOffsets.
+            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
             nOutput = HadoopCLUtils.merge(valsIter, dotsIndices, dotsVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfVectors);
+                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
           // double normA = referenceGlobalFval(GLOBAL_NORMS_INDEX, row);
@@ -249,7 +236,7 @@ public class PairwiseSimilarity64 {
 
     public static class PairwiseCombiner extends
             IntSvecIntSvecHadoopCLReducerKernel {
-
+/*
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
           int[] combinedIndices = null;
           double[] combinedVals = null;
@@ -286,14 +273,53 @@ public class PairwiseSimilarity64 {
             // minimum for that vector that hasn't been merged into the
             // output vector.
             int[] queueOfOffsets = allocInt(valsIter.nValues());
-            // Stores ID for vector associated with index in queueOfOffsets.
+            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
             nOutput = HadoopCLUtils.merge(valsIter, combinedIndices, combinedVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfVectors);
+                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
             write(key, combinedIndices, combinedVals, nOutput);
+        }
+
+        public int getOutputPairsPerInput() {
+            return 1;
+        }
+        public void deviceStrength(DeviceStrength str) {
+            str.add(Device.TYPE.CPU, 10);
+        }
+        public Device.TYPE[] validDevices() {
+            return new Device.TYPE[] { Device.TYPE.CPU };
+        }
+        */
+        protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
+          HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
+          TreeSet<Integer> sorted = new TreeSet<Integer>();
+
+          for (int i = 0; i < valsIter.nValues(); i++) {
+            valsIter.seekTo(i);
+            int[] indices = valsIter.getValIndices();
+            double[] vals = valsIter.getValVals();
+            for (int j = 0; j < valsIter.currentVectorLength(); j++) {
+              if (!merged.containsKey(indices[j])) {
+                sorted.add(indices[j]);
+                merged.put(indices[j], new MutableDouble(vals[j]));
+              } else {
+                merged.get(indices[j]).incr(vals[j]);
+              }
+            }
+          }
+
+          int[] outputIndices = new int[sorted.size()];
+          double[] outputVals = new double[sorted.size()];
+          int index = 0;
+          for (Integer i : sorted) {
+            outputIndices[index] = i.intValue();
+            outputVals[index] = merged.get(i).val;
+            index++;
+          }
+          write(key, outputIndices, outputVals, outputIndices.length);
         }
 
         public int getOutputPairsPerInput() {
@@ -304,6 +330,14 @@ public class PairwiseSimilarity64 {
         }
         public Device.TYPE[] validDevices() {
             return new Device.TYPE[] { Device.TYPE.JAVA };
+        }
+
+        class MutableDouble {
+          public double val;
+          public MutableDouble(double v) {
+            this.val = v;
+          }
+          public void incr(double v) { this.val += v; }
         }
     }
 

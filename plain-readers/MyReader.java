@@ -45,6 +45,8 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
             reader = new SequenceFile.Reader(fs, path, conf);
         } catch(Exception e) {
             // in case of non-seq files
+            System.out.println("Skipping non-sequence file "+path.toString()+" due to:");
+            e.printStackTrace();
             return;
         }
         if (enablePrinting) {

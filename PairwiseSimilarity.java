@@ -165,11 +165,12 @@ public class PairwiseSimilarity {
             // minimum for that vector that hasn't been merged into the
             // output vector.
             int[] queueOfOffsets = allocInt(valsIter.nValues());
+            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             // Stores ID for vector associated with index in queueOfOffsets.
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
             nOutput = HadoopCLUtils.merge(valsIter, dotsIndices, dotsVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfVectors);
+                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
           // float normA = referenceGlobalFval(GLOBAL_NORMS_INDEX, row);
@@ -248,11 +249,12 @@ public class PairwiseSimilarity {
             // minimum for that vector that hasn't been merged into the
             // output vector.
             int[] queueOfOffsets = allocInt(valsIter.nValues());
+            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             // Stores ID for vector associated with index in queueOfOffsets.
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
             nOutput = HadoopCLUtils.merge(valsIter, combinedIndices, combinedVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfVectors);
+                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
             write(key, combinedIndices, combinedVals, nOutput);

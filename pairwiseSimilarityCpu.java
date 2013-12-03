@@ -182,12 +182,14 @@ public class pairwiseSimilarityCpu {
 				throws IOException, InterruptedException {
 			Iterator<VectorWritable> partialDotsIterator = partialDots
 					.iterator();
-                        int count = 1;
 			Vector dots = partialDotsIterator.next().get();
+                        long totalNonZero = dots.getNumNonZeroElements();
+                        int count = 1;
 			while (partialDotsIterator.hasNext()) {
                           count++;
 				Vector toAdd = partialDotsIterator.next().get();
 				for (Element nonZeroElement : toAdd.nonZeroes()) {
+                                  totalNonZero++;
 					dots.setQuick(nonZeroElement.index(),
 							dots.getQuick(nonZeroElement.index())
 									+ nonZeroElement.get());
