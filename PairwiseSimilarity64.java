@@ -14,7 +14,6 @@ import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
 import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
-import org.apache.hadoop.mapreduce.HadoopCLUtils;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -155,12 +154,12 @@ public class PairwiseSimilarity64 {
         private final boolean excludeSelfSimilarity = false;
 
         protected void reduce(int row, HadoopCLSvecValueIterator valsIter) {
-
           int[] dotsIndices = null;
           double[] dotsVals = null;
           int nOutput = -1;
 
           if (valsIter.nValues() == 1) {
+            valsIter.seekTo(0);
             int length = valsIter.currentVectorLength();
             dotsIndices = allocInt(length);
             dotsVals = allocDouble(length);
@@ -176,7 +175,8 @@ public class PairwiseSimilarity64 {
           } else {
             int totalNElements = 0;
             for (int i = 0; i < valsIter.nValues(); i++) {
-              totalNElements += valsIter.vectorLength(i);
+              valsIter.seekTo(i);
+              totalNElements += valsIter.currentVectorLength();
             }
 
             // Arrays to merge input values into
@@ -193,7 +193,7 @@ public class PairwiseSimilarity64 {
             int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
-            nOutput = HadoopCLUtils.merge(valsIter, dotsIndices, dotsVals, totalNElements,
+            nOutput = merge(valsIter, dotsIndices, dotsVals, totalNElements,
                 vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
@@ -203,7 +203,7 @@ public class PairwiseSimilarity64 {
           for (int i = 0; i < nOutput; i++) {
             // similarity_similarity collapses to 'return arg0;'
             double similarityValue = dotsVals[i];
-            if (similarityValue >= threshold) {
+            if (similarityValue >= threshold && similaritySoFar != i) {
               dotsIndices[similaritySoFar] = dotsIndices[i];
               dotsVals[similaritySoFar] = similarityValue;
               similaritySoFar++;
@@ -227,21 +227,20 @@ public class PairwiseSimilarity64 {
           return 1;
         }
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
-          return new Device.TYPE[] { Device.TYPE.JAVA };
+          return new Device.TYPE[] { Device.TYPE.CPU };
         }
       }
 
     public static class PairwiseCombiner extends
             IntSvecIntSvecHadoopCLReducerKernel {
-/*
+
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
           int[] combinedIndices = null;
           double[] combinedVals = null;
           int nOutput = -1;
-
           if (valsIter.nValues() == 1) {
             int length = valsIter.currentVectorLength();
             combinedIndices = allocInt(length);
@@ -254,18 +253,17 @@ public class PairwiseSimilarity64 {
               combinedIndices[i] = inputIndices[i];
               combinedVals[i] = inputVals[i];
             }
+            
             nOutput = length;
-
           } else {
             int totalNElements = 0;
             for (int i = 0; i < valsIter.nValues(); i++) {
-                totalNElements += valsIter.vectorLength(i);
+                valsIter.seekTo(i);
+                totalNElements += valsIter.currentVectorLength();
             }
-
             // Arrays to merge input values into
             combinedIndices = allocInt(totalNElements);
             combinedVals = allocDouble(totalNElements);
-
             // Stores an index indicating how far we've incremented into each
             // input vector so far.
             int[] vectorIndices = allocInt(valsIter.nValues());
@@ -276,23 +274,24 @@ public class PairwiseSimilarity64 {
             int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
             int[] queueOfVectors = allocInt(valsIter.nValues());
 
-            nOutput = HadoopCLUtils.merge(valsIter, combinedIndices, combinedVals, totalNElements,
+            nOutput = merge(valsIter, combinedIndices, combinedVals, totalNElements,
                 vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
 
-            write(key, combinedIndices, combinedVals, nOutput);
+          write(key, combinedIndices, combinedVals, nOutput);
         }
 
         public int getOutputPairsPerInput() {
             return 1;
         }
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.CPU, 10);
+            str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
-            return new Device.TYPE[] { Device.TYPE.CPU };
+            return new Device.TYPE[] { Device.TYPE.JAVA };
         }
-        */
+
+        /*
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
           HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
           TreeSet<Integer> sorted = new TreeSet<Integer>();
@@ -339,6 +338,7 @@ public class PairwiseSimilarity64 {
           }
           public void incr(double v) { this.val += v; }
         }
+        */
     }
 
     public static void main(String[] args) throws Exception {
@@ -397,6 +397,8 @@ public class PairwiseSimilarity64 {
 
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
+
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
