@@ -400,7 +400,7 @@ public class PairwiseSimilarity64 {
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);

@@ -72,8 +72,7 @@ cpu-pairwise: SetupInputCompression.class
 	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/function/IntComparator.class \
 	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/map/PrimeFinder.class \
 	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/IndexException.class \
-	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/CardinalityException.class \
-	  -C /home/yiskylee/hadoopcl/build/classes org/apache/hadoop/io/compress/GzipCodec.class
+	  -C /home/yiskylee/mahout/trunk/math/target/classes org/apache/mahout/math/CardinalityException.class
 
 clean:
 	rm *.class *.jar openclsortclasses/* javasortclasses/* openclkmeansclasses/* javakmeansclasses/* openclpiclasses/* javapiclasses/* openclblackscholesclasses/* javablackscholesclasses/* testmapinputsvecclasses/*
