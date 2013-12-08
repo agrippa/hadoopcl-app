@@ -94,6 +94,8 @@ full-pipeline: wiki-parser wiki-txt-to-seq asf-txt-to-seq word-count \
 		merge-word-count word-id tf-vectors tf-to-df prune-tf tfidf \
 		mypruner
 
+sparse-to-new: pipeline/SparseToNewSparse.java
+	javac -cp ${CLASSPATH} pipeline/SparseToNewSparse.java
 wiki-parser: pipeline/ParseWiki.java
 	javac -cp ${CLASSPATH} pipeline/ParseWiki.java
 wiki-txt-to-seq: pipeline/WikiTxtToSeq.java

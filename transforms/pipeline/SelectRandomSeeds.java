@@ -149,7 +149,6 @@ public class SelectRandomSeeds {
             final org.apache.hadoop.io.SparseVectorWritable val =
                 new org.apache.hadoop.io.SparseVectorWritable();
 
-
             try {
                 while(reader.next(key, val)) {
                     count++;
