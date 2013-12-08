@@ -203,9 +203,11 @@ public class PairwiseSimilarity64 {
           for (int i = 0; i < nOutput; i++) {
             // similarity_similarity collapses to 'return arg0;'
             double similarityValue = dotsVals[i];
-            if (similarityValue >= threshold && similaritySoFar != i) {
-              dotsIndices[similaritySoFar] = dotsIndices[i];
-              dotsVals[similaritySoFar] = similarityValue;
+            if (similarityValue >= threshold) {
+              if (similaritySoFar != i) {
+                dotsIndices[similaritySoFar] = dotsIndices[i];
+                dotsVals[similaritySoFar] = similarityValue;
+              }
               similaritySoFar++;
             }
           }
@@ -227,10 +229,10 @@ public class PairwiseSimilarity64 {
           return 1;
         }
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
-          return new Device.TYPE[] { Device.TYPE.CPU };
+          return new Device.TYPE[] { Device.TYPE.JAVA };
         }
       }
 
@@ -398,7 +400,7 @@ public class PairwiseSimilarity64 {
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
+       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
