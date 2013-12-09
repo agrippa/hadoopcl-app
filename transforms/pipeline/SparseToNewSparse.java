@@ -55,8 +55,8 @@ public class SparseToNewSparse {
         this.outputFolder = outputFolder;
       }
 
-      private NewSparseVectorWritable convert(SparseVectorWritable vec) {
-        return new NewSparseVectorWritable(vec);
+      private BSparseVectorWritable convert(SparseVectorWritable vec) {
+        return new BSparseVectorWritable(vec);
       }
 
       protected void callback(File currentFile) {
@@ -69,7 +69,7 @@ public class SparseToNewSparse {
           reader = new SequenceFile.Reader(fs, inputPath, conf);
           writer = SequenceFile.createWriter(fs, conf, outputPath,
               org.apache.hadoop.io.IntWritable.class,
-              org.apache.hadoop.io.NewSparseVectorWritable.class);
+              org.apache.hadoop.io.BSparseVectorWritable.class);
         } catch(IOException io) {
           throw new RuntimeException(io);
         }
@@ -80,7 +80,7 @@ public class SparseToNewSparse {
 
         try {
           while (reader.next(key, val)) {
-            final NewSparseVectorWritable outputVal = convert(val);
+            final BSparseVectorWritable outputVal = convert(val);
             writer.append(key, outputVal);
           }
           reader.close();

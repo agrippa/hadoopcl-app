@@ -116,6 +116,30 @@ public abstract class MyReader<KeyType extends Writable, ValueType extends Writa
         return sb.toString();
     }
 
+    protected String LimitedBSparseVectorToString(BSparseVectorWritable vec,
+            int maxStringLength) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("(length = ");
+        sb.append(vec.size());
+        sb.append(") { ");
+        boolean broke = false;
+        int[] indices = vec.indices();
+        double[] vals = vec.vals();
+        for(int i = 0; i < vec.size(); i++) {
+            sb.append(indices[i]);
+            sb.append(":");
+            sb.append(vals[i]);
+            sb.append(" ");
+            if(sb.length() > maxStringLength) {
+                broke = true;
+                break;
+            }
+        }
+        if(broke) sb.append("... ");
+        sb.append("}");
+        return sb.toString();
+    }
+
     protected String LimitedSparseVectorToString(SparseVectorWritable vec,
             int maxStringLength) {
         StringBuffer sb = new StringBuffer();

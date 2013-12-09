@@ -10,9 +10,9 @@ import org.apache.hadoop.mapreduce.OpenCLMapper;
 import org.apache.hadoop.mapreduce.OpenCLReducer;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
@@ -33,7 +33,7 @@ public class PairwiseSimilarity64 {
     public static final double NO_THRESHOLD = Double.MIN_VALUE;
 
     public static class PairwiseMapper extends
-      IntSvecIntSvecHadoopCLMapperKernel {
+      IntBsvecIntBsvecHadoopCLMapperKernel {
 
         private final double threshold = 5000.0f;
         // private final double threshold = NO_THRESHOLD;
@@ -147,7 +147,7 @@ public class PairwiseSimilarity64 {
       }
 
     public static class PairwiseReducer extends
-      IntSvecIntSvecHadoopCLReducerKernel {
+      IntBsvecIntBsvecHadoopCLReducerKernel {
 
         private final double threshold = 5000.0f;
         // private final double threshold = Double.MIN_VALUE;
@@ -237,7 +237,7 @@ public class PairwiseSimilarity64 {
       }
 
     public static class PairwiseCombiner extends
-            IntSvecIntSvecHadoopCLReducerKernel {
+            IntBsvecIntBsvecHadoopCLReducerKernel {
 
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
           int[] combinedIndices = null;
@@ -386,10 +386,10 @@ public class PairwiseSimilarity64 {
        // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
 
        job.setOutputKeyClass(IntWritable.class);
-       job.setOutputValueClass(SparseVectorWritable.class);
+       job.setOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapOutputKeyClass(IntWritable.class);
-       job.setMapOutputValueClass(SparseVectorWritable.class);
+       job.setMapOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
        job.setOCLMapperClass(PairwiseMapper.class);
@@ -400,7 +400,7 @@ public class PairwiseSimilarity64 {
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
+       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);

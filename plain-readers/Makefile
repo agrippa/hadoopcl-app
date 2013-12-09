@@ -3,7 +3,7 @@ include ../Makefile.common
 all: ReadTextLong.class ReadTextInt.class ReadTextVector.class ReadIntCluster.class \
 		ReadIntFloat.class ReadDoubleDouble.class ReadIntInt.class ReadIntLong.class \
 		ReadIntSparse.class ReadTextCluster.class ReadIntDouble.class ReadIntVector.class \
-		ReadIntMap.class ReadIntFSparse.class
+		ReadIntMap.class ReadIntFSparse.class ReadIntBSparse.class
 
 ReadIntSparse.class: ReadIntSparse.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntSparse.java
@@ -35,6 +35,8 @@ ReadIntMap.class: ReadIntMap.java
 	javac -cp ${CLASSPATH} ReadIntMap.java
 ReadIntFSparse.class: ReadIntFSparse.java
 	javac -cp ${CLASSPATH} ReadIntFSparse.java
+ReadIntBSparse.class: ReadIntBSparse.java
+	javac -cp ${CLASSPATH} ReadIntBSparse.java
 
 read:
 	java -cp ${CLASSPATH} ReadIntSparse ../part-r-00000.hadoopcl | less
