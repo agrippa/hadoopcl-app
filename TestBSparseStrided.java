@@ -9,7 +9,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.IntDoubleIntDoubleHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.IntSvecIntDoubleHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntDoubleHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLDoubleValueIterator;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
@@ -22,9 +22,9 @@ import com.amd.aparapi.device.Device;
 import org.apache.mahout.math.Vector;
 import org.apache.mahout.clustering.iterator.ClusterWritable;
 
-public class TestStridedPerf {
+public class TestBSparseStrided {
 
-    public static class TestStridedMapper extends IntSvecIntDoubleHadoopCLMapperKernel {
+    public static class TestBSparseStridedMapper extends IntBsvecIntDoubleHadoopCLMapperKernel {
         protected void map(int key, int[] indices, double[] vals, int len) {
             // double sum = 0.0;
             // for (int iter = 0; iter < 1000; iter++) {
@@ -33,7 +33,7 @@ public class TestStridedPerf {
             //     }
             // }
             // write(key, sum);
-            write(key, (double)indices[0]);
+            write(key, (double)indices[1]);
         }
         public int getOutputPairsPerInput() { return 1; }
         public Device.TYPE[] validDevices() { return null; }
@@ -42,7 +42,7 @@ public class TestStridedPerf {
         }
     }
 
-    public static class TestStridedReducer extends IntDoubleIntDoubleHadoopCLReducerKernel {
+    public static class TestBSparseStridedReducer extends IntDoubleIntDoubleHadoopCLReducerKernel {
         protected void reduce(int key, HadoopCLDoubleValueIterator valIter) {
             valIter.seekTo(0);
             write(key, valIter.get());
@@ -63,8 +63,8 @@ public class TestStridedPerf {
 
        FileSystem fs = FileSystem.get(conf);
 
-       Job job = new Job(conf, "test-strided");
-       job.setJarByClass(TestStridedPerf.class);
+       Job job = new Job(conf, "test-bsparse-strided");
+       job.setJarByClass(TestBSparseStrided.class);
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(DoubleWritable.class);
@@ -73,10 +73,10 @@ public class TestStridedPerf {
        job.setMapOutputValueClass(DoubleWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
-       job.setOCLMapperClass(TestStridedMapper.class);
+       job.setOCLMapperClass(TestBSparseStridedMapper.class);
        
        job.setReducerClass(OpenCLReducer.class);
-       job.setOCLReducerClass(TestStridedReducer.class);
+       job.setOCLReducerClass(TestBSparseStridedReducer.class);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);

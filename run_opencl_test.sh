@@ -60,9 +60,11 @@ else
     if [ ${BENCHMARK} == pairwise ]; then
         EXE_NAME=PairwiseSimilarity
     fi
-
     if [ ${BENCHMARK} == pairwise64 ]; then
         EXE_NAME=PairwiseSimilarity64
+    fi
+    if [ ${BENCHMARK} == bsparse-strided ]; then
+        EXE_NAME=TestBSparseStrided
     fi
 
     CPU_GROUP=1

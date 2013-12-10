@@ -89,6 +89,14 @@ public class PairwiseSimilarity64 {
         protected void map(int column, int[] occurrenceIndices,
             double[] occurrenceVals, int occurrenceLen) {
 
+          // int[] outputIndices = allocInt(occurrenceLen);
+          // double[] outputVals = allocDouble(occurrenceLen);
+          // for (int i = 0; i < occurrenceLen; i++) {
+          //   outputIndices[i] = occurrenceIndices[i];
+          //   outputVals[i] = occurrenceVals[i];
+          // }
+          // write(column, outputIndices, outputVals, occurrenceLen);
+
           int[] dotsIndices = null;
           double[] dotsVals = null;
 
@@ -138,7 +146,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.GPU, 10);
         }
 
         public Device.TYPE[] validDevices() {

@@ -1,6 +1,7 @@
 include Makefile.common
 
 all: SetupInputCompression.class
+	javac -g -classpath ${CLASSPATH} -d testbsparsestridedclasses/ TestBSparseStrided.java 
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d testfglobalsongpuclasses/ TestFGlobalsOnGPU.java
@@ -21,6 +22,7 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
+	jar cvf TestBSparseStrided.jar -C testbsparsestridedclasses/ . SetupInputCompression.class
 	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ . SetupInputCompression.class
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
@@ -106,6 +108,7 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} TestJustReduceOutputSvecInputGenerator.java
 	javac -cp ${CLASSPATH} GenerateRandomSvec.java
 	javac -cp ${CLASSPATH} GlobalsOnGpuGenerator.java
+	javac -cp ${CLASSPATH} GenerateSimpleBSparse.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
@@ -133,7 +136,10 @@ random-svec-generate:
 	java ${RUN_FLAGS} GenerateRandomSvec ${HADOOP_INPUT_DIR}/random-svec/ 100 1000000
 globals-on-gpu-generate:
 	java ${RUN_FLAGS} GlobalsOnGpuGenerator ${HADOOP_INPUT_DIR}/globals-on-gpu.input/ 10 1000
-
+strided-generate:
+	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/test-strided.input 10 1000
+bstrided-generate:
+	java ${RUN_FLAGS} GenerateSimpleBSparse ${HADOOP_INPUT_DIR}/bsparse-strided.input 10 1000
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*
