@@ -66,12 +66,12 @@ public class ConvertPairwiseSimilarity64 {
                         fs, conf,
                         new Path(this.outputFolder+"/"+currentFile.getName()),
                         org.apache.hadoop.io.IntWritable.class,
-                        org.apache.hadoop.io.SparseVectorWritable.class);
+                        org.apache.hadoop.io.BSparseVectorWritable.class);
                 final IntWritable key = new IntWritable();
                 final org.apache.mahout.math.VectorWritable val = 
                     new org.apache.mahout.math.VectorWritable();
-                final SparseVectorWritable outputVal =
-                    new SparseVectorWritable();
+                final BSparseVectorWritable outputVal =
+                    new BSparseVectorWritable();
 
                 while (reader.next(key, val)) {
                     final org.apache.mahout.math.Vector originalVec = val.get();

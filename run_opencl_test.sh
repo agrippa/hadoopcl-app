@@ -69,13 +69,11 @@ else
 
     CPU_GROUP=1
     GPU_GROUP=36
-    CPU_THREAD=256
+    CPU_THREAD=128
     GPU_THREAD=256
 
     hdfs_chunk_size=268435456
-    # mapper=13
-    # mapper=8
-    mapper=1
+    mapper=3
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else

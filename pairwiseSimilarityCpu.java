@@ -119,8 +119,8 @@ public class pairwiseSimilarityCpu {
 		protected void map(IntWritable column, VectorWritable occurrenceVector,
 				Context ctx) throws IOException, InterruptedException {
 			Vector.Element[] occurrences = Vectors.toArray(occurrenceVector);
-			Arrays.sort(occurrences, BY_INDEX);
 
+			Arrays.sort(occurrences, BY_INDEX);
 			int cooccurrences = 0;
 			int prunedCooccurrences = 0;
 			for (int n = 0; n < occurrences.length; n++) {
@@ -183,13 +183,9 @@ public class pairwiseSimilarityCpu {
 			Iterator<VectorWritable> partialDotsIterator = partialDots
 					.iterator();
 			Vector dots = partialDotsIterator.next().get();
-                        long totalNonZero = dots.getNumNonZeroElements();
-                        int count = 1;
 			while (partialDotsIterator.hasNext()) {
-                          count++;
 				Vector toAdd = partialDotsIterator.next().get();
 				for (Element nonZeroElement : toAdd.nonZeroes()) {
-                                  totalNonZero++;
 					dots.setQuick(nonZeroElement.index(),
 							dots.getQuick(nonZeroElement.index())
 									+ nonZeroElement.get());
@@ -209,7 +205,9 @@ public class pairwiseSimilarityCpu {
 			if (excludeSelfSimilarity) {
 				similarities.setQuick(row.get(), 0);
 			}
-			ctx.write(row, new VectorWritable(similarities));
+                        if (similarities.getNumNonZeroElements() > 0) {
+                          ctx.write(row, new VectorWritable(similarities));
+                        }
 		}
 	}
 

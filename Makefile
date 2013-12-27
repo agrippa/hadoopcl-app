@@ -3,6 +3,7 @@ include Makefile.common
 all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testbsparsestridedclasses/ TestBSparseStrided.java 
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
+	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d testfglobalsongpuclasses/ TestFGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
@@ -24,6 +25,7 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
 	jar cvf TestBSparseStrided.jar -C testbsparsestridedclasses/ . SetupInputCompression.class
 	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ . SetupInputCompression.class
+	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . SetupInputCompression.class
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class

@@ -35,12 +35,13 @@ public class PairwiseSimilarity64 {
     public static class PairwiseMapper extends
       IntBsvecIntBsvecHadoopCLMapperKernel {
 
-        private final double threshold = 5000.0f;
+        private final double threshold = 500.0;
         // private final double threshold = NO_THRESHOLD;
 
         /* CooccurrenceCountSimilarity */
         private double similarity_aggregate(double valA, double valB) {
-          return 1.0;
+          return valA * valB;
+          // return 1.0;
         }
 
         /* CosineSimilarity */
@@ -67,39 +68,14 @@ public class PairwiseSimilarity64 {
             numNonZeroEntriesA >= threshold / maxValueB;
         }
 
-        private void stupidSort(int[] arr, double[] coarr, int len) {
-          for (int i = 0; i < len; i++) {
-            int minIndex = i;
-            int minVal = arr[i];
-            for (int j = i + 1; j < len; j++) {
-              if (arr[j] < minVal) {
-                minIndex = j;
-                minVal = arr[j];
-              }
-            }
-            arr[minIndex] = arr[i];
-            arr[i] = minVal;
-
-            double tmp = coarr[i];
-            coarr[i] = coarr[minIndex];
-            coarr[minIndex] = tmp;
-          }
-        }
-
         protected void map(int column, int[] occurrenceIndices,
             double[] occurrenceVals, int occurrenceLen) {
-
-          // int[] outputIndices = allocInt(occurrenceLen);
-          // double[] outputVals = allocDouble(occurrenceLen);
-          // for (int i = 0; i < occurrenceLen; i++) {
-          //   outputIndices[i] = occurrenceIndices[i];
-          //   outputVals[i] = occurrenceVals[i];
-          // }
-          // write(column, outputIndices, outputVals, occurrenceLen);
-
           int[] dotsIndices = null;
           double[] dotsVals = null;
 
+          // int[] beg = allocInt(300);
+          // int[] end = allocInt(300);
+          // quickSort(occurrenceIndices, occurrenceVals, occurrenceLen, beg, end);
           stupidSort(occurrenceIndices, occurrenceVals, occurrenceLen);
 
           for (int n = 0; n < occurrenceLen; n++) {
@@ -146,7 +122,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.GPU, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -157,7 +133,7 @@ public class PairwiseSimilarity64 {
     public static class PairwiseReducer extends
       IntBsvecIntBsvecHadoopCLReducerKernel {
 
-        private final double threshold = 5000.0f;
+        private final double threshold = 500.0;
         // private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
 
@@ -230,7 +206,9 @@ public class PairwiseSimilarity64 {
             }
           }
 
-          write(row, dotsIndices, dotsVals, similaritySoFar);
+          if (similaritySoFar > 0) {
+            write(row, dotsIndices, dotsVals, similaritySoFar);
+          }
         }
 
         public int getOutputPairsPerInput() {
@@ -301,54 +279,52 @@ public class PairwiseSimilarity64 {
             return new Device.TYPE[] { Device.TYPE.JAVA };
         }
 
-        /*
-        protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
-          HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
-          TreeSet<Integer> sorted = new TreeSet<Integer>();
+        // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
+        //   HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
+        //   TreeSet<Integer> sorted = new TreeSet<Integer>();
 
-          for (int i = 0; i < valsIter.nValues(); i++) {
-            valsIter.seekTo(i);
-            int[] indices = valsIter.getValIndices();
-            double[] vals = valsIter.getValVals();
-            for (int j = 0; j < valsIter.currentVectorLength(); j++) {
-              if (!merged.containsKey(indices[j])) {
-                sorted.add(indices[j]);
-                merged.put(indices[j], new MutableDouble(vals[j]));
-              } else {
-                merged.get(indices[j]).incr(vals[j]);
-              }
-            }
-          }
+        //   for (int i = 0; i < valsIter.nValues(); i++) {
+        //     valsIter.seekTo(i);
+        //     int[] indices = valsIter.getValIndices();
+        //     double[] vals = valsIter.getValVals();
+        //     for (int j = 0; j < valsIter.currentVectorLength(); j++) {
+        //       if (!merged.containsKey(indices[j])) {
+        //         sorted.add(indices[j]);
+        //         merged.put(indices[j], new MutableDouble(vals[j]));
+        //       } else {
+        //         merged.get(indices[j]).incr(vals[j]);
+        //       }
+        //     }
+        //   }
 
-          int[] outputIndices = new int[sorted.size()];
-          double[] outputVals = new double[sorted.size()];
-          int index = 0;
-          for (Integer i : sorted) {
-            outputIndices[index] = i.intValue();
-            outputVals[index] = merged.get(i).val;
-            index++;
-          }
-          write(key, outputIndices, outputVals, outputIndices.length);
-        }
+        //   int[] outputIndices = allocInt(sorted.size());
+        //   double[] outputVals = allocDouble(sorted.size());
+        //   int index = 0;
+        //   for (Integer i : sorted) {
+        //     outputIndices[index] = i.intValue();
+        //     outputVals[index] = merged.get(i).val;
+        //     index++;
+        //   }
+        //   write(key, outputIndices, outputVals, outputIndices.length);
+        // }
 
-        public int getOutputPairsPerInput() {
-            return 1;
-        }
-        public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
-        }
-        public Device.TYPE[] validDevices() {
-            return new Device.TYPE[] { Device.TYPE.JAVA };
-        }
+        // public int getOutputPairsPerInput() {
+        //     return 1;
+        // }
+        // public void deviceStrength(DeviceStrength str) {
+        //     str.add(Device.TYPE.JAVA, 10);
+        // }
+        // public Device.TYPE[] validDevices() {
+        //     return new Device.TYPE[] { Device.TYPE.JAVA };
+        // }
 
-        class MutableDouble {
-          public double val;
-          public MutableDouble(double v) {
-            this.val = v;
-          }
-          public void incr(double v) { this.val += v; }
-        }
-        */
+        // class MutableDouble {
+        //   public double val;
+        //   public MutableDouble(double v) {
+        //     this.val = v;
+        //   }
+        //   public void incr(double v) { this.val += v; }
+        // }
     }
 
     public static void main(String[] args) throws Exception {

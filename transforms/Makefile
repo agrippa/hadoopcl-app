@@ -75,7 +75,7 @@ pairwise64: pipeline/ConvertPairwiseSimilarity.java
 pairwise-run:
 	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-hadoopcl-small
 pairwise64-run:
-	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity64 /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-hadoopcl-small-64
+	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity64 /home/yiskylee/mahout/allTempFiles/weights /home/yiskylee/mahout/allTempFiles/weights-64
 
 ###########################################################
 ################### Compression ###########################
