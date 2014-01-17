@@ -3,8 +3,10 @@ include ../Makefile.common
 all: ReadTextLong.class ReadTextInt.class ReadTextVector.class ReadIntCluster.class \
 		ReadIntFloat.class ReadDoubleDouble.class ReadIntInt.class ReadIntLong.class \
 		ReadIntSparse.class ReadTextCluster.class ReadIntDouble.class ReadIntVector.class \
-		ReadIntMap.class ReadIntFSparse.class ReadIntBSparse.class
+		ReadIntMap.class ReadIntFSparse.class ReadIntBSparse.class SortedReadIntBSparse.class
 
+SortedReadIntBSparse.class: SortedReadIntBSparse.java MySortedReader.class
+	javac -cp ${CLASSPATH} SortedReadIntBSparse.java
 ReadIntSparse.class: ReadIntSparse.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntSparse.java
 ReadIntLong.class: ReadIntLong.java MyReader.class
@@ -31,6 +33,8 @@ ReadIntDouble.class: ReadIntDouble.java MyReader.class
 	javac -cp ${CLASSPATH} ReadIntDouble.java
 MyReader.class: MyReader.java
 	javac -cp ${CLASSPATH} MyReader.java
+MySortedReader.class: MySortedReader.java
+	javac -cp ${CLASSPATH} MySortedReader.java
 ReadIntMap.class: ReadIntMap.java
 	javac -cp ${CLASSPATH} ReadIntMap.java
 ReadIntFSparse.class: ReadIntFSparse.java

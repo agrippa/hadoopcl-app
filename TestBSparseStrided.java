@@ -7,10 +7,10 @@ import org.apache.hadoop.mapreduce.OpenCLMapper;
 import org.apache.hadoop.mapreduce.OpenCLReducer;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.IntDoubleIntDoubleHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.IntBsvecIntDoubleHadoopCLMapperKernel;
-import org.apache.hadoop.mapreduce.HadoopCLDoubleValueIterator;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -24,7 +24,7 @@ import org.apache.mahout.clustering.iterator.ClusterWritable;
 
 public class TestBSparseStrided {
 
-    public static class TestBSparseStridedMapper extends IntBsvecIntDoubleHadoopCLMapperKernel {
+    public static class TestBSparseStridedMapper extends IntBsvecIntBsvecHadoopCLMapperKernel {
         protected void map(int key, int[] indices, double[] vals, int len) {
             // double sum = 0.0;
             // for (int iter = 0; iter < 1000; iter++) {
@@ -33,7 +33,14 @@ public class TestBSparseStrided {
             //     }
             // }
             // write(key, sum);
-            write(key, (double)indices[1]);
+            int[] garbage = allocInt(4);
+            int[] outInd = allocInt(len);
+            double[] outVal = allocDouble(len);
+            for (int i = 0; i < len; i++) {
+              outInd[i] = indices[i];
+              outVal[i] = vals[i];
+            }
+            write(key, outInd, outVal, len);
         }
         public int getOutputPairsPerInput() { return 1; }
         public Device.TYPE[] validDevices() { return null; }
@@ -42,10 +49,16 @@ public class TestBSparseStrided {
         }
     }
 
-    public static class TestBSparseStridedReducer extends IntDoubleIntDoubleHadoopCLReducerKernel {
-        protected void reduce(int key, HadoopCLDoubleValueIterator valIter) {
+    public static class TestBSparseStridedReducer extends IntBsvecIntBsvecHadoopCLReducerKernel {
+        protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
             valIter.seekTo(0);
-            write(key, valIter.get());
+            int[] outInd = allocInt(valIter.currentVectorLength());
+            double[] outVal = allocDouble(valIter.currentVectorLength());
+            for (int i = 0 ;i < valIter.currentVectorLength(); i++) {
+                outInd[i] = valIter.getValIndices()[i];
+                outVal[i] = valIter.getValVals()[i];
+            }
+            write(key, outInd, outVal, valIter.currentVectorLength());
         }
         public int getOutputPairsPerInput() { return 1; }
         public void deviceStrength(DeviceStrength str) {
@@ -67,10 +80,10 @@ public class TestBSparseStrided {
        job.setJarByClass(TestBSparseStrided.class);
 
        job.setOutputKeyClass(IntWritable.class);
-       job.setOutputValueClass(DoubleWritable.class);
+       job.setOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapOutputKeyClass(IntWritable.class);
-       job.setMapOutputValueClass(DoubleWritable.class);
+       job.setMapOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
        job.setOCLMapperClass(TestBSparseStridedMapper.class);

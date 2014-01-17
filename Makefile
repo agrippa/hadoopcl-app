@@ -24,8 +24,8 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
 	jar cvf TestBSparseStrided.jar -C testbsparsestridedclasses/ . SetupInputCompression.class
-	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ . SetupInputCompression.class
-	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . SetupInputCompression.class
+	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ .
+	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . 
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -45,8 +45,14 @@ all: SetupInputCompression.class
 	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
-	# javac -g -classpath ${CLASSPATH} -d pairwiseclasses/ PairwiseSimilarity.java
-	# jar cvf PairwiseSimilarity.jar -C pairwiseclasses/ . SetupInputCompression.class
+
+opencl-pairwise: SetupInputCompression.class
+	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
+	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ .
+
+opencl-pairwise_xiangyu: SetupInputCompression.class
+	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
+	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . 
 
 cpu-pairwise: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d cpu-pairwise-classes/ pairwiseSimilarityCpu.java

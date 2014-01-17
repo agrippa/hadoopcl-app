@@ -180,9 +180,11 @@ public class pairwiseSimilarityCpu {
 		protected void reduce(IntWritable row,
 				Iterable<VectorWritable> partialDots, Context ctx)
 				throws IOException, InterruptedException {
+
 			Iterator<VectorWritable> partialDotsIterator = partialDots
 					.iterator();
 			Vector dots = partialDotsIterator.next().get();
+
 			while (partialDotsIterator.hasNext()) {
 				Vector toAdd = partialDotsIterator.next().get();
 				for (Element nonZeroElement : toAdd.nonZeroes()) {
@@ -221,12 +223,14 @@ public class pairwiseSimilarityCpu {
 				throws IOException, InterruptedException {
 			Vector vector = null;
 			for (VectorWritable v : values) {
+
 				if (vector == null) {
 					vector = v.get();
 				} else {
 					vector.assign(v.get(), Functions.PLUS);
 				}
 			}
+
 			ctx.write(key, new VectorWritable(vector));
 		}
 	}

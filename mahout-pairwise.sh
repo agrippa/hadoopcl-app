@@ -22,15 +22,13 @@ sleep 2
 ./CLEAN.sh
 sleep 2
 
-./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
+./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 30
 
 ${HADOOP} fs -put ${HOME}/mahout/allTempFiles/weights/ input
-${HADOOP} fs -put ./threshold.1/norms.bin norms-file
-${HADOOP} fs -put ./threshold.1/numNonZeroEntries.bin non-zero-entries-file
-
-# ${HADOOP} fs -put ${HOME}/mahout/allTempFiles/norms.bin norms-file
-# ${HADOOP} fs -put ${HOME}/mahout/allTempFiles/numNonZeroEntries.bin non-zero-entries-file
+# ${HADOOP} fs -put ${HOME}/mahout/allTempFiles/weights-small/ input
+${HADOOP} fs -put ${HOME}/hadoopcl-app/threshold.1/norms.bin norms-file
+${HADOOP} fs -put ${HOME}/hadoopcl-app/threshold.1/numNonZeroEntries.bin non-zero-entries-file
 
 sleep 30
 time ${HADOOP} jar pairwiseSimilarityCpu.jar pairwiseSimilarityCpu ${1}

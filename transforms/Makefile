@@ -75,7 +75,7 @@ pairwise64: pipeline/ConvertPairwiseSimilarity.java
 pairwise-run:
 	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-hadoopcl-small
 pairwise64-run:
-	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity64 /home/yiskylee/mahout/allTempFiles/weights /home/yiskylee/mahout/allTempFiles/weights-64
+	java -cp ${CLASSPATH} pipeline.ConvertPairwiseSimilarity64 /home/yiskylee/mahout/allTempFiles/weights-small /home/yiskylee/mahout/allTempFiles/weights-64-small
 
 ###########################################################
 ################### Compression ###########################
@@ -83,6 +83,7 @@ pairwise64-run:
 compression: compress/MyCompressor.java compress/CompressIntSparse.java compress/CompressTextCluster.java
 	javac -cp ${CLASSPATH} compress/MyCompressor.java
 	javac -cp ${CLASSPATH} compress/CompressIntSparse.java
+	javac -cp ${CLASSPATH} compress/CompressIntBSparse.java
 	javac -cp ${CLASSPATH} compress/CompressTextCluster.java
 
 

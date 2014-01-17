@@ -85,7 +85,7 @@ public class ConvertPairwiseSimilarity64 {
                     while (iter.hasNext()) {
                         org.apache.mahout.math.Vector.Element ele = iter.next();
                         indices[index] = ele.index();
-                        vals[index] = (double)ele.get();
+                        vals[index] = ele.get();
                         index++;
                     }
 

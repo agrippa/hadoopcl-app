@@ -21,21 +21,21 @@ import org.apache.mahout.common.StringTuple;
 import org.apache.mahout.clustering.iterator.ClusterWritable;
 import org.apache.mahout.clustering.Cluster;
 
-public class ReadIntBSparse extends MyReader<IntWritable, BSparseVectorWritable> {
+public class SortedReadIntBSparse extends MySortedReader<IntWritable, BSparseVectorWritable> {
     private HashMap<Integer, MutableInteger> counts = new HashMap<Integer, MutableInteger>();
 
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
-            System.out.println("usage: java ReadIntBSparse file");
+            System.out.println("usage: java SortedReadIntBSparse file");
             return;
         }
-        ReadIntBSparse runner = new ReadIntBSparse(args[0]);
+        SortedReadIntBSparse runner = new SortedReadIntBSparse(args[0]);
         // runner.enablePrinting = false;
         runner.runRead();
         // runner.done();
     }
 
-    public ReadIntBSparse(String s) { super(s); }
+    public SortedReadIntBSparse(String s) { super(s); }
     @Override
     protected String overrideKeyToString(IntWritable key) {
         // return "";

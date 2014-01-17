@@ -1,16 +1,15 @@
-if [ $# -ne 5 ] ; then
+if [ $# -ne 4 ] ; then
     echo Incorrect num command line arguments $#
 else
 
     BENCHMARK=${1}
     FORMAT=${2}
     MAP_OUTPUTFORMAT=${3}
-    buffer=${4}
-    java_heap=${5}
+    java_heap=${4}
 
     echo run_opencl_test.sh: Running ${BENCHMARK} with input compression \
         ${FORMAT}, intermediate compression ${MAP_OUTPUTFORMAT}
-    echo     Buffer size ${buffer} bytes, Java heap size ${java_heap}G
+    echo     Java heap size ${java_heap}G
 
     if [ ${BENCHMARK} == sort ]; then
         EXE_NAME=SortOpenCLVersion
@@ -63,17 +62,20 @@ else
     if [ ${BENCHMARK} == pairwise64 ]; then
         EXE_NAME=PairwiseSimilarity64
     fi
+    if [ ${BENCHMARK} == pairwise64_xiangyu ]; then
+        EXE_NAME=PairwiseSimilarity64_xiangyu
+    fi
     if [ ${BENCHMARK} == bsparse-strided ]; then
         EXE_NAME=TestBSparseStrided
     fi
 
-    CPU_GROUP=1
+    CPU_GROUP=4
     GPU_GROUP=36
-    CPU_THREAD=128
+    CPU_THREAD=64
     GPU_THREAD=256
 
     hdfs_chunk_size=268435456
-    mapper=3
+    mapper=4
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
@@ -93,8 +95,8 @@ else
     ./CLEAN.sh
 
     ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} \
-        ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${GPU_GROUP} ${CPU_GROUP} \
-        ${GPU_THREAD} ${CPU_THREAD} 3 3 ${buffer} ${buffer} ${hdfs_chunk_size} \
+        ${CPU_THREAD} ${GPU_GROUP} ${CPU_GROUP} \
+        ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
     sleep 60
     echo Putting inputs from \
