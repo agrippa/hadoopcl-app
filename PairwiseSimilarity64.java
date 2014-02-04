@@ -76,6 +76,12 @@ public class PairwiseSimilarity64 {
           int[] indicesBuf = allocInt(occurrenceLen);
           double[] valsBuf = allocDouble(occurrenceLen);
 
+          // for (int i = 0; i < occurrenceLen; i++) {
+          //   indicesBuf[i] = occurrenceIndices[i];
+          //   valsBuf[i] = occurrenceVals[i];
+          // }
+          // write(column, indicesBuf, valsBuf, occurrenceLen);
+
           for (int n = 0; n < occurrenceLen; n++) {
             int occurrenceAIndex = occurrenceIndices[n];
             double occurrenceAVal = occurrenceVals[n];
@@ -103,25 +109,24 @@ public class PairwiseSimilarity64 {
 
             if (willAllocate == 0) continue;
 
-            // if (dotsIndices == null) {
-              // dotsIndices = allocInt(occurrenceLen - n);
-              // dotsVals = allocDouble(occurrenceLen - n);
-              int[] dotsIndices = allocInt(willAllocate);
-              double[] dotsVals = allocDouble(willAllocate);
-            // }
-            //
+            int[] dotsIndices = allocInt(willAllocate);
+            double[] dotsVals = allocDouble(willAllocate);
+
             for (int m = 0; m < willAllocate; m++) {
                 dotsIndices[m] = indicesBuf[m];
                 dotsVals[m] = valsBuf[m];
             }
 
-            // if (dotsSoFar > 0) {
-              // write(occurrenceAIndex, completeInt, allocOffset, completeDouble, allocOffset, dotsSoFar);
-              // allocOffset += dotsSoFar;
-              write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
-              // dotsIndices = null;
-              // dotsVals = null;
-            // }
+          // if (occurrenceAIndex == 12308) {
+          //   StringBuilder sb = new StringBuilder();
+          //   sb.append("key="+occurrenceAIndex+" len="+willAllocate+" ");
+          //   for (int i = 0; i < willAllocate; i++) {
+          //     sb.append(dotsIndices[i]+":"+dotsVals[i]+" ");
+          //   }
+          //   System.err.println(sb.toString());
+          // }
+
+          write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
           }
         }
 
@@ -150,7 +155,6 @@ public class PairwiseSimilarity64 {
         private final double threshold = 1000.0;
         // private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
-
 
         protected void reduce(int row, HadoopCLSvecValueIterator valsIter) {
           int[] dotsIndices = null;
@@ -242,23 +246,10 @@ public class PairwiseSimilarity64 {
 
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
 
-          // StringBuilder sb = new StringBuilder();
-          // sb.append("Combiner processing "+valsIter.nValues()+" values for key "+key+"\n");
-          // for (int i = 0; i < valsIter.nValues(); i++) {
-          //     sb.append("  "+i+": ");
-          //     valsIter.seekTo(i);
-          //     int len = valsIter.currentVectorLength();
-          //     int lenToWrite = len < 4 ? len : 4;
-          //     for (int j = 0; j < lenToWrite; j++) {
-          //       sb.append(valsIter.getValIndices()[j]+" ");
-          //     }
-          //     sb.append("\n");
-          // }
-          // System.err.println(sb.toString());
-
           int[] combinedIndices = null;
           double[] combinedVals = null;
           int nOutput = -1;
+
           if (valsIter.nValues() == 1) {
             int length = valsIter.currentVectorLength();
             combinedIndices = allocInt(length);
@@ -295,7 +286,6 @@ public class PairwiseSimilarity64 {
             nOutput = merge(valsIter, combinedIndices, combinedVals, totalNElements,
                 vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
-
           write(key, combinedIndices, combinedVals, nOutput);
         }
 
@@ -306,7 +296,7 @@ public class PairwiseSimilarity64 {
             str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
-            return new Device.TYPE[] { Device.TYPE.JAVA };
+            return null;
         }
 
         @Override
@@ -420,7 +410,7 @@ public class PairwiseSimilarity64 {
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
