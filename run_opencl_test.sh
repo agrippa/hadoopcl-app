@@ -69,8 +69,6 @@ else
         EXE_NAME=TestBSparseStrided
     fi
 
-    CPU_GROUP=4
-    GPU_GROUP=36
     CPU_THREAD=64
     GPU_THREAD=256
 
@@ -94,8 +92,8 @@ else
     ./KILL.sh
     ./CLEAN.sh
 
-    ./startup.sh ${mapper} ${reducer} ${GPU_GROUP} ${CPU_GROUP} ${GPU_THREAD} \
-        ${CPU_THREAD} ${GPU_GROUP} ${CPU_GROUP} \
+    ./startup.sh ${mapper} ${reducer} ${GPU_THREAD} \
+        ${CPU_THREAD} \
         ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
     sleep 60
