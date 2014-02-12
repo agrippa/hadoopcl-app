@@ -14,7 +14,7 @@ import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
 import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
-
+import org.apache.hadoop.mapreduce.HadoopOpenCLContext;
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
 import java.lang.StringBuilder;        
@@ -34,6 +34,7 @@ public class PairwiseSimilarity64_xiangyu {
 
     public static class PairwiseMapper extends
       IntBsvecIntBsvecHadoopCLMapperKernel {
+        public PairwiseMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         private final double threshold = 1000.0;
         // private final double threshold = NO_THRESHOLD;
@@ -71,7 +72,7 @@ public class PairwiseSimilarity64_xiangyu {
         protected void map(int column, int[] occurrenceIndices,
             double[] occurrenceVals, int occurrenceLen) {
 
-          //stupidSort(occurrenceIndices, occurrenceVals, occurrenceLen);
+          stupidSort(occurrenceIndices, occurrenceVals, occurrenceLen);
 
           int[] indicesBuf = allocInt(occurrenceLen);
           double[] valsBuf = allocDouble(occurrenceLen);
@@ -103,13 +104,9 @@ public class PairwiseSimilarity64_xiangyu {
 
             if (willAllocate == 0) continue;
 
-            // if (dotsIndices == null) {
-              // dotsIndices = allocInt(occurrenceLen - n);
-              // dotsVals = allocDouble(occurrenceLen - n);
-              int[] dotsIndices = allocInt(willAllocate);
-              double[] dotsVals = allocDouble(willAllocate);
-            // }
-            //
+            int[] dotsIndices = allocInt(willAllocate);
+            double[] dotsVals = allocDouble(willAllocate);
+
             for (int m = 0; m < willAllocate; m++) {
                 dotsIndices[m] = indicesBuf[m];
                 dotsVals[m] = valsBuf[m];
@@ -127,8 +124,9 @@ public class PairwiseSimilarity64_xiangyu {
 
         @Override
         public String getKernelFile() {
-            return "/home/yiskylee/tmp.gpu";
+            //return "/home/yiskylee/tmp.gpu";
             //return "/home/yiskylee/fields.dump";
+            return null;
         }
 
         public int getOutputPairsPerInput() {
@@ -136,7 +134,7 @@ public class PairwiseSimilarity64_xiangyu {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.GPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -146,7 +144,7 @@ public class PairwiseSimilarity64_xiangyu {
 
     public static class PairwiseReducer extends
       IntBsvecIntBsvecHadoopCLReducerKernel {
-
+        public PairwiseReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
         private final double threshold = 1000.0;
         // private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
@@ -226,9 +224,6 @@ public class PairwiseSimilarity64_xiangyu {
           }
         }
 
-        public int getOutputPairsPerInput() {
-          return 1;
-        }
         public void deviceStrength(DeviceStrength str) {
           str.add(Device.TYPE.CPU, 10);
         }
@@ -239,22 +234,9 @@ public class PairwiseSimilarity64_xiangyu {
 
     public static class PairwiseCombiner extends
             IntBsvecIntBsvecHadoopCLReducerKernel {
+        public PairwiseCombiner(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
-
-          // StringBuilder sb = new StringBuilder();
-          // sb.append("Combiner processing "+valsIter.nValues()+" values for key "+key+"\n");
-          // for (int i = 0; i < valsIter.nValues(); i++) {
-          //     sb.append("  "+i+": ");
-          //     valsIter.seekTo(i);
-          //     int len = valsIter.currentVectorLength();
-          //     int lenToWrite = len < 4 ? len : 4;
-          //     for (int j = 0; j < lenToWrite; j++) {
-          //       sb.append(valsIter.getValIndices()[j]+" ");
-          //     }
-          //     sb.append("\n");
-          // }
-          // System.err.println(sb.toString());
 
           int[] combinedIndices = null;
           double[] combinedVals = null;
@@ -299,9 +281,6 @@ public class PairwiseSimilarity64_xiangyu {
           write(key, combinedIndices, combinedVals, nOutput);
         }
 
-        public int getOutputPairsPerInput() {
-            return 1;
-        }
         public void deviceStrength(DeviceStrength str) {
             str.add(Device.TYPE.JAVA, 10);
         }
@@ -402,8 +381,6 @@ public class PairwiseSimilarity64_xiangyu {
 
        Job job = new Job(conf, "mahout-pairwise");
        ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64_xiangyu.jar");
-       // job.setJarByClass(PairwiseSimilarity.class);
-       // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(BSparseVectorWritable.class);
