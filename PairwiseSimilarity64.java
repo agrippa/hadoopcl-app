@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
 import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
+import org.apache.hadoop.mapreduce.HadoopOpenCLContext;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -34,6 +35,7 @@ public class PairwiseSimilarity64 {
 
     public static class PairwiseMapper extends
       IntBsvecIntBsvecHadoopCLMapperKernel {
+        public PairwiseMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         private final double threshold = 1000.0;
         // private final double threshold = NO_THRESHOLD;
@@ -136,10 +138,6 @@ public class PairwiseSimilarity64 {
             return "/home/yiskylee/fields.dump";
         }
 
-        public int getOutputPairsPerInput() {
-          return 1;
-        }
-
         public void deviceStrength(DeviceStrength str) {
           str.add(Device.TYPE.CPU, 10);
         }
@@ -151,6 +149,7 @@ public class PairwiseSimilarity64 {
 
     public static class PairwiseReducer extends
       IntBsvecIntBsvecHadoopCLReducerKernel {
+        public PairwiseReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         private final double threshold = 1000.0;
         // private final double threshold = Double.MIN_VALUE;
@@ -230,19 +229,20 @@ public class PairwiseSimilarity64 {
           }
         }
 
-        public int getOutputPairsPerInput() {
-          return 1;
-        }
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
+        }
+        public String getKernelFile() {
+            return "/home/yiskylee/fields.reducer.dump";
         }
       }
 
     public static class PairwiseCombiner extends
             IntBsvecIntBsvecHadoopCLReducerKernel {
+        public PairwiseCombiner(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
 
@@ -289,9 +289,6 @@ public class PairwiseSimilarity64 {
           write(key, combinedIndices, combinedVals, nOutput);
         }
 
-        public int getOutputPairsPerInput() {
-            return 1;
-        }
         public void deviceStrength(DeviceStrength str) {
             str.add(Device.TYPE.JAVA, 10);
         }
@@ -301,7 +298,6 @@ public class PairwiseSimilarity64 {
 
         @Override
         public String getKernelFile() {
-            // return null;
             return "/home/yiskylee/fields.combiner.dump";
         }
 
@@ -334,9 +330,6 @@ public class PairwiseSimilarity64 {
         //   write(key, outputIndices, outputVals, outputIndices.length);
         // }
 
-        // public int getOutputPairsPerInput() {
-        //     return 1;
-        // }
         // public void deviceStrength(DeviceStrength str) {
         //     str.add(Device.TYPE.JAVA, 10);
         // }
