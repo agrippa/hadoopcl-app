@@ -15,7 +15,6 @@ import org.apache.hadoop.mapreduce.DeviceStrength;
 import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
 import org.apache.hadoop.mapreduce.HadoopOpenCLContext;
-
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
 import java.lang.StringBuilder;        
@@ -119,22 +118,12 @@ public class PairwiseSimilarity64 {
                 dotsVals[m] = valsBuf[m];
             }
 
-          // if (occurrenceAIndex == 12308) {
-          //   StringBuilder sb = new StringBuilder();
-          //   sb.append("key="+occurrenceAIndex+" len="+willAllocate+" ");
-          //   for (int i = 0; i < willAllocate; i++) {
-          //     sb.append(dotsIndices[i]+":"+dotsVals[i]+" ");
-          //   }
-          //   System.err.println(sb.toString());
-          // }
-
-          write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
+            write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
           }
         }
 
         @Override
         public String getKernelFile() {
-            // return null;
             return "/home/yiskylee/fields.dump";
         }
 
@@ -156,9 +145,23 @@ public class PairwiseSimilarity64 {
         private final boolean excludeSelfSimilarity = false;
 
         protected void reduce(int row, HadoopCLSvecValueIterator valsIter) {
+
           int[] dotsIndices = null;
           double[] dotsVals = null;
           int nOutput = -1;
+
+          // if (row == 12308) {
+          // for (int i = 0; i < valsIter.nValues(); i++) {
+          //   valsIter.seekTo(i);
+          //   StringBuilder sb = new StringBuilder();
+          //   int len = valsIter.currentVectorLength();
+          //   sb.append("key="+row+" len="+len+ " { ");
+          //   for (int j = 0;j < len; j++) {
+          //     sb.append(valsIter.getValIndices()[j]+":"+valsIter.getValVals()[j]+" ");
+          //   }
+          //   System.err.println(sb.toString());
+          // }
+          // }
 
           if (valsIter.nValues() == 1) {
             valsIter.seekTo(0);
@@ -230,7 +233,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
@@ -286,6 +289,7 @@ public class PairwiseSimilarity64 {
             nOutput = merge(valsIter, combinedIndices, combinedVals, totalNElements,
                 vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
           }
+
           write(key, combinedIndices, combinedVals, nOutput);
         }
 
