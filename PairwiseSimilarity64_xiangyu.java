@@ -77,6 +77,12 @@ public class PairwiseSimilarity64_xiangyu {
           int[] indicesBuf = allocInt(occurrenceLen);
           double[] valsBuf = allocDouble(occurrenceLen);
 
+          // for (int i = 0; i < occurrenceLen; i++) {
+          //   indicesBuf[i] = occurrenceIndices[i];
+          //   valsBuf[i] = occurrenceVals[i];
+          // }
+          // write(column, indicesBuf, valsBuf, occurrenceLen);
+
           for (int n = 0; n < occurrenceLen; n++) {
             int occurrenceAIndex = occurrenceIndices[n];
             double occurrenceAVal = occurrenceVals[n];
@@ -112,25 +118,14 @@ public class PairwiseSimilarity64_xiangyu {
                 dotsVals[m] = valsBuf[m];
             }
 
-            // if (dotsSoFar > 0) {
-              // write(occurrenceAIndex, completeInt, allocOffset, completeDouble, allocOffset, dotsSoFar);
-              // allocOffset += dotsSoFar;
-              write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
-              // dotsIndices = null;
-              // dotsVals = null;
-            // }
+            write(occurrenceAIndex, dotsIndices, dotsVals, willAllocate);
           }
         }
 
         @Override
         public String getKernelFile() {
-            //return "/home/yiskylee/tmp.gpu";
             //return "/home/yiskylee/fields.dump";
             return null;
-        }
-
-        public int getOutputPairsPerInput() {
-          return 1;
         }
 
         public void deviceStrength(DeviceStrength str) {
@@ -145,12 +140,13 @@ public class PairwiseSimilarity64_xiangyu {
     public static class PairwiseReducer extends
       IntBsvecIntBsvecHadoopCLReducerKernel {
         public PairwiseReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
+
         private final double threshold = 1000.0;
         // private final double threshold = Double.MIN_VALUE;
         private final boolean excludeSelfSimilarity = false;
 
-
         protected void reduce(int row, HadoopCLSvecValueIterator valsIter) {
+
           int[] dotsIndices = null;
           double[] dotsVals = null;
           int nOutput = -1;
@@ -225,10 +221,14 @@ public class PairwiseSimilarity64_xiangyu {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
+        }
+        public String getKernelFile() {
+            return null;
+            //return "/home/yiskylee/fields.reducer.dump";
         }
       }
 
@@ -241,6 +241,7 @@ public class PairwiseSimilarity64_xiangyu {
           int[] combinedIndices = null;
           double[] combinedVals = null;
           int nOutput = -1;
+
           if (valsIter.nValues() == 1) {
             int length = valsIter.currentVectorLength();
             combinedIndices = allocInt(length);
@@ -291,7 +292,7 @@ public class PairwiseSimilarity64_xiangyu {
         @Override
         public String getKernelFile() {
             return null;
-            // return "/home/yiskylee/fields.combiner.dump";
+            //return "/home/yiskylee/fields.combiner.dump";
         }
 
         // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
@@ -323,9 +324,6 @@ public class PairwiseSimilarity64_xiangyu {
         //   write(key, outputIndices, outputVals, outputIndices.length);
         // }
 
-        // public int getOutputPairsPerInput() {
-        //     return 1;
-        // }
         // public void deviceStrength(DeviceStrength str) {
         //     str.add(Device.TYPE.JAVA, 10);
         // }
@@ -381,6 +379,8 @@ public class PairwiseSimilarity64_xiangyu {
 
        Job job = new Job(conf, "mahout-pairwise");
        ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64_xiangyu.jar");
+       // job.setJarByClass(PairwiseSimilarity.class);
+       // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(BSparseVectorWritable.class);
