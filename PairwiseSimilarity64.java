@@ -135,7 +135,7 @@ public class PairwiseSimilarity64 {
         @Override
         public String getKernelFile() {
             // return null;
-            return "/home/yiskylee/fields.dump";
+            return "/home/jmg3/transfer/fields.dump";
         }
 
         public void deviceStrength(DeviceStrength str) {
@@ -236,7 +236,7 @@ public class PairwiseSimilarity64 {
           return null;
         }
         public String getKernelFile() {
-            return "/home/yiskylee/fields.reducer.dump";
+            return "/home/jmg3/transfer/fields.reducer.dump";
         }
       }
 
@@ -298,7 +298,7 @@ public class PairwiseSimilarity64 {
 
         @Override
         public String getKernelFile() {
-            return "/home/yiskylee/fields.combiner.dump";
+            return "/home/jmg3/transfer/fields.combiner.dump";
         }
 
         // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
