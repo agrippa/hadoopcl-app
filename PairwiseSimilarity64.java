@@ -128,7 +128,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -149,19 +149,6 @@ public class PairwiseSimilarity64 {
           int[] dotsIndices = null;
           double[] dotsVals = null;
           int nOutput = -1;
-
-          // if (row == 12308) {
-          // for (int i = 0; i < valsIter.nValues(); i++) {
-          //   valsIter.seekTo(i);
-          //   StringBuilder sb = new StringBuilder();
-          //   int len = valsIter.currentVectorLength();
-          //   sb.append("key="+row+" len="+len+ " { ");
-          //   for (int j = 0;j < len; j++) {
-          //     sb.append(valsIter.getValIndices()[j]+":"+valsIter.getValVals()[j]+" ");
-          //   }
-          //   System.err.println(sb.toString());
-          // }
-          // }
 
           if (valsIter.nValues() == 1) {
             valsIter.seekTo(0);
@@ -233,7 +220,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;

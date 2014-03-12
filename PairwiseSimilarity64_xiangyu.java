@@ -291,8 +291,8 @@ public class PairwiseSimilarity64_xiangyu {
 
         @Override
         public String getKernelFile() {
-            //return null;
-            return "/home/yiskylee/fields.combiner.dump";
+            return null;
+            //return "/home/yiskylee/fields.combiner.dump";
         }
 
         // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {

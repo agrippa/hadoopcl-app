@@ -1,4 +1,4 @@
-if [ $# !=  8 ]; then
+if [ $# != 8 ]; then
     echo Need more arguments for the startup script $#
     exit 1
 fi
