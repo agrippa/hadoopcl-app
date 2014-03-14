@@ -122,9 +122,11 @@ public class PairwiseSimilarity64 {
           }
         }
 
+        private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.dump"); }
         @Override
-        public String getKernelFile() {
-            return "/home/yiskylee/fields.dump";
+        public Map<Device.TYPE, String> getKernelFile() {
+            return fileMapping;
         }
 
         public void deviceStrength(DeviceStrength str) {
@@ -220,13 +222,16 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
         }
-        public String getKernelFile() {
-            return "/home/yiskylee/fields.reducer.dump";
+        private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.reducer.dump"); }
+        @Override
+        public Map<Device.TYPE, String> getKernelFile() {
+            return fileMapping;
         }
       }
 
@@ -287,10 +292,12 @@ public class PairwiseSimilarity64 {
             return null;
         }
 
+        private static final Map<Device.TYPE, String> fileMapping =
+            new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU,
+            "/home/yiskylee/fields.combiner.dump"); }
         @Override
-        public String getKernelFile() {
-            return "/home/yiskylee/fields.combiner.dump";
-        }
+        public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
         // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
         //   HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
