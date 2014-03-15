@@ -77,12 +77,6 @@ public class PairwiseSimilarity64 {
           int[] indicesBuf = allocInt(occurrenceLen);
           double[] valsBuf = allocDouble(occurrenceLen);
 
-          // for (int i = 0; i < occurrenceLen; i++) {
-          //   indicesBuf[i] = occurrenceIndices[i];
-          //   valsBuf[i] = occurrenceVals[i];
-          // }
-          // write(column, indicesBuf, valsBuf, occurrenceLen);
-
           for (int n = 0; n < occurrenceLen; n++) {
             int occurrenceAIndex = occurrenceIndices[n];
             double occurrenceAVal = occurrenceVals[n];
@@ -177,18 +171,11 @@ public class PairwiseSimilarity64 {
             dotsIndices = allocInt(totalNElements);
             dotsVals = allocDouble(totalNElements);
 
-            // Stores an index indicating how far we've incremented into each
-            // input vector so far.
-            int[] vectorIndices = allocInt(valsIter.nValues());
-            // Stores actual index values from the vectors, the current
-            // minimum for that vector that hasn't been merged into the
-            // output vector.
-            int[] queueOfOffsets = allocInt(valsIter.nValues());
-            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
-            int[] queueOfVectors = allocInt(valsIter.nValues());
+            int[] preallocInt = allocInt(valsIter.nValues());
+            double[] preallocDouble = allocDouble(valsIter.nValues() * 2);
 
             nOutput = merge(valsIter, dotsIndices, dotsVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
+                preallocDouble, preallocInt);
           }
 
           // double normA = referenceGlobalFval(GLOBAL_NORMS_INDEX, row);
@@ -222,7 +209,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
@@ -268,18 +255,11 @@ public class PairwiseSimilarity64 {
             // Arrays to merge input values into
             combinedIndices = allocInt(totalNElements);
             combinedVals = allocDouble(totalNElements);
-            // Stores an index indicating how far we've incremented into each
-            // input vector so far.
-            int[] vectorIndices = allocInt(valsIter.nValues());
-            // Stores actual index values from the vectors, the current
-            // minimum for that vector that hasn't been merged into the
-            // output vector.
-            int[] queueOfOffsets = allocInt(valsIter.nValues());
-            int[] queueOfOffsetsLinks = allocInt(valsIter.nValues());
-            int[] queueOfVectors = allocInt(valsIter.nValues());
+            int[] preallocInt = allocInt(valsIter.nValues());
+            double[] preallocDouble = allocDouble(valsIter.nValues() * 2);
 
             nOutput = merge(valsIter, combinedIndices, combinedVals, totalNElements,
-                vectorIndices, queueOfOffsets, queueOfOffsetsLinks, queueOfVectors);
+                preallocDouble, preallocInt);
           }
 
           write(key, combinedIndices, combinedVals, nOutput);

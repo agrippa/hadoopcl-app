@@ -122,14 +122,15 @@ public class PairwiseSimilarity64_xiangyu {
           }
         }
 
+        private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.dump"); }
         @Override
-        public String getKernelFile() {
-            //return "/home/yiskylee/fields.dump";
-            return null;
+        public Map<Device.TYPE, String> getKernelFile() {
+            return fileMapping;
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -221,14 +222,16 @@ public class PairwiseSimilarity64_xiangyu {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
         }
-        public String getKernelFile() {
-            return null;
-            //return "/home/yiskylee/fields.reducer.dump";
+        private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.reducer.dump"); }
+        @Override
+        public Map<Device.TYPE, String> getKernelFile() {
+            return fileMapping;
         }
       }
 
@@ -283,17 +286,18 @@ public class PairwiseSimilarity64_xiangyu {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
             return null;
         }
 
+        private static final Map<Device.TYPE, String> fileMapping =
+            new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU,
+            "/home/yiskylee/fields.combiner.dump"); }
         @Override
-        public String getKernelFile() {
-            return null;
-            //return "/home/yiskylee/fields.combiner.dump";
-        }
+        public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
         // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
         //   HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
@@ -397,7 +401,7 @@ public class PairwiseSimilarity64_xiangyu {
        job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(PairwiseCombiner.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
