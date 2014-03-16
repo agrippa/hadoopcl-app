@@ -171,7 +171,7 @@ public class PairwiseSimilarity64 {
             dotsIndices = allocInt(totalNElements);
             dotsVals = allocDouble(totalNElements);
 
-            int[] preallocInt = allocInt(valsIter.nValues());
+            int[] preallocInt = allocInt(valsIter.nValues() * 2);
             double[] preallocDouble = allocDouble(valsIter.nValues() * 2);
 
             nOutput = merge(valsIter, dotsIndices, dotsVals, totalNElements,
@@ -255,7 +255,7 @@ public class PairwiseSimilarity64 {
             // Arrays to merge input values into
             combinedIndices = allocInt(totalNElements);
             combinedVals = allocDouble(totalNElements);
-            int[] preallocInt = allocInt(valsIter.nValues());
+            int[] preallocInt = allocInt(valsIter.nValues() * 2);
             double[] preallocDouble = allocDouble(valsIter.nValues() * 2);
 
             nOutput = merge(valsIter, combinedIndices, combinedVals, totalNElements,
