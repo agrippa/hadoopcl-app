@@ -23,23 +23,17 @@ import org.apache.mahout.common.StringTuple;
 
 public class MergeWordCount {
     public static void main(String[] args) {
-        if(args.length != 1) {
-            System.out.println("usage: java MergeWordCount dir");
+        System.out.println(args.length);
+        if(args.length < 2) {
+            System.out.println("usage: java MergeWordCount output-file input-file-1 input-file-2 ...");
             return;
         }
 
-        String inputDirName = args[0];
-        String outputDirName = args[0];
+        String outputFileName = args[0];
 
-        File folder = new File(inputDirName);
-        int nInputFiles = 0;
-        File[] allFiles = folder.listFiles();
-        for(int i = 0; i < allFiles.length; i++) {
-            String name = allFiles[i].getName();
-            if(name.indexOf("counts-") == 0) {
-                allFiles[nInputFiles] = allFiles[i];
-                nInputFiles++;
-            }
+        File[] allFiles = new File[args.length - 1];
+        for (int i = 0; i < allFiles.length; i++) {
+            allFiles[i] = new File(args[1+i]);
         }
 
         Configuration conf = new Configuration();
@@ -52,8 +46,8 @@ public class MergeWordCount {
 
         final HashMap<String, MutableLong> counts = new HashMap<String, MutableLong>();
 
-        for(int i = 0; i < nInputFiles; i++) {
-            System.out.print("Aggregating from "+i);
+        for (int i = 0; i < allFiles.length; i++) {
+            System.out.print("Aggregating from "+allFiles[i].toString());
             File curr = allFiles[i];
             final Path inputPath = new Path(curr.getAbsolutePath());
             SequenceFile.Reader reader;
@@ -79,15 +73,19 @@ public class MergeWordCount {
             System.out.println(" DONE");
         }
 
-        final Path outputFilePath = new Path(outputDirName+"/final-counts");
+        final Path outputFilePath = new Path(outputFileName);
         SequenceFile.Writer writer;
         try {
                 writer = SequenceFile.createWriter(fs, conf, 
                     outputFilePath,
                     org.apache.hadoop.io.Text.class,
                     org.apache.hadoop.io.LongWritable.class);
-            for(String s : counts.keySet()) {
-                writer.append(new Text(s), new LongWritable(counts.get(s).get()));
+            final Text outKey = new Text();
+            final LongWritable outVal = new LongWritable();
+            for (final Map.Entry<String, MutableLong> e : counts.entrySet()) {
+                outKey.set(e.getKey());
+                outVal.set(e.getValue().get());
+                writer.append(outKey, outVal);
             }
             writer.close();
         } catch(IOException io) {

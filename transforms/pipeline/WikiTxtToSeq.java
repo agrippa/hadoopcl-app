@@ -24,8 +24,8 @@ import java.util.concurrent.*;
  */
 public class WikiTxtToSeq {
     public static void main(String[] args) throws Exception {
-        if (args.length != 3) {
-            System.out.println("usage: java WikiTxtToSeq input-dirname output-dirname n-input-files");
+        if (args.length != 2) {
+            System.out.println("usage: java WikiTxtToSeq input-dirname output-dirname");
             return;
         }
 
@@ -34,23 +34,25 @@ public class WikiTxtToSeq {
         if(outputDirName.charAt(outputDirName.length()-1) == '/') {
             outputDirName = outputDirName.substring(0, outputDirName.length()-1);
         }
-        int nInputFiles = Integer.parseInt(args[2]);
-        System.out.println("input=\""+inputDirName+"\", output=\""+outputDirName+"\", nfiles="+nInputFiles);
+
+        File folder = new File(inputDirName);
+        File[] inputFiles = folder.listFiles();
 
         Configuration conf = new Configuration();
         Charset charset = Charset.forName("UTF-8");
 
         int nThreads = 12;
-        int chunkSize = (nInputFiles + 12 - 1) / 12;
+        int chunkSize = (inputFiles.length + 12 - 1) / 12;
         Runnable[] runners = new Runnable[nThreads];
         Thread[] threads = new Thread[nThreads];
 
         for(int t = 0; t < nThreads; t++) {
             int start = t * chunkSize;
             int end = (t + 1) * chunkSize;
-            if(end > nInputFiles) end = nInputFiles;
+            if(end > inputFiles.length) end = inputFiles.length;
 
-            runners[t] = new WikiRunner(t, start, end, inputDirName, outputDirName+Integer.toString(t)+"/", charset, conf);
+            runners[t] = new WikiRunner(t, start, end, inputDirName,
+                    outputDirName+"/"+Integer.toString(t), charset, conf, inputFiles);
             threads[t] = new Thread(runners[t]);
             threads[t].start();
         }
@@ -69,37 +71,43 @@ public class WikiTxtToSeq {
         private final String outputDirName;
         private final Charset charset;
         private final int tid;
-        private final ChunkedWriter writer;
+        private final SequenceFile.Writer writer;
+        private final File[] inputFiles;
 
-        public WikiRunner(int setTid, int setStart, int setEnd, String setInputDir, String setOutputDir, Charset setCharset,
-                Configuration setConf) {
+        public WikiRunner(int setTid, int setStart, int setEnd,
+                String setInputDir, String setOutputDir, Charset setCharset,
+                Configuration setConf, File[] inputFiles) {
             this.start = setStart; this.end = setEnd; this.nFiles = this.end - this.start;
             this.inputDirName = setInputDir;
             this.outputDirName = setOutputDir;
             this.charset = setCharset;
             this.tid = setTid;
             this.conf = setConf;
-            ChunkedWriter tmpWriter = null;
             try {
-                tmpWriter = new ChunkedWriter(conf, 5, new Path(outputDirName));
+                this.writer = new SequenceFile.Writer(FileSystem.get(this.conf),
+                        this.conf, new Path(outputDirName), Text.class, Text.class);
             } catch(Exception e) {
                 throw new RuntimeException(e);
             }
-            this.writer = tmpWriter;
+            this.inputFiles = inputFiles;
         }
 
         public void run() {
             for (int i = start; i < end; i++) {
                 String contents;
                 try {
-                    contents = FileUtils.readFileToString(new File(inputDirName+"/"+i+".txt"), charset);
-                    writer.write(i+".txt", contents);
+                    String[] tokens = inputFiles[i].getName().split("\\.");
+                    final int base = Integer.parseInt(tokens[1]);
+                    int count = 0;
+                    contents = FileUtils.readFileToString(
+                           inputFiles[i], charset);
+                    String[] lines = contents.split(System.getProperty("line.separator"));
+                    for (String l : lines) {
+                        writer.append(new Text(Integer.toString(base + count)), new Text(l));
+                        count++;
+                    }
                 } catch(IOException io) {
                     throw new RuntimeException(io);
-                }
-
-                if ((i+1) % 1000 == 0) {
-                    System.out.format("Thread %d completed (%2.2f)\n",tid, (((double)(i-start+1)/(double)this.nFiles) * 100.0));
                 }
             }
             try {

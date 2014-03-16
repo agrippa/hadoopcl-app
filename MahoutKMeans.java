@@ -26,6 +26,7 @@ public class MahoutKMeans {
 
     public static class MahoutKMeansReducer 
         extends IntSvecIntSvecHadoopCLReducerKernel {
+            public MahoutKMeansReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
             private void swapHelper(int[] arr, int index1, int index2) {
                 if (index1 != index2) {
@@ -274,6 +275,7 @@ public class MahoutKMeans {
 
     public static class MahoutKMeansMapper
             extends IntSvecIntSvecHadoopCLMapperKernel {
+            public MahoutKMeansMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected double vectorLengthSquared(double[] vals, int length) {
             double agg = 0.0;
@@ -454,6 +456,8 @@ public class MahoutKMeans {
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+
+       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
 
        FileInputFormat.addInputPath(job, new Path(args[0]));
        FileOutputFormat.setOutputPath(job, new Path(args[1]));
