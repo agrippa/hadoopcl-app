@@ -40,12 +40,14 @@ public class FilterZeroLengthSparseVectors {
         }
         ParallelFileIterator executor = new ParallelFileIterator(new File(input),
                 conf, fs, org.apache.hadoop.io.IntWritable.class,
-                org.apache.hadoop.io.SparseVectorWritable.class);
+                org.apache.hadoop.io.BSparseVectorWritable.class);
         executor.run(runners);
     }
 
     public static class FilterRunner extends
             ParallelFileIterator.ParallelFileRunner {
+
+        protected void finish() { }
         protected void callback(File currentFile) {
             final Path inputPath = new Path(currentFile.getAbsolutePath());
             final Path outputPath = new Path(currentFile.getAbsolutePath()+".copy");
@@ -60,14 +62,14 @@ public class FilterZeroLengthSparseVectors {
             try {
                 writer = SequenceFile.createWriter(fs, conf, outputPath, 
                         org.apache.hadoop.io.IntWritable.class,
-                        org.apache.hadoop.io.SparseVectorWritable.class);
+                        org.apache.hadoop.io.BSparseVectorWritable.class);
             } catch(IOException io) {
                 throw new RuntimeException(io);
             }
 
             final IntWritable key = new IntWritable();
-            final org.apache.hadoop.io.SparseVectorWritable val =
-                new org.apache.hadoop.io.SparseVectorWritable();
+            final org.apache.hadoop.io.BSparseVectorWritable val =
+                new org.apache.hadoop.io.BSparseVectorWritable();
 
             try {
                 while(reader.next(key, val)) {

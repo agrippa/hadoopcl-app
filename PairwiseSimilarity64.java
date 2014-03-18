@@ -117,7 +117,7 @@ public class PairwiseSimilarity64 {
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU, "/home/jmg3/transfer/fields.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "/home/jmg3/kernels/pairwise.mapper"); }
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
         }
@@ -208,14 +208,14 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU, "/home/jmg3/transfer/fields.reducer.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "/home/jmg3/kernels/pairwise.reducer"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
@@ -274,8 +274,7 @@ public class PairwiseSimilarity64 {
 
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU,
-            "/home/jmg3/transfer/fields.combiner.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "/home/jmg3/kernels/pairwise.combiner"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
