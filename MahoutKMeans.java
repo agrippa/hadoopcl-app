@@ -138,36 +138,6 @@ public class MahoutKMeans {
              * output in order to maintain total ordering
              */
             protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
-                /*
-                HashMap<Integer, MutableDouble> merged =
-                    new HashMap<Integer, MutableDouble>();
-
-                for (int i = 0; i < valIter.nValues(); i++) {
-                    valIter.seekTo(i);
-                    int[] indices = valIter.getValIndices();
-                    double[] vals = valIter.getValVals();
-                    int length = valIter.currentVectorLength();
-                    for (int j = 0; j < length; j++) {
-                        if (merged.containsKey(indices[j])) {
-                            merged.get(indices[j]).incr(vals[j]);
-                        } else {
-                            merged.put(indices[j], new MutableDouble(vals[j]));
-                        }
-                    }
-                }
-                
-                List<Integer> indices = new ArrayList<Integer>(merged.size());
-                indices.addAll(merged.keySet());
-                Collections.sort(indices);
-                int[] outputIndices = allocInt(merged.size());
-                double[] outputVals = allocDouble(merged.size());
-                for (int i = 0; i < indices.size(); i++) {
-                    outputIndices[i] = indices.get(i);
-                    outputVals[i] = merged.get(outputIndices[i]).get();
-                }
-                write(key, outputIndices, outputVals, merged.size());
-                */
-
                 int totalNElements = 0;
                 for (int i = 0; i < valsIter.nValues(); i++) {
                   valsIter.seekTo(i);
@@ -190,9 +160,6 @@ public class MahoutKMeans {
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
 
-            public int getOutputPairsPerInput() {
-                return 1;
-            }
             public void deviceStrength(DeviceStrength str) {
                 str.add(Device.TYPE.JAVA, 10);
             }
@@ -311,10 +278,6 @@ public class MahoutKMeans {
             write(closestCluster, outputIndices, outputVals, len);
         }
 
-        public int getOutputPairsPerInput() {
-            return 1;
-        }
-
         public void deviceStrength(DeviceStrength str) {
             str.add(Device.TYPE.GPU, 10);
         }
@@ -371,7 +334,7 @@ public class MahoutKMeans {
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.JAVA);
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        FileInputFormat.addInputPath(job, new Path(args[0]));
        FileOutputFormat.setOutputPath(job, new Path(args[1]));

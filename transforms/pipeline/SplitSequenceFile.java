@@ -27,7 +27,7 @@ import common.*;
 public class SplitSequenceFile {
     public static void main(String[] args) throws IOException, InterruptedException {
         if (args.length != 3) {
-            System.out.println("usage: java SplitSequenceFile file split output-folder");
+            System.out.println("usage: java SplitSequenceFile file nsplits output-folder");
             return;
         }
 

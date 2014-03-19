@@ -96,7 +96,7 @@ else
         ${CPU_THREAD} \
         ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
-    sleep 20
+    sleep 40
     echo Putting inputs from \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
     ${HADOOP_HOME}/bin/hadoop fs -put \
