@@ -154,8 +154,7 @@ public class MahoutKMeans {
 
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU,
-            "~/kernels/kmeans.reducer"); }
+        static { fileMapping.put(Device.TYPE.CPU, "kmeans.reducer"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
@@ -288,8 +287,7 @@ public class MahoutKMeans {
 
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.GPU,
-            "~/kernels/kmeans.mapper"); }
+        static { fileMapping.put(Device.TYPE.GPU, "kmeans.mapper"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
     }
