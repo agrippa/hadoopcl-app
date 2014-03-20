@@ -73,7 +73,7 @@ else
     GPU_THREAD=256
 
     hdfs_chunk_size=268435456
-    mapper=4
+    mapper=12
     if [ ${BENCHMARK} == sort ]; then
         reducer=4
     else
@@ -96,7 +96,7 @@ else
         ${CPU_THREAD} \
         ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
-    sleep 20
+    sleep 40
     echo Putting inputs from \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
     ${HADOOP_HOME}/bin/hadoop fs -put \

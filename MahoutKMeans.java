@@ -7,10 +7,11 @@ import org.apache.hadoop.mapreduce.OpenCLMapper;
 import org.apache.hadoop.mapreduce.OpenCLReducer;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.IntSvecIntSvecHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.IntBsvecIntBsvecHadoopCLMapperKernel;
 import org.apache.hadoop.mapreduce.HadoopCLSvecValueIterator;
+import org.apache.hadoop.mapreduce.HadoopOpenCLContext;
 
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -25,7 +26,8 @@ import org.apache.mahout.clustering.iterator.ClusterWritable;
 public class MahoutKMeans {
 
     public static class MahoutKMeansReducer 
-        extends IntSvecIntSvecHadoopCLReducerKernel {
+        extends IntBsvecIntBsvecHadoopCLReducerKernel {
+            public MahoutKMeansReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
             private void swapHelper(int[] arr, int index1, int index2) {
                 if (index1 != index2) {
@@ -135,135 +137,29 @@ public class MahoutKMeans {
              * through the input vectors in parallel, merging them into the final
              * output in order to maintain total ordering
              */
-            protected void reduce(int key, HadoopCLSvecValueIterator valIter) {
-                HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
-
-                for (int i = 0; i < valIter.nValues(); i++) {
-                    valIter.seekTo(i);
-                    int[] indices = valIter.getValIndices();
-                    double[] vals = valIter.getValVals();
-                    int length = valIter.currentVectorLength();
-                    for (int j = 0; j < length; j++) {
-                        if (merged.containsKey(indices[j])) {
-                            merged.get(indices[j]).incr(vals[j]);
-                        } else {
-                            merged.put(indices[j], new MutableDouble(vals[j]));
-                        }
-                    }
+            protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
+                int totalNElements = 0;
+                for (int i = 0; i < valsIter.nValues(); i++) {
+                  valsIter.seekTo(i);
+                  totalNElements += valsIter.currentVectorLength();
                 }
-                
-                List<Integer> indices = new ArrayList<Integer>(merged.size());
-                indices.addAll(merged.keySet());
-                Collections.sort(indices);
-                int[] outputIndices = allocInt(merged.size());
-                double[] outputVals = allocDouble(merged.size());
-                for (int i = 0; i < indices.size(); i++) {
-                    outputIndices[i] = indices.get(i);
-                    outputVals[i] = merged.get(outputIndices[i]).get();
-                }
-                write(key, outputIndices, outputVals, merged.size());
-
-                /*
-                // System.err.println("DIAGNOSTICS: Entering reduce with key "+key+" and "+valIter.nValues()+" values");
-                long initStart = System.currentTimeMillis();
-                int totalElements = 0;
-                for (int i = 0; i < valIter.nValues(); i++) {
-                    totalElements += valIter.vectorLength(i);
-                }
-                // System.err.println("DIAGNOSTICS: totalElements="+totalElements);
-
-                int[] outputIndices = allocInt(totalElements);
-                double[] outputVals = allocDouble(totalElements);
-                // Offset into outputIndices for each vector
-                int[] vectorIndices = allocInt(valIter.nValues());
-                int[] queueOfOffsets = allocInt(valIter.nValues());
-                int[] queueOfVectors = allocInt(valIter.nValues());
-
-                for(int i = 0; i < valIter.nValues(); i++) {
-                    valIter.seekTo(i);
-                    vectorIndices[i] = 0;
-                    queueOfOffsets[i] = valIter.getValIndices()[0];
-                    queueOfVectors[i] = i;
-                }
-
-                quicksort(queueOfOffsets, queueOfVectors, 0, valIter.nValues()-1);
-                // System.err.println("After quicksort: ");
-                // for (int i = 0; i < valIter.nValues(); i++) {
-                //     System.err.print(queueOfOffsets[i]+" ");
-                // }
-                // System.err.println();
-                long initStop = System.currentTimeMillis();
-
-                int queueHead = 0;
-
-                int currentCount = 0;
-                int nProcessed = 0;
-                int nOutput = 0;
-                int queueLength = valIter.nValues();
-
-                // long mainStart = System.currentTimeMillis();
-                while (nProcessed < totalElements) {
-                    // if ((nProcessed+1) % 1000 == 0) {
-                    //     System.err.println("DIAGNOSTICS: nProcessed="+(nProcessed+1)+"/"+totalElements);
-                    // }
-
-                    int minVector = queueOfVectors[queueHead];
-                    boolean dontIncr = false;
-
-                    valIter.seekTo(minVector);
-                    int newIndex = ++vectorIndices[minVector];
-                    int minIndex = valIter.getValIndices()[newIndex-1];
-                    double minValue = valIter.getValVals()[newIndex-1];
-
-                    if (newIndex < valIter.currentVectorLength()) {
-                        int tmp = valIter.getValIndices()[newIndex];
-                        if (tmp <= queueOfOffsets[forwardIterate(queueHead, queueOfOffsets, queueLength)]) {
-                            queueOfOffsets[queueHead] = tmp;
-                            queueOfVectors[queueHead] = minVector;
-                            // because we're going to advance it below
-                            dontIncr = true;
-                        } else {
-                            insert(tmp, minVector,
-                                    queueOfOffsets, queueOfVectors,
-                                    queueLength, queueHead);
-                        }
-                    } else {
-                        for (int i = queueHead + 1; i < queueLength; i++) {
-                            queueOfOffsets[i-1] = queueOfOffsets[i];
-                            queueOfVectors[i-1] = queueOfVectors[i];
-                        }
-                        queueLength--;
-                    }
-                    nProcessed++;
-
-                    if (nOutput > 0 && outputIndices[nOutput-1] == minIndex) {
-                        outputVals[nOutput-1] += minValue;
-                    } else {
-                        if (nOutput > 0) outputVals[nOutput-1] /= (double)currentCount;
-                        outputIndices[nOutput] = minIndex;
-                        outputVals[nOutput] = minValue;
-                        nOutput++;
-                        currentCount = 0;
-                    }
-
-                    currentCount++;
-                    if (!dontIncr) {
-                        queueHead = forwardIterate(queueHead, queueOfOffsets, queueLength);
-                    }
-                }
-                long runStop = System.currentTimeMillis();
-                // System.err.println("Reducer init time: "+(initStop-initStart)+" ms, run time "+(runStop-initStop)+" ms");
-                // long mainStop = System.currentTimeMillis();
-                // System.err.println("Main loop took "+(mainStop-mainStart)+" ms, find time = "+findTime+" ms");
-                outputVals[nOutput-1] /= (double)currentCount;
-                // System.err.println("DIAGNOSTICS: Reducer writing vector of length "+nOutput+" for key "+key);
+                int[] outputIndices = allocInt(totalNElements);
+                double[] outputVals = allocDouble(totalNElements);
+                int[] preallocInt = allocInt(valsIter.nValues() * 2);
+                double[] preallocDouble = allocDouble(valsIter.nValues() * 2);
+                final int nOutput = merge(valsIter, outputIndices, outputVals,
+                        totalNElements, preallocDouble, preallocInt);
                 write(key, outputIndices, outputVals, nOutput);
-                */
             }
 
-            public int getOutputPairsPerInput() {
-                return 1;
-            }
+        private static final Map<Device.TYPE, String> fileMapping =
+            new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.CPU,
+            "/home/jmg3/kernels/kmeans.reducer"); }
+        @Override
+        public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
+
+
             public void deviceStrength(DeviceStrength str) {
                 str.add(Device.TYPE.JAVA, 10);
             }
@@ -273,7 +169,8 @@ public class MahoutKMeans {
         }
 
     public static class MahoutKMeansMapper
-            extends IntSvecIntSvecHadoopCLMapperKernel {
+            extends IntBsvecIntBsvecHadoopCLMapperKernel {
+            public MahoutKMeansMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected double vectorLengthSquared(double[] vals, int length) {
             double agg = 0.0;
@@ -381,10 +278,6 @@ public class MahoutKMeans {
             write(closestCluster, outputIndices, outputVals, len);
         }
 
-        public int getOutputPairsPerInput() {
-            return 1;
-        }
-
         public void deviceStrength(DeviceStrength str) {
             str.add(Device.TYPE.GPU, 10);
         }
@@ -392,27 +285,13 @@ public class MahoutKMeans {
         public Device.TYPE[] validDevices() {
             return null;
         }
-    }
 
-    private static SparseVectorWritable clusterToSparseVector(
-            org.apache.mahout.clustering.iterator.ClusterWritable cluster) {
-        Iterator<Vector.Element> iter = cluster.getValue().getCenter().nonZeroes().iterator();
-        int count = 0;
-        while(iter.hasNext()) {
-            iter.next();
-            count++;
-        }
-        iter = cluster.getValue().getCenter().nonZeroes().iterator();
-        int[] indices = new int[count];
-        double[] vals = new double[count];
-        count = 0;
-        while(iter.hasNext()) {
-            Vector.Element ele = iter.next();
-            indices[count] = ele.index();
-            vals[count] = ele.get();
-            count++;
-        }
-        return new SparseVectorWritable(indices, vals);
+        private static final Map<Device.TYPE, String> fileMapping =
+            new HashMap<Device.TYPE, String>();
+        static { fileMapping.put(Device.TYPE.GPU,
+            "/home/jmg3/kernels/kmeans.mapper"); }
+        @Override
+        public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException,
@@ -423,10 +302,10 @@ public class MahoutKMeans {
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
        // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.pruned128.512clusters");
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.length32.512clusters");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
-       SparseVectorWritable tmpVal = new SparseVectorWritable();
+       BSparseVectorWritable tmpVal = new BSparseVectorWritable();
 
        int count = 0;
        while(reader.next(tmpKey, tmpVal)) { 
@@ -438,10 +317,10 @@ public class MahoutKMeans {
        job.setJarByClass(MahoutKMeans.class);
 
        job.setOutputKeyClass(IntWritable.class);
-       job.setOutputValueClass(SparseVectorWritable.class);
+       job.setOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapOutputKeyClass(IntWritable.class);
-       job.setMapOutputValueClass(SparseVectorWritable.class);
+       job.setMapOutputValueClass(BSparseVectorWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
        job.setOCLMapperClass(MahoutKMeansMapper.class);
@@ -454,6 +333,8 @@ public class MahoutKMeans {
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
+
+       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
 
        FileInputFormat.addInputPath(job, new Path(args[0]));
        FileOutputFormat.setOutputPath(job, new Path(args[1]));

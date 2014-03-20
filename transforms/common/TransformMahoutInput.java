@@ -102,7 +102,7 @@ public class TransformMahoutInput {
             try {
                 writer = SequenceFile.createWriter(fs, conf, outputPath, 
                         org.apache.hadoop.io.IntWritable.class,
-                        org.apache.hadoop.io.SparseVectorWritable.class);
+                        org.apache.hadoop.io.BSparseVectorWritable.class);
             } catch(IOException io) {
                 throw new RuntimeException(io);
             }
@@ -134,7 +134,7 @@ public class TransformMahoutInput {
                     }
                     int thisFileId = fileId.getAndAdd(1);
                     writer.append(new IntWritable(thisFileId),
-                            new SparseVectorWritable(indices, vals));
+                            new BSparseVectorWritable(indices, vals));
                     fileMapping.put(thisFileId, inputKey.toString());
                 }
                 writer.close();

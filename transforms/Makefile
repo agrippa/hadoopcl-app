@@ -3,7 +3,7 @@ include ../Makefile.common
 transform-mahout-input:
 	javac -cp ${CLASSPATH} common/TransformMahoutInput.java
 transform-wiki:
-	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned-merged.1024/ /scratch/jmg3/wiki-sparse/hadoopcl-input.1024/
+	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-96/ /scratch/jmg3/wiki-sparse/10.hadoopcl-input/
 transform-wiki-length:
 	java common.TransformMahoutInput /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-64-merged/ /scratch/jmg3/wiki-sparse/hadoopcl-input-length.64/
 random-seed:
@@ -52,10 +52,12 @@ get-num-unique-tokens-asf:
 ###########################################################
 ################### Mergers ###############################
 ###########################################################
-merges: merge-int-sparse merge-text-vector merge-int-fsparse
+merges: merge-int-sparse merge-text-vector merge-int-fsparse merge-int-bsparse
 
 merge-int-sparse: file-merger merge/MergeIntSparseFiles.java
 	javac -cp ${CLASSPATH} merge/MergeIntSparseFiles.java
+merge-int-bsparse: file-merger merge/MergeIntBSparseFiles.java
+	javac -cp ${CLASSPATH} merge/MergeIntBSparseFiles.java
 merge-int-fsparse: file-merger merge/MergeIntFSparseFiles.java
 	javac -cp ${CLASSPATH} merge/MergeIntFSparseFiles.java
 merge-text-vector: file-merger merge/MergeTextVector.java
@@ -102,7 +104,7 @@ wiki-parser: pipeline/ParseWiki.java
 wiki-txt-to-seq: pipeline/WikiTxtToSeq.java
 	javac -cp ${CLASSPATH} pipeline/WikiTxtToSeq.java
 wiki-txt-to-seq-run:
-	java -cp ${CLASSPATH} pipeline.WikiTxtToSeq /scratch/jmg3/wiki-txt/ /scratch/jmg3/wiki-seq/ 13638329
+	java -cp ${CLASSPATH} pipeline.WikiTxtToSeq /scratch/jmg3/wiki-sparse/0.wiki-files/ /scratch/jmg3/wiki-sparse/1.wiki-seq
 
 asf-txt-to-seq: pipeline/ASFTxtToSeq.java
 	javac -cp ${CLASSPATH} pipeline/ASFTxtToSeq.java
@@ -112,15 +114,19 @@ asf-txt-to-seq-run:
 txt-to-tokens:
 	javac -cp ${CLASSPATH} pipeline/TextToTokens.java 
 wiki-txt-to-tokens:
-	java -cp ${CLASSPATH} pipeline.TextToTokens /scratch/jmg3/wiki-seq-merged/ /scratch/jmg3/wiki-sparse/tokenized-documents
+	java -cp ${CLASSPATH} pipeline.TextToTokens /scratch/jmg3/wiki-sparse/1.wiki-seq/ /scratch/jmg3/wiki-sparse/2.tokenized-documents
 asf-txt-to-tokens:
 	java -cp ${CLASSPATH} pipeline.TextToTokens /scratch/jmg3/asf-seq-merged/ /scratch/jmg3/asf-sparse/tokenized-documents
 
 
 word-count: pipeline/WordCountFromTokenized.java
 	javac -cp ${CLASSPATH} pipeline/WordCountFromTokenized.java
+sort-word-counts: pipeline/SortCounts.java
+	javac -cp ${CLASSPATH} pipeline/SortCounts.java
 merge-word-count: pipeline/MergeWordCount.java
 	javac -cp ${CLASSPATH} pipeline/MergeWordCount.java
+merge-sorted-word-count: pipeline/MergeSortedWordCount.java
+	javac -cp ${CLASSPATH} pipeline/MergeSortedWordCount.java
 word-id: pipeline/GenerateUniqueWordIDs.java
 	javac -cp ${CLASSPATH} pipeline/GenerateUniqueWordIDs.java
 tf-vectors: pipeline/GenerateDFVectors.java
@@ -135,44 +141,72 @@ mypruner: pipeline/MyPruner.java
 	javac -cp ${CLASSPATH} pipeline/MyPruner.java
 prune-with-target-length: pipeline/PruneWithTargetLength.java
 	javac -cp ${CLASSPATH} pipeline/PruneWithTargetLength.java
+split-seq-file: pipeline/SplitSequenceFile.java
+	javac -cp ${CLASSPATH} pipeline/SplitSequenceFile.java
 
 wiki-word-count:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.WordCountFromTokenized /scratch/jmg3/wiki-sparse/tokenized-documents/ /scratch/jmg3/wiki-sparse/wordcount/
+	java -Xmx48G -cp ${CLASSPATH} pipeline.WordCountFromTokenized /scratch/jmg3/wiki-sparse/2.tokenized-documents/ /scratch/jmg3/wiki-sparse/3.wordcount/
 asf-word-count:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.WordCountFromTokenized /scratch/jmg3/asf-sparse/tokenized-documents/ /scratch/jmg3/asf-sparse/wordcount/
-wiki-merge-word-count:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.MergeWordCount /scratch/jmg3/wiki-sparse/wordcount/
+wiki-merge-word-count-1:
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MergeWordCount /scratch/jmg3/wiki-sparse/3.wordcount/interm-counts-2 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-6 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-7 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-8 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-9 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-10 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-11
+wiki-merge-word-count-2:
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MergeWordCount /scratch/jmg3/wiki-sparse/3.wordcount/interm-counts-1 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-0 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-1 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-2 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-3 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-4 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/counts-5
+wiki-merge-word-count-final:
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MergeWordCount /scratch/jmg3/wiki-sparse/3.wordcount/final-counts \
+		/scratch/jmg3/wiki-sparse/3.wordcount/interm-counts-1 \
+		/scratch/jmg3/wiki-sparse/3.wordcount/interm-counts-2
+
+
 asf-merge-word-count:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.MergeWordCount /scratch/jmg3/asf-sparse/wordcount/
 wiki-word-id:
-	java -cp ${CLASSPATH} pipeline.GenerateUniqueWordIDs /scratch/jmg3/wiki-sparse/wordcount/final-counts /scratch/jmg3/wiki-sparse/wordcount/dictionary-file
+	java -cp ${CLASSPATH} pipeline.GenerateUniqueWordIDs /scratch/jmg3/wiki-sparse/3.wordcount/final-counts /scratch/jmg3/wiki-sparse/3.wordcount/dictionary-file
 asf-word-id:
 	java -cp ${CLASSPATH} pipeline.GenerateUniqueWordIDs /scratch/jmg3/asf-sparse/wordcount/final-counts /scratch/jmg3/asf-sparse/wordcount/dictionary-file
 wiki-tf-vector:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.GenerateDFVectors /scratch/jmg3/wiki-sparse/tokenized-documents/ /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/wordcount/dictionary-file
+	java -Xmx48G -cp ${CLASSPATH} pipeline.GenerateDFVectors /scratch/jmg3/wiki-sparse/2.tokenized-documents/ /scratch/jmg3/wiki-sparse/4.tf-vectors/ /scratch/jmg3/wiki-sparse/3.wordcount/dictionary-file
 asf-tf-vector:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.GenerateDFVectors /scratch/jmg3/asf-sparse/tokenized-documents/ /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/wordcount/dictionary-file
 wiki-df-count:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.TFtoDF /scratch/jmg3/wiki-sparse/wordcount/final-counts /scratch/jmg3/wiki-sparse/wordcount/dictionary-file /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/df-count/term-counts
+	java -Xmx48G -cp ${CLASSPATH} pipeline.TFtoDF /scratch/jmg3/wiki-sparse/3.wordcount/final-counts /scratch/jmg3/wiki-sparse/3.wordcount/dictionary-file /scratch/jmg3/wiki-sparse/4.tf-vectors/ /scratch/jmg3/wiki-sparse/5.df-count/term-counts
 asf-df-count:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.TFtoDF /scratch/jmg3/asf-sparse/wordcount/final-counts /scratch/jmg3/asf-sparse/wordcount/dictionary-file /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/df-count/term-counts
 wiki-prune-tf:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneTF /scratch/jmg3/wiki-sparse/tf-vectors/ /scratch/jmg3/wiki-sparse/df-count/term-counts /scratch/jmg3/wiki-sparse/tf-vectors-pruned/ 13637681
+	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneTF /scratch/jmg3/wiki-sparse/4.tf-vectors/ /scratch/jmg3/wiki-sparse/5.df-count/term-counts /scratch/jmg3/wiki-sparse/6.tf-vectors-pruned/ 14303375
 asf-prune-tf:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneTF /scratch/jmg3/asf-sparse/tf-vectors/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tf-vectors-pruned/ 36909
 wiki-tfidf:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.TFPrunedtoTFIDF /scratch/jmg3/wiki-sparse/tf-vectors-pruned/ /scratch/jmg3/wiki-sparse/df-count/term-counts /scratch/jmg3/wiki-sparse/tfidf-vectors/ 149053452 13637681
+	java -Xmx48G -cp ${CLASSPATH} pipeline.TFPrunedtoTFIDF /scratch/jmg3/wiki-sparse/6.tf-vectors-pruned/ /scratch/jmg3/wiki-sparse/5.df-count/term-counts /scratch/jmg3/wiki-sparse/7.tfidf-vectors/ 126007518 14303375
 asf-tfidf:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.TFPrunedtoTFIDF /scratch/jmg3/asf-sparse/tf-vectors-pruned/ /scratch/jmg3/asf-sparse/df-count/term-counts /scratch/jmg3/asf-sparse/tfidf-vectors/ 124993853 36909
+
+wiki-tfidf-transform:
+	python ../RenameTFIDF.py /scratch/jmg3/wiki-sparse/7.tfidf-vectors/ /scratch/jmg3/wiki-sparse/8.tfidf-vectors-transformed
 
 asf-myprune:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-pruned.4096/ /scratch/jmg3/asf-sparse/token-counts c 4096
 wiki-myprune:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-pruned/ /scratch/jmg3/wiki-sparse/token-counts c 1024
+	java -Xmx48G -cp ${CLASSPATH} pipeline.MyPruner /scratch/jmg3/wiki-sparse/8.tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-pruned.1024/ /scratch/jmg3/wiki-sparse/token-counts c 1024
 asf-prune-for-length:
 	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/asf-sparse/tfidf-vectors-transformed/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96/ /scratch/jmg3/asf-sparse/token-counts 96
 wiki-prune-for-length:
-	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed/ /scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-96/ /scratch/jmg3/wiki-sparse/token-counts 96
+	java -Xmx48G -cp ${CLASSPATH} pipeline.PruneWithTargetLength \
+		/scratch/jmg3/wiki-sparse/8.tfidf-vectors-transformed/ \
+		/scratch/jmg3/wiki-sparse/tfidf-vectors-transformed-lengthpruned-32 \
+		/scratch/jmg3/wiki-sparse/token-counts 32
 
 asf-merge:
 	java merge.MergeTextVector /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96/ /scratch/jmg3/asf-sparse/tfidf-vectors-transformed-lengthpruned.96-merged/ 13 part-r-

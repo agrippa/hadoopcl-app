@@ -22,7 +22,7 @@ import org.apache.mahout.math.RandomAccessSparseVector;
 import org.apache.mahout.clustering.kmeans.Kluster;
 
 public class SelectRandomSeeds {
-    private static ClusterWritable sparseToCluster(SparseVectorWritable sparse,
+    private static ClusterWritable sparseToCluster(BSparseVectorWritable sparse,
             int id) {
         int[] indices = sparse.indices();
         double[] vals = sparse.vals();
@@ -38,7 +38,7 @@ public class SelectRandomSeeds {
          * wiki = 149053452
          * asf = 124993853
          */
-        RandomAccessSparseVector center = new RandomAccessSparseVector(124993853);
+        RandomAccessSparseVector center = new RandomAccessSparseVector(126007518);
         for (int i = 0; i < length; i++) {
             center.setQuick(indices[i], vals[i]);
         }
@@ -71,7 +71,7 @@ public class SelectRandomSeeds {
         }
         ParallelFileIterator executor = new ParallelFileIterator(new File(input),
                 conf, fs, org.apache.hadoop.io.IntWritable.class,
-                org.apache.hadoop.io.SparseVectorWritable.class);
+                org.apache.hadoop.io.BSparseVectorWritable.class);
         executor.run(countRunners);
 
         int nPairs = 0;
@@ -94,10 +94,10 @@ public class SelectRandomSeeds {
         }
         executor = new ParallelFileIterator(new File(input),
                 conf, fs, org.apache.hadoop.io.IntWritable.class,
-                org.apache.hadoop.io.SparseVectorWritable.class);
+                org.apache.hadoop.io.BSparseVectorWritable.class);
         executor.run(findRunners);
 
-        List<SparseVectorWritable> seeds = new LinkedList<SparseVectorWritable>();
+        List<BSparseVectorWritable> seeds = new LinkedList<BSparseVectorWritable>();
         for (FindRunner r : findRunners) {
             seeds.addAll(r.selected());
         }
@@ -107,7 +107,7 @@ public class SelectRandomSeeds {
         try {
             writer = SequenceFile.createWriter(fs, conf, outputPath,
                     org.apache.hadoop.io.IntWritable.class,
-                    org.apache.hadoop.io.SparseVectorWritable.class);
+                    org.apache.hadoop.io.BSparseVectorWritable.class);
             for (int i = 0; i < seeds.size(); i++) {
                 writer.append(new IntWritable(i), seeds.get(i));
             }
@@ -146,8 +146,8 @@ public class SelectRandomSeeds {
             }
 
             final IntWritable key = new IntWritable();
-            final org.apache.hadoop.io.SparseVectorWritable val =
-                new org.apache.hadoop.io.SparseVectorWritable();
+            final org.apache.hadoop.io.BSparseVectorWritable val =
+                new org.apache.hadoop.io.BSparseVectorWritable();
 
             try {
                 while(reader.next(key, val)) {
@@ -165,17 +165,17 @@ public class SelectRandomSeeds {
     public static class FindRunner extends
             ParallelFileIterator.ParallelFileRunner {
         private final HashSet<Integer> selections;
-        private final List<SparseVectorWritable> selected;
+        private final List<BSparseVectorWritable> selected;
         private int vectorIndex;
 
         public FindRunner(HashSet<Integer> selections, int nSeeds,
                 int pre) {
             this.selections = selections;
-            this.selected = new ArrayList<SparseVectorWritable>(nSeeds);
+            this.selected = new ArrayList<BSparseVectorWritable>(nSeeds);
             this.vectorIndex = pre;
         }
 
-        public List<SparseVectorWritable> selected() { return this.selected; }
+        public List<BSparseVectorWritable> selected() { return this.selected; }
 
         protected void callback(File current) {
             final Path inputPath = new Path(current.getAbsolutePath());
@@ -187,8 +187,8 @@ public class SelectRandomSeeds {
             }
 
             final IntWritable key = new IntWritable();
-            final org.apache.hadoop.io.SparseVectorWritable val =
-                new org.apache.hadoop.io.SparseVectorWritable();
+            final org.apache.hadoop.io.BSparseVectorWritable val =
+                new org.apache.hadoop.io.BSparseVectorWritable();
 
             try {
                 while (reader.next(key, val)) {

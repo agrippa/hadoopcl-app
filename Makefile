@@ -49,6 +49,10 @@ all: SetupInputCompression.class
 opencl-pairwise: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
 	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ .
+opencl-kmeans: SetupInputCompression.class
+	rm -rf mahoutkmeansclasses/*
+	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
+	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ .
 
 opencl-pairwise_xiangyu: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java

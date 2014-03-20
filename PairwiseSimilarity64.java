@@ -117,8 +117,8 @@ public class PairwiseSimilarity64 {
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.mapper"); }
         @Override
+        static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.mapper"); }
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
         }
@@ -209,11 +209,12 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.CPU, 10);
+          str.add(Device.TYPE.JAVA, 10);
         }
         public Device.TYPE[] validDevices() {
           return null;
         }
+
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
         static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.reducer"); }
         @Override
@@ -283,8 +284,8 @@ public class PairwiseSimilarity64 {
        Configuration conf = new Configuration();
        SetupInputCompression.setupCompression(conf, args);
 
-       String numNonZeroEntriesPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/numNonZeroEntries.bin";
-       String normsPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/norms.bin";
+       String numNonZeroEntriesPath = "file:///home/jmg3/transfer/numNonZeroEntries.bin";
+       String normsPath = "file:///home/jmg3/transfer/norms.bin";
        OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
        Vector norms = Vectors.read(new Path(normsPath), conf);
 
@@ -317,7 +318,7 @@ public class PairwiseSimilarity64 {
        conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
-       ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64.jar");
+       ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
        // job.setJarByClass(PairwiseSimilarity.class);
        // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
 

@@ -48,11 +48,11 @@ public class PruneWithTargetLength {
         File[] allFiles = existingFolder.listFiles();
         int targetLength = Integer.parseInt(args[3]);
 
-        try {
-            FileUtils.cleanDirectory(new File(newDir));
-        } catch(IOException io) {
-            throw new RuntimeException(io);
-        }
+        // try {
+        //     FileUtils.cleanDirectory(new File(newDir));
+        // } catch(IOException io) {
+        //     throw new RuntimeException(io);
+        // }
 
         final TreeSet<TokenCount> sortedTokens = new TreeSet<TokenCount>();
         final int nThreads = ParallelFileIterator.nCores;
@@ -120,6 +120,14 @@ public class PruneWithTargetLength {
         @Override
         protected void callback(File f) {
             String fileName = f.getName();
+
+            File out = new File(this.outputFolder+"/"+fileName);
+            if (out.exists()) {
+                System.out.println("Skipping "+this.outputFolder+"/"+fileName);
+                return;
+            } else {
+                System.out.println("Working on "+this.outputFolder+"/"+fileName);
+            }
 
             SequenceFile.Reader reader;
             SequenceFile.Writer writer;

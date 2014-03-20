@@ -57,8 +57,8 @@ public class MyPruner {
 
             SequenceFile.Writer writer = SequenceFile.createWriter(fs, conf,
                     new Path(countsFolder+"/all-counts"),
-                    org.apache.hadoop.io.Text.class,
-                    org.apache.mahout.math.VectorWritable.class);
+                    org.apache.hadoop.io.IntWritable.class,
+                    org.apache.hadoop.io.LongWritable.class);
             final Iterator<Map.Entry<Integer, MutableLong>> it =
                 accum.entrySet().iterator();
             final IntWritable outputKey = new IntWritable();
