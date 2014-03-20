@@ -155,7 +155,7 @@ public class MahoutKMeans {
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
         static { fileMapping.put(Device.TYPE.CPU,
-            "/home/jmg3/kernels/kmeans.reducer"); }
+            "~/kernels/kmeans.reducer"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
@@ -289,7 +289,7 @@ public class MahoutKMeans {
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
         static { fileMapping.put(Device.TYPE.GPU,
-            "/home/jmg3/kernels/kmeans.mapper"); }
+            "~/kernels/kmeans.mapper"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
     }
@@ -301,7 +301,6 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed/sparse-randomSeed.pruned128.512clusters");
        Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
