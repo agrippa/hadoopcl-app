@@ -163,7 +163,8 @@ public class MahoutKMeans {
                 str.add(Device.TYPE.JAVA, 10);
             }
             public Device.TYPE[] validDevices() {
-                return new Device.TYPE[] { Device.TYPE.JAVA };
+                // return new Device.TYPE[] { Device.TYPE.JAVA };
+                return null;
             }
         }
 
