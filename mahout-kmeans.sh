@@ -1,13 +1,5 @@
 #!/bin/bash
 
-if [ $# -ne 2 ]; then
-    echo usage: mahout-kmeans.sh pruning clusters
-    exit 1
-fi
-
-PRUNING=32
-CLUSTERS=1024
-
 MAP_SLOTS=12
 REDUCE_SLOTS=2
 JAVA_HEAP=16

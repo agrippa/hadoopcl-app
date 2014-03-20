@@ -38,7 +38,7 @@ public class SelectRandomSeeds {
          * wiki = 149053452
          * asf = 124993853
          */
-        RandomAccessSparseVector center = new RandomAccessSparseVector(124993853);
+        RandomAccessSparseVector center = new RandomAccessSparseVector(126007518);
         for (int i = 0; i < length; i++) {
             center.setQuick(indices[i], vals[i]);
         }
