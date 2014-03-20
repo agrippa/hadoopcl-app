@@ -117,8 +117,8 @@ public class PairwiseSimilarity64 {
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        @Override
         static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.mapper"); }
+        @Override
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
         }
