@@ -117,7 +117,7 @@ public class PairwiseSimilarity64 {
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.mapper"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
@@ -215,7 +215,7 @@ public class PairwiseSimilarity64 {
           return null;
         }
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU, "/home/yiskylee/fields.reducer.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.reducer"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() {
             return fileMapping;
@@ -274,54 +274,9 @@ public class PairwiseSimilarity64 {
 
         private static final Map<Device.TYPE, String> fileMapping =
             new HashMap<Device.TYPE, String>();
-        static { fileMapping.put(Device.TYPE.CPU,
-            "/home/yiskylee/fields.combiner.dump"); }
+        static { fileMapping.put(Device.TYPE.CPU, "~/kernels/pairwise.combiner"); }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
-
-        // protected void reduce(int key, HadoopCLSvecValueIterator valsIter) {
-        //   HashMap<Integer, MutableDouble> merged = new HashMap<Integer, MutableDouble>();
-        //   TreeSet<Integer> sorted = new TreeSet<Integer>();
-
-        //   for (int i = 0; i < valsIter.nValues(); i++) {
-        //     valsIter.seekTo(i);
-        //     int[] indices = valsIter.getValIndices();
-        //     double[] vals = valsIter.getValVals();
-        //     for (int j = 0; j < valsIter.currentVectorLength(); j++) {
-        //       if (!merged.containsKey(indices[j])) {
-        //         sorted.add(indices[j]);
-        //         merged.put(indices[j], new MutableDouble(vals[j]));
-        //       } else {
-        //         merged.get(indices[j]).incr(vals[j]);
-        //       }
-        //     }
-        //   }
-
-        //   int[] outputIndices = allocInt(sorted.size());
-        //   double[] outputVals = allocDouble(sorted.size());
-        //   int index = 0;
-        //   for (Integer i : sorted) {
-        //     outputIndices[index] = i.intValue();
-        //     outputVals[index] = merged.get(i).val;
-        //     index++;
-        //   }
-        //   write(key, outputIndices, outputVals, outputIndices.length);
-        // }
-
-        // public void deviceStrength(DeviceStrength str) {
-        //     str.add(Device.TYPE.JAVA, 10);
-        // }
-        // public Device.TYPE[] validDevices() {
-        //     return new Device.TYPE[] { Device.TYPE.JAVA };
-        // }
-
-        // class MutableDouble {
-        //   public double val;
-        //   public MutableDouble(double v) {
-        //     this.val = v;
-        //   }
-        //   public void incr(double v) { this.val += v; }
-        // }
     }
 
     public static void main(String[] args) throws Exception {
