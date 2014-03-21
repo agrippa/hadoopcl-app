@@ -339,8 +339,6 @@ public class MahoutKMeans {
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
 
-       job.setOCLCombinerDeviceType(Device.TYPE.CPU);
-
        FileInputFormat.addInputPath(job, new Path(args[0]));
        FileOutputFormat.setOutputPath(job, new Path(args[1]));
 
