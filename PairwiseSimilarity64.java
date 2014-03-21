@@ -327,9 +327,8 @@ public class PairwiseSimilarity64 {
        conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
-       ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
-       // job.setJarByClass(PairwiseSimilarity.class);
-       // job.setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity.jar");
+       // ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
+       ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(BSparseVectorWritable.class);
