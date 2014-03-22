@@ -163,7 +163,7 @@ public class MahoutKMeans {
 
 
             public void deviceStrength(DeviceStrength str) {
-                str.add(Device.TYPE.JAVA, 10);
+                str.add(Device.TYPE.CPU, 10);
             }
             public Device.TYPE[] validDevices() {
                 // return new Device.TYPE[] { Device.TYPE.JAVA };

@@ -212,10 +212,10 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
-          return null;
+          return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
@@ -273,10 +273,10 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
-            return null;
+          return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
         }
 
         private static final Map<Device.TYPE, String> fileMapping =
