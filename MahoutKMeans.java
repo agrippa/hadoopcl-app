@@ -163,7 +163,7 @@ public class MahoutKMeans {
 
 
             public void deviceStrength(DeviceStrength str) {
-                str.add(Device.TYPE.CPU, 10);
+                str.add(Device.TYPE.JAVA, 10);
             }
             public Device.TYPE[] validDevices() {
                 // return new Device.TYPE[] { Device.TYPE.JAVA };
@@ -221,14 +221,7 @@ public class MahoutKMeans {
                 while (next < length2 && index2[next] < currentIndex) {
                   next++;
                 }
-                // int j = 0;
-                // while(j < length2 && currentIndex != index2[j]) {
-                //     j++;
-                // }
-                // if(j != length2) {
-                //     agg += val1[i] * val2[j];
-                // }
-                if (index2[next] == currentIndex) {
+                if (next < length2 && index2[next] == currentIndex) {
                     agg += val1[i] * val2[next];
                 }
             }
