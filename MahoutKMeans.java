@@ -213,15 +213,23 @@ public class MahoutKMeans {
         protected double dot(int[] index1, double[] val1, int length1,
                 int[] index2, double[] val2, int length2) {
 
+            int next = 0;
             double agg = 0.0;
-            for(int i = 0; i < length1; i++) {
+            for(int i = 0; next < length2 && i < length1; i++) {
                 int currentIndex = index1[i];
-                int j = 0;
-                while(j < length2 && currentIndex != index2[j]) {
-                    j++;
+
+                while (next < length2 && index2[next] < currentIndex) {
+                  next++;
                 }
-                if(j != length2) {
-                    agg += val1[i] * val2[j];
+                // int j = 0;
+                // while(j < length2 && currentIndex != index2[j]) {
+                //     j++;
+                // }
+                // if(j != length2) {
+                //     agg += val1[i] * val2[j];
+                // }
+                if (index2[next] == currentIndex) {
+                    agg += val1[i] * val2[next];
                 }
             }
             return agg;
