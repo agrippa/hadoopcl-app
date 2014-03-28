@@ -29,107 +29,6 @@ public class MahoutKMeans {
         extends IntBsvecIntBsvecHadoopCLReducerKernel {
             public MahoutKMeansReducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
-            private void swapHelper(int[] arr, int index1, int index2) {
-                if (index1 != index2) {
-                    arr[index1] += arr[index2];
-                    arr[index2] = arr[index1] - arr[index2];
-                    arr[index1] -= arr[index2];
-                }
-            }
-
-            private void swap(int[] arr, int[] coarr, int index1, int index2) {
-                swapHelper(arr, index1, index2);
-                swapHelper(coarr, index1, index2);
-            }
-
-            private int partition(int[] arr, int[] coarr, int left, int right,
-                    int pivotIndex) {
-                int pivotValue = arr[pivotIndex];
-                swap(arr, coarr, pivotIndex, right);
-                int storeIndex = left;
-                int topIndex = right-1;
-                int nPivots = 1;
-                for (int i = left; i <= topIndex; ) {
-                    int curr = arr[i];
-                    if (curr < pivotValue) {
-                        swap(arr, coarr, i, storeIndex);
-                        storeIndex++;
-                        i++;
-                    } else if(curr == pivotValue) {
-                        swap(arr, coarr, i, topIndex);
-                        topIndex--;
-                        nPivots++;
-                    } else {
-                        i++;
-                    }
-                }
-                for (int i = 0; i < nPivots; i++) {
-                    swap(arr, coarr, storeIndex + i, topIndex + 1 + i);
-                }
-                return storeIndex;
-            }
-
-            private void quicksort(int[] arr, int[] coarr, int low, int high) {
-                if (high - low <= 1) {
-                    return;
-                }
-                int baseOfPivot = partition(arr, coarr, low, high, low);
-                int pivot = arr[baseOfPivot];
-                int topOfPivot = baseOfPivot;
-                while (topOfPivot < arr.length && arr[topOfPivot] == pivot) {
-                    topOfPivot++;
-                }
-                quicksort(arr, coarr, low, baseOfPivot-1);
-                quicksort(arr, coarr, topOfPivot, high);
-            }
-
-            protected int reverseIterateHelper(int queueHead, int queueLength) {
-                int tmp = queueHead  -1;
-                return tmp < 0 ? queueLength-1 : tmp;
-            }
-
-            protected int forwardIterateHelper(int queueHead, int queueLength) {
-                int tmp = queueHead + 1;
-                return tmp >= queueLength ? 0 : tmp;
-            }
-
-            protected int reverseIterate(int queueHead, int[] q, int queueLength) {
-                return reverseIterateHelper(queueHead, queueLength);
-            }
-
-            protected int forwardIterate(int queueHead, int[] q, int queueLength) {
-                return forwardIterateHelper(queueHead, queueLength);
-            }
-
-            /*
-             * Already know the first element has been used and is no longer needed
-             */
-            protected void insert(int newIndex, int newVector, int[] queueOfOffsets,
-                    int[] queueOfVectors, int queueLength, int queueHead) {
-                int emptySlot = queueHead;
-                int checkingSlot = reverseIterate(emptySlot, queueOfOffsets, queueLength);
-                // System.err.println("Starting at slot "+queueHead);
-
-                // System.err.println("Checking "+newIndex+" against "+queueOfOffsets[checkingSlot]+" at slot "+checkingSlot);
-                while (queueOfOffsets[checkingSlot] > newIndex) {
-                    queueOfOffsets[emptySlot] = queueOfOffsets[checkingSlot];
-                    queueOfVectors[emptySlot] = queueOfVectors[checkingSlot];
-                    emptySlot = checkingSlot;
-                    checkingSlot = reverseIterate(checkingSlot, queueOfOffsets, queueLength);
-                    // System.err.println("Checking "+newIndex+" against "+queueOfOffsets[checkingSlot]+" at slot "+checkingSlot);
-                }
-
-                queueOfOffsets[emptySlot] = newIndex;
-                queueOfVectors[emptySlot] = newVector;
-            }
-
-            class MutableDouble {
-                private double val;
-                public MutableDouble(double v) { this.val = v; }
-                public double get() { return this.val; }
-                public void incr(double i) { this.val = this.val + i; }
-            }
-
             /*
              * This reducer first counts the number of unique indices present
              * in the input vectors, allocates sufficiently large output buffers
@@ -163,7 +62,7 @@ public class MahoutKMeans {
 
 
             public void deviceStrength(DeviceStrength str) {
-                str.add(Device.TYPE.JAVA, 10);
+                str.add(Device.TYPE.CPU, 10);
             }
             public Device.TYPE[] validDevices() {
                 // return new Device.TYPE[] { Device.TYPE.JAVA };
@@ -183,33 +82,6 @@ public class MahoutKMeans {
             return agg;
         }
 
-        /*
-        protected double dot(int[] index1, double[] val1, int length1,
-                int[] index2, double[] val2, int length2) {
-
-            double agg = 0.0;
-            int i = 0;
-            int j = 0;
-            int iIndex = index1[i];
-            int jIndex = index2[i];
-            while (i < length1 && j < length2) {
-                if (iIndex == jIndex) {
-                    agg += (val1[i] * val2[j]);
-                    i++;
-                    j++;
-                    if (i < length1) iIndex = index1[i];
-                    if (j < length2) jIndex = index2[j];
-                } else if (iIndex < jIndex) {
-                    i++;
-                    if (i < length1) iIndex = index1[i];
-                } else {
-                    j++;
-                    if (j < length2) jIndex = index2[j];
-                }
-            }
-            return agg;
-        }
-        */
         protected double dot(int[] index1, double[] val1, int length1,
                 int[] index2, double[] val2, int length2) {
 
@@ -307,8 +179,8 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
-       Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
+       // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
        BSparseVectorWritable tmpVal = new BSparseVectorWritable();
