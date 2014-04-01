@@ -60,7 +60,6 @@ public class MahoutKMeans {
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
-
             public void deviceStrength(DeviceStrength str) {
                 str.add(Device.TYPE.CPU, 10);
             }

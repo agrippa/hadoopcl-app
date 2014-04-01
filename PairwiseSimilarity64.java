@@ -127,11 +127,12 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
-            return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
+            return null;
+            // return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
         }
       }
 
@@ -215,7 +216,8 @@ public class PairwiseSimilarity64 {
           str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
-          return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
+          return null;
+          // return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
         }
 
         private static final Map<Device.TYPE, String> fileMapping = new HashMap<Device.TYPE, String>();
@@ -276,7 +278,8 @@ public class PairwiseSimilarity64 {
             str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
-          return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
+          return null;
+          // return new Device.TYPE[] { Device.TYPE.JAVA, Device.TYPE.CPU };
         }
 
         private static final Map<Device.TYPE, String> fileMapping =
@@ -331,8 +334,8 @@ public class PairwiseSimilarity64 {
        conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
-       // ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
-       ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64.jar");
+       ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
+       // ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(BSparseVectorWritable.class);
