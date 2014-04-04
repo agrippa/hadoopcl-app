@@ -22,6 +22,17 @@ select-random-seeds-wiki:
 	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/wiki-sparse/hadoopcl-input-length.32/ /scratch/jmg3/wiki-sparse/random-seed/ 512
 select-random-seeds-asf:
 	java -cp ${CLASSPATH} pipeline.SelectRandomSeeds /scratch/jmg3/asf-sparse/hadoopcl-input.lengthpruned-32/ /scratch/jmg3/asf-sparse/random-seed/ 64
+build-dump-features:
+	javac -cp ${CLASSPATH} pipeline/DumpFeatures.java
+dump-features:
+	java -cp ${CLASSPATH} pipeline.DumpFeatures /scratch/jmg3/mahout-kmeans.input/block.none /scratch/jmg3/features.dump
+build-classify-points:
+	javac -cp ${CLASSPATH} pipeline/ClassifyPoints.java
+classify-points:
+	java -cp ${CLASSPATH} pipeline.ClassifyPoints \
+		/scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-32-combined-merged/ \
+		/scratch/jmg3/first-iter-clusters \
+		/scratch/jmg3/classified-points
 
 
 ###########################################################

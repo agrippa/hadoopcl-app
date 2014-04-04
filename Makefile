@@ -53,6 +53,10 @@ opencl-kmeans: SetupInputCompression.class
 	rm -rf mahoutkmeansclasses/*
 	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ .
+opencl-bayes:
+	rm -rf bayesclasses/*
+	javac -g -classpath ${CLASSPATH} -d bayesclasses/ NaiveBayes.java
+	jar cvf NaiveBayes.jar -C bayesclasses/ .
 opencl-writable: SetupInputCompression.class
 	rm -rf writableclasses/*
 	javac -g -classpath ${CLASSPATH} -d writableclasses/ TestWritables.java
