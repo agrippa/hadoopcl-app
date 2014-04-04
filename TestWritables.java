@@ -57,18 +57,25 @@ public class TestWritables {
             int[] indices = allocInt(valsIter.currentVectorLength());
             float[] vals = allocFloat(valsIter.currentVectorLength());
 
-            int[] inIndices = valsIter.getValIndices();
-            float[] inVals = valsIter.getValVals();
+            for (int i = 0; i < valsIter.nValues(); i++) {
+                indices[i] = 0;
+                vals[i] = 0.0f;
+            }
 
-            for (int i = 0; i < valsIter.currentVectorLength(); i++) {
-                indices[i] = inIndices[i];
-                vals[i] = inVals[i];
+            for (int j = 0; j < valsIter.nValues(); j++) {
+                valsIter.seekTo(j);
+                int[] inIndices = valsIter.getValIndices();
+                float[] inVals = valsIter.getValVals();
+                for (int i = 0; i < valsIter.currentVectorLength(); i++) {
+                    indices[i] = inIndices[i];
+                    vals[i] += inVals[i];
+                }
             }
             write(key, indices, vals, valsIter.currentVectorLength());
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.GPU, 10);
+            str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
             return null;
@@ -94,6 +101,7 @@ public class TestWritables {
            vals[i] = 0.0f;
        }
        conf.addWritableHadoopCLGlobal(indices, vals, TaskType.MAPPER);
+       // conf.addWritableHadoopCLGlobal(indices, vals, TaskType.MAPPER);
 
        Job job = new Job(conf, "test-writable");
        ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/TestWritables.jar");
