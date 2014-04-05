@@ -297,11 +297,15 @@ public class PairwiseSimilarity64 {
        SetupInputCompression.setupCompression(conf, args);
 
        // Davinci
-       String numNonZeroEntriesPath = "file:///home/jmg3/pairwise-inputs/numNonZeroEntries.bin";
-       String normsPath = "file:///home/jmg3/pairwise-inputs/norms.bin";
+       // String numNonZeroEntriesPath = "file:///home/jmg3/pairwise-inputs/numNonZeroEntries.bin";
+       // String normsPath = "file:///home/jmg3/pairwise-inputs/norms.bin";
        // Nyan
        // String numNonZeroEntriesPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/numNonZeroEntries.bin";
        // String normsPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/norms.bin";
+       // AMD
+       String numNonZeroEntriesPath = "file:///home/mgrossman/hadoopcl-input/transfer/numNonZeroEntries.bin";
+       String normsPath = "file:///home/mgrossman/hadoopcl-input/transfer/norms.bin";
+      
        OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
        Vector norms = Vectors.read(new Path(normsPath), conf);
 
