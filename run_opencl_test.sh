@@ -68,6 +68,12 @@ else
     if [ ${BENCHMARK} == bsparse-strided ]; then
         EXE_NAME=TestBSparseStrided
     fi
+    if [ ${BENCHMARK} == test-writables ]; then
+        EXE_NAME=TestWritables
+    fi
+    if [ ${BENCHMARK} == bayes ]; then
+        EXE_NAME=NaiveBayes
+    fi
 
     CPU_THREAD=64
     GPU_THREAD=256

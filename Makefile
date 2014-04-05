@@ -53,6 +53,14 @@ opencl-kmeans: SetupInputCompression.class
 	rm -rf mahoutkmeansclasses/*
 	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ .
+opencl-bayes:
+	rm -rf bayesclasses/*
+	javac -g -classpath ${CLASSPATH} -d bayesclasses/ NaiveBayes.java
+	jar cvf NaiveBayes.jar -C bayesclasses/ .
+opencl-writable: SetupInputCompression.class
+	rm -rf writableclasses/*
+	javac -g -classpath ${CLASSPATH} -d writableclasses/ TestWritables.java
+	jar cvf TestWritables.jar -C writableclasses/ .
 
 opencl-pairwise_xiangyu: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
@@ -121,6 +129,7 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} GenerateRandomSvec.java
 	javac -cp ${CLASSPATH} GlobalsOnGpuGenerator.java
 	javac -cp ${CLASSPATH} GenerateSimpleBSparse.java
+	javac -cp ${CLASSPATH} GenerateTestWritables.java
 
 bs-generate:
 	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
@@ -152,6 +161,8 @@ strided-generate:
 	java ${RUN_FLAGS} TestMapInputSvecCompressedInputGenerator ${HADOOP_INPUT_DIR}/test-strided.input 10 1000
 bstrided-generate:
 	java ${RUN_FLAGS} GenerateSimpleBSparse ${HADOOP_INPUT_DIR}/bsparse-strided.input 10 1000
+writables-generate:
+	java ${RUN_FLAGS} GenerateTestWritables ${HADOOP_INPUT_DIR}/test-writables.input 10 100
 
 bs-read:
 	cd readers && java -cp ${CLASSPATH} BlackscholesReader -1 /scratch/jmg3/blackscholes.output/part-r-*
