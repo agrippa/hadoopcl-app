@@ -61,6 +61,10 @@ opencl-bayes:
 	rm -rf bayesclasses/*
 	javac -g -classpath ${CLASSPATH} -d bayesclasses/ NaiveBayes.java
 	jar cvf NaiveBayes.jar -C bayesclasses/ .
+opencl-dirichlet:
+	rm -rf dirichletclasses/*
+	javac -g -classpath ${CLASSPATH} -d dirichletclasses/ Dirichlet.java
+	jar cvf Dirichlet.jar -C dirichletclasses/ .
 opencl-writable: SetupInputCompression.class
 	rm -rf writableclasses/*
 	javac -g -classpath ${CLASSPATH} -d writableclasses/ TestWritables.java
