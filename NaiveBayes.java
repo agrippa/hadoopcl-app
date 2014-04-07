@@ -34,7 +34,7 @@ public class NaiveBayes {
         public NaiveBayesMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected void map(int label, int[] indices, double[] vals, int length) {
-            System.err.println("Processing mapper with key="+label+" and vector with length "+length);
+            // System.err.println("Processing mapper with key="+label+" and vector with length "+length);
             double labelWeight = referenceGlobalVal(0, label);
             double alphaI = 5.0;
             int numFeatures = globalsLength(1);
@@ -151,7 +151,7 @@ public class NaiveBayes {
            trainerVals[i] = 0.0f;
        }
 
-       byte[] bytes = Files.readAllBytes(Paths.get("/scratch/jmg3/features.dump"));
+       byte[] bytes = Files.readAllBytes(Paths.get("/home-nis/mgrossman/hadoopcl-input/features.dump"));
        int nFeatures = bytes.length / 4;
        int[] featureWeightIndices = new int[nFeatures];
        double[] featureWeightVals = new double[nFeatures];
@@ -169,7 +169,7 @@ public class NaiveBayes {
                TaskType.MAPPER);
 
        Job job = new Job(conf, "naive-bayes");
-       ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/NaiveBayes.jar");
+       ((JobConf)job.getConfiguration()).setJar("/home-nis/mgrossman/hadoopcl-app/NaiveBayes.jar");
 
        job.setOutputKeyClass(IntWritable.class);
        job.setOutputValueClass(FSparseVectorWritable.class);

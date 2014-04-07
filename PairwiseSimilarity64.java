@@ -127,7 +127,7 @@ public class PairwiseSimilarity64 {
         }
 
         public void deviceStrength(DeviceStrength str) {
-          str.add(Device.TYPE.JAVA, 10);
+          str.add(Device.TYPE.CPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -303,8 +303,8 @@ public class PairwiseSimilarity64 {
        // String numNonZeroEntriesPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/numNonZeroEntries.bin";
        // String normsPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/norms.bin";
        // AMD
-       String numNonZeroEntriesPath = "file:///home/mgrossman/hadoopcl-input/transfer/numNonZeroEntries.bin";
-       String normsPath = "file:///home/mgrossman/hadoopcl-input/transfer/norms.bin";
+       String numNonZeroEntriesPath = "file:///home-nis/mgrossman/hadoopcl-input/transfer/numNonZeroEntries.bin";
+       String normsPath = "file:///home-nis/mgrossman/hadoopcl-input/transfer/norms.bin";
       
        OpenIntIntHashMap numNonZeroEntries = Vectors.readAsIntMap(new Path(numNonZeroEntriesPath), conf);
        Vector norms = Vectors.read(new Path(normsPath), conf);
@@ -338,7 +338,8 @@ public class PairwiseSimilarity64 {
        conf.addHadoopCLGlobal(normIndices, normVals);
 
        Job job = new Job(conf, "mahout-pairwise");
-       ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
+       ((JobConf)job.getConfiguration()).setJar("/home-nis/mgrossman/hadoopcl-app/PairwiseSimilarity64.jar");
+       // ((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/PairwiseSimilarity64.jar");
        // ((JobConf)job.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/PairwiseSimilarity64.jar");
 
        job.setOutputKeyClass(IntWritable.class);
