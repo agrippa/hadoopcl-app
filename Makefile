@@ -53,6 +53,10 @@ opencl-kmeans: SetupInputCompression.class
 	rm -rf mahoutkmeansclasses/*
 	javac -g -classpath ${CLASSPATH} -d mahoutkmeansclasses/ MahoutKMeans.java
 	jar cvf MahoutKMeans.jar -C mahoutkmeansclasses/ .
+opencl-fuzzy: SetupInputCompression.class
+	rm -rf fuzzyclasses/*
+	javac -g -classpath ${CLASSPATH} -d fuzzyclasses/ FuzzyKMeans.java
+	jar cvf FuzzyKMeans.jar -C fuzzyclasses/ .
 opencl-bayes:
 	rm -rf bayesclasses/*
 	javac -g -classpath ${CLASSPATH} -d bayesclasses/ NaiveBayes.java

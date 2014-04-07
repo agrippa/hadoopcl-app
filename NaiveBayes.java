@@ -34,7 +34,7 @@ public class NaiveBayes {
         public NaiveBayesMapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         protected void map(int label, int[] indices, double[] vals, int length) {
-            System.err.println("Processing mapper with key="+label+" and vector with length "+length);
+            // System.err.println("Processing mapper with key="+label+" and vector with length "+length);
             double labelWeight = referenceGlobalVal(0, label);
             double alphaI = 5.0;
             int numFeatures = globalsLength(1);
