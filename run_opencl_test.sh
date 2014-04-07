@@ -77,6 +77,9 @@ else
     if [ ${BENCHMARK} == fuzzy ]; then
         EXE_NAME=FuzzyKMeans
     fi
+    if [ ${BENCHMARK} == dirichlet ]; then
+        EXE_NAME=Dirichlet
+    fi
 
     CPU_THREAD=64
     GPU_THREAD=256
