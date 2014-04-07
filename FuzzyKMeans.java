@@ -101,7 +101,7 @@ public class FuzzyKMeans {
             public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.CPU, 10);
         }
         public Device.TYPE[] validDevices() {
             // return new Device.TYPE[] { Device.TYPE.JAVA };
@@ -170,7 +170,7 @@ public class FuzzyKMeans {
         protected void map(int key, int[] indices, double[] vals, int len) {
             int[] outputIndices = allocInt(len);
             double[] outputVals = allocDouble(len);
-            double[] distances = allocDouble(this.nGlobals());
+            // double[] distances = allocDouble(this.nGlobals());
 
             int minDistIndex = -1;
             double minDist = -1.0;
@@ -180,11 +180,13 @@ public class FuzzyKMeans {
                 double[] centroidVals = this.getGlobalVals(i);
                 int centroidVectorLength = this.globalsLength(i);
 
-                distances[i] = distance(indices, vals, len, centroidIndices,
+                double dist = distance(indices, vals, len, centroidIndices,
                         centroidVals, centroidVectorLength);
-                if (i == 0 || minDist > distances[i]) {
+                // distances[i] = distance(indices, vals, len, centroidIndices,
+                //         centroidVals, centroidVectorLength);
+                if (i == 0 || minDist > dist) {
                     minDistIndex = i;
-                    minDist = distances[i];
+                    minDist = dist;
                 }
             }
 
@@ -192,7 +194,10 @@ public class FuzzyKMeans {
             if (dist == 0.0) dist = 0.0000000001;
             double denom = 0.0;
             for (int j = 0; j < this.nGlobals(); j++) {
-                double eachCDist = distances[j];
+                int[] centroidIndices = this.getGlobalIndices(j);
+                double[] centroidVals = this.getGlobalVals(j);
+                int centroidVectorLength = this.globalsLength(j);
+                double eachCDist = distance(indices, vals, len, centroidIndices, centroidVals, centroidVectorLength);
                 if (eachCDist == 0.0) eachCDist = 0.0000000001;
                 denom += Math.pow(dist / eachCDist, 2.0);
             }
