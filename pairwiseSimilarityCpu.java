@@ -250,8 +250,9 @@ public class pairwiseSimilarityCpu {
 		pairwiseConf.setBoolean(EXCLUDE_SELF_SIMILARITY, false);
 
 		Job pairwiseSimilarity = new Job(pairwiseConf, "mahout-pairwise-cpu");
-        // ((JobConf)pairwiseSimilarity.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/pairwiseSimilarityCpu.jar");
-        ((JobConf)pairwiseSimilarity.getConfiguration()).setJar("/home/jmg3/app/pairwiseSimilarityCpu.jar");
+		// ((JobConf)pairwiseSimilarity.getConfiguration()).setJar("/home/yiskylee/hadoopcl-app/pairwiseSimilarityCpu.jar");
+		// ((JobConf)pairwiseSimilarity.getConfiguration()).setJar("/home/jmg3/app/pairwiseSimilarityCpu.jar");
+		((JobConf)pairwiseSimilarity.getConfiguration()).setJar("/home-nis/mgrossman/hadoopcl-app/pairwiseSimilarityCpu.jar");
 
 		pairwiseSimilarity.setMapperClass(CooccurrencesMapper.class);
 		pairwiseSimilarity.setMapOutputKeyClass(IntWritable.class);
@@ -271,6 +272,7 @@ public class pairwiseSimilarityCpu {
 		long start = System.currentTimeMillis();
 		boolean succeeded = pairwiseSimilarity.waitForCompletion(true);
 		long stop = System.currentTimeMillis();
+        System.err.println("Execution Time = "+(stop-start)+" ms");
 	}
 }
 
