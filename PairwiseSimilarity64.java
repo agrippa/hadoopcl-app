@@ -297,8 +297,8 @@ public class PairwiseSimilarity64 {
        SetupInputCompression.setupCompression(conf, args);
 
        // Davinci
-       // String numNonZeroEntriesPath = "file:///home/jmg3/pairwise-inputs/numNonZeroEntries.bin";
-       // String normsPath = "file:///home/jmg3/pairwise-inputs/norms.bin";
+       // String numNonZeroEntriesPath = "file:///home/jmg3/transfer/numNonZeroEntries.bin";
+       // String normsPath = "file:///home/jmg3/transfer/norms.bin";
        // Nyan
        // String numNonZeroEntriesPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/numNonZeroEntries.bin";
        // String normsPath = "file:///home/yiskylee/hadoopcl-app/threshold.1/norms.bin";

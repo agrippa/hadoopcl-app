@@ -33,7 +33,14 @@ classify-points:
 		/scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-32-combined-merged/ \
 		/scratch/jmg3/first-iter-clusters \
 		/scratch/jmg3/classified-points
-
+build-subset-cluster:
+	javac -cp ${CLASSPATH} pipeline/SubsetClusters.java
+subset-cluster:
+	java -cp ${CLASSPATH} pipeline.SubsetClusters /scratch/jmg3/wiki-sparse/random-seed-cluster /scratch/jmg3/wiki-sparse/random-seed-cluster.64 64
+build-subset-sparse:
+	javac -cp ${CLASSPATH} pipeline/SubsetSparse.java
+subset-sparse:
+	java -cp ${CLASSPATH} pipeline.SubsetSparse /scratch/jmg3/wiki-sparse/random-seed-sparse /scratch/jmg3/wiki-sparse/random-seed-sparse.128 128
 
 ###########################################################
 ################### Checkers ##############################

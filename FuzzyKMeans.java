@@ -168,6 +168,7 @@ public class FuzzyKMeans {
         }
 
         protected void map(int key, int[] indices, double[] vals, int len) {
+            final double m = 2.0;
             int[] outputIndices = allocInt(len);
             double[] outputVals = allocDouble(len);
             // double[] distances = allocDouble(this.nGlobals());
@@ -199,7 +200,7 @@ public class FuzzyKMeans {
                 int centroidVectorLength = this.globalsLength(j);
                 double eachCDist = distance(indices, vals, len, centroidIndices, centroidVals, centroidVectorLength);
                 if (eachCDist == 0.0) eachCDist = 0.0000000001;
-                denom += Math.pow(dist / eachCDist, 2.0);
+                denom += Math.pow(dist / eachCDist, m);
             }
             double probWeight = 1.0 / denom;
 
@@ -236,7 +237,7 @@ public class FuzzyKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
+       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse.64");
        // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();

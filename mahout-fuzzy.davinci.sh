@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# != 1 ]; then
-    echo usage: mahout-kmeans.davinci.sh nruns
+    echo usage: mahout-fuzzy.davinci.sh nruns
     exit 1
 fi
 
@@ -11,7 +11,6 @@ JAVA_HEAP=4
 PWD=$(pwd)
 
 cd ${HADOOP_APP_DIR}
-
 
 for i in $(seq $1); do
 
@@ -29,9 +28,9 @@ for i in $(seq $1); do
 
     ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-32-combined-merged/ input
     ${HADOOP_HOME}/bin/hadoop fs -mkdir clusters
-    ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed-cluster clusters/
+    ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed-cluster.128 clusters/
 
     sleep 30
-    time ${MAHOUT_HOME}/bin/mahout kmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -ow
+    time ${MAHOUT_HOME}/bin/mahout fkmeans -i input -c clusters -o output -dm org.apache.mahout.common.distance.CosineDistanceMeasure -x 1 -ow -m 2.0
 done
 cd ${PWD}
