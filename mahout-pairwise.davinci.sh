@@ -7,9 +7,9 @@ if [ $# != 1 ]; then
   exit 1
 fi
 
-MAP_SLOTS=4
-REDUCE_SLOTS=1
-JAVA_HEAP=3
+MAP_SLOTS=12
+REDUCE_SLOTS=2
+JAVA_HEAP=4
 PWD=$(pwd)
 
 for i in $(seq $1); do
