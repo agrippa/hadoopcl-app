@@ -41,7 +41,10 @@ build-subset-sparse:
 	javac -cp ${CLASSPATH} pipeline/SubsetSparse.java
 subset-sparse:
 	java -cp ${CLASSPATH} pipeline.SubsetSparse /scratch/jmg3/wiki-sparse/random-seed-sparse /scratch/jmg3/wiki-sparse/random-seed-sparse.128 128
-
+bsparse-to-vector-build:
+	javac -cp ${CLASSPATH} pipeline/BSparseToVector.java
+bsparse-to-vector:
+	java -cp ${CLASSPATH} pipeline.BSparseToVector ~/hadoopcl-input/bayes-dataset/classified-points.splitless/ ~/hadoopcl-input/bayes-dataset/classified-points.splitless.vector/ 126007518
 ###########################################################
 ################### Checkers ##############################
 ###########################################################
