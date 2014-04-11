@@ -74,6 +74,41 @@ opencl-pairwise_xiangyu: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
 	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . 
 
+generate-weights-file-build:
+	javac -classpath ${CLASSPATH} GenerateWeightsFile.java
+generate-weights-file:
+	java -classpath ${CLASSPATH} GenerateWeightsFile weights.bayes 4032949 1024
+cpu-bayes:
+	javac -g -classpath ${CLASSPATH} -d cpu-bayes-classes/ MahoutNaiveBayes.java
+	jar cvf MahoutNaiveBayes.jar -C cpu-bayes-classes/ . SetupInputCompression.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/Vector.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/Vector$$Element.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/VectorWritable.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/AbstractVector.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/LengthCachingVector.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/SequentialAccessSparseVector.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/RandomAccessSparseVector.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/RowSimilarityJob.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/common/AbstractJob.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/VectorSimilarityMeasure.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/CooccurrenceCountSimilarity.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/common/ClassUtils.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/measures/CountbasedMeasure.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/hadoop/similarity/cooccurrence/Vectors.class \
+	  -C ${MAHOUT_HOME}/core/target/classes org/apache/mahout/math/Varint.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/map/OpenIntIntHashMap.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/map/AbstractIntIntMap.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/set/AbstractSet.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/PersistentObject.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/function/IntIntProcedure.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/function/IntProcedure.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/Swapper.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/function/IntComparator.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/map/PrimeFinder.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/IndexException.class \
+	  -C ${MAHOUT_HOME}/math/target/classes org/apache/mahout/math/CardinalityException.class
+
+
 cpu-pairwise: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d cpu-pairwise-classes/ pairwiseSimilarityCpu.java
 	jar cvf pairwiseSimilarityCpu.jar -C cpu-pairwise-classes/ . SetupInputCompression.class \

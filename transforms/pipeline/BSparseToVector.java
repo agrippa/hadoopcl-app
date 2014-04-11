@@ -62,25 +62,23 @@ public class BSparseToVector {
                 reader = new SequenceFile.Reader(fs, inputPath, conf);
                 writer = SequenceFile.createWriter(fs, conf,
                         new Path(outFolder+"/"+inputPath.getName()),
-                        org.apache.hadoop.io.Text.class,
+                        org.apache.hadoop.io.IntWritable.class,
                         VectorWritable.class);
             } catch (IOException io) {
                 throw new RuntimeException(io);
             }
             final IntWritable inKey = new IntWritable();
-            final Text outKey = new Text();
             final VectorWritable outVal = new VectorWritable();
             final org.apache.hadoop.io.BSparseVectorWritable inVal =
                 new org.apache.hadoop.io.BSparseVectorWritable();
             try {
                 while (reader.next(inKey, inVal)) {
-                    outKey.set(Integer.toString(inKey.get()));
                     RandomAccessSparseVector vec = new RandomAccessSparseVector(cardinality);
                     for (int i = 0; i < inVal.size(); i++) {
                         vec.set(inVal.indices()[i], inVal.vals()[i]);
                     }
                     outVal.set(vec);
-                    writer.append(outKey, outVal);
+                    writer.append(inKey, outVal);
                 }
                 reader.close();
                 writer.close();

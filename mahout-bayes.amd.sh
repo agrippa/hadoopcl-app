@@ -28,10 +28,11 @@ sleep 2
 sleep 30
 
 ${HADOOP} fs -put ${HOME}/hadoopcl-input/bayes-dataset/classified-points.splitless.vector/ input
+${HADOOP} fs -put ${HOME}/hadoopcl-app/weights.bayes weights
 
 sleep 30
 
-${MAHOUT_HOME}/bin/mahout trainnb -i input -el -o model -li labelindex -ow
+${HADOOP} jar MahoutNaiveBayes.jar MahoutNaiveBayes
 done
 
 cd ${PWD}
