@@ -6,7 +6,6 @@ import org.apache.hadoop.io.*;
 import org.apache.hadoop.io.compress.*;
 import java.util.*;
 import org.apache.hadoop.conf.*;
-import com.hadoop.compression.lzo.*;
 import org.apache.hadoop.io.*;
 import org.apache.mahout.common.StringTuple;
 import org.apache.commons.io.FileUtils;

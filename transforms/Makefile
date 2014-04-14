@@ -45,6 +45,10 @@ bsparse-to-vector-build:
 	javac -cp ${CLASSPATH} pipeline/BSparseToVector.java
 bsparse-to-vector:
 	java -cp ${CLASSPATH} pipeline.BSparseToVector ~/hadoopcl-input/bayes-dataset/classified-points.splitless/ ~/hadoopcl-input/bayes-dataset/classified-points.splitless.vector/ 126007518
+cluster-to-bsparse-build:
+	javac -cp ${CLASSPATH} pipeline/ClusterToBSparse.java
+cluster-to-bsparse:
+	java -cp ${CLASSPATH} pipeline.ClusterToBSparse ~/hadoopcl-input/wiki-sparse/random-seed-cluster ~/hadoopcl-input/wiki-sparse/random-seed-sparse
 ###########################################################
 ################### Checkers ##############################
 ###########################################################

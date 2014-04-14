@@ -89,7 +89,7 @@ public class Dirichlet {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.GPU, 10);
         }
 
         public Device.TYPE[] validDevices() { return null; }
@@ -111,9 +111,12 @@ public class Dirichlet {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path clusterPath = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
-       Path radiusPath = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse-radius");
-       // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
+       // Davinci
+       // Path clusterPath = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
+       // Path radiusPath = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse-radius");
+       // AMD
+       Path clusterPath = new Path("/home-nis/mgrossman/hadoopcl-input/wiki-sparse/random-seed-sparse");
+       Path radiusPath = new Path("/home-nis/mgrossman/hadoopcl-input/wiki-sparse/random-seed-sparse-radius");
 
        SequenceFile.Reader clusterReader = new SequenceFile.Reader(localFs, clusterPath, conf);
        SequenceFile.Reader radiusReader = new SequenceFile.Reader(localFs, radiusPath, conf);

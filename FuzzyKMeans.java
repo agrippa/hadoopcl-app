@@ -69,6 +69,7 @@ public class FuzzyKMeans {
                 return null;
             }
         }
+
     public static class FuzzyKMeansCombiner extends IntPsvecIntPsvecHadoopCLReducerKernel {
         public FuzzyKMeansCombiner(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
@@ -171,7 +172,6 @@ public class FuzzyKMeans {
             final double m = 2.0;
             int[] outputIndices = allocInt(len);
             double[] outputVals = allocDouble(len);
-            // double[] distances = allocDouble(this.nGlobals());
 
             int minDistIndex = -1;
             double minDist = -1.0;
@@ -183,8 +183,6 @@ public class FuzzyKMeans {
 
                 double dist = distance(indices, vals, len, centroidIndices,
                         centroidVals, centroidVectorLength);
-                // distances[i] = distance(indices, vals, len, centroidIndices,
-                //         centroidVals, centroidVectorLength);
                 if (i == 0 || minDist > dist) {
                     minDistIndex = i;
                     minDist = dist;
@@ -208,7 +206,6 @@ public class FuzzyKMeans {
                 outputIndices[i] = indices[i];
                 outputVals[i] = vals[i];
             }
-
             write(minDistIndex, probWeight, outputIndices, outputVals, len);
         }
 
@@ -237,7 +234,8 @@ public class FuzzyKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse.64");
+       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse.64");
+       Path path = new Path("/home-nis/mgrossman/hadoopcl-input/wiki-sparse/random-seed-sparse.64");
        // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();

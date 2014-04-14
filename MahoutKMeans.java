@@ -61,7 +61,7 @@ public class MahoutKMeans {
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
 
             public void deviceStrength(DeviceStrength str) {
-                str.add(Device.TYPE.JAVA, 10);
+                str.add(Device.TYPE.CPU, 10);
             }
             public Device.TYPE[] validDevices() {
                 // return new Device.TYPE[] { Device.TYPE.JAVA };
@@ -154,7 +154,7 @@ public class MahoutKMeans {
         }
 
         public void deviceStrength(DeviceStrength str) {
-            str.add(Device.TYPE.JAVA, 10);
+            str.add(Device.TYPE.GPU, 10);
         }
 
         public Device.TYPE[] validDevices() {
@@ -178,7 +178,8 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
+       Path path = new Path("/home-nis/mgrossman/hadoopcl-input/wiki-sparse/random-seed-sparse");
+       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
        // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();
