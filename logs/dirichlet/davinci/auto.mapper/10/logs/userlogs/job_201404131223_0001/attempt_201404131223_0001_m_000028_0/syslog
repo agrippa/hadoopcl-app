@@ -1,0 +1,50 @@
+2014-04-13 12:26:16,626 WARN org.apache.hadoop.util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2014-04-13 12:26:16,809 INFO org.apache.hadoop.metrics2.impl.MetricsConfig: loaded properties from hadoop-metrics2.properties
+2014-04-13 12:26:16,862 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source MetricsSystem,sub=Stats registered.
+2014-04-13 12:26:16,866 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Scheduled snapshot period at 10 second(s).
+2014-04-13 12:26:16,866 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: MapTask metrics system started
+2014-04-13 12:26:16,867 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source ugi registered.
+2014-04-13 12:26:16,870 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source jvm registered.
+2014-04-13 12:26:16,966 INFO org.apache.hadoop.mapred.Child: Xiangyu: time1397409976966 jvm1900537031 task starts
+2014-04-13 12:26:16,981 INFO org.apache.hadoop.util.ProcessTree: setsid exited with exit code 0
+2014-04-13 12:26:16,985 INFO org.apache.hadoop.mapred.Task:  Using ResourceCalculatorPlugin : org.apache.hadoop.util.LinuxResourceCalculatorPlugin@1c00ee0c
+2014-04-13 12:26:17,062 INFO org.apache.hadoop.mapred.MapTask: Xiangyu: 1397409977062 mapper starts
+2014-04-13 12:26:17,129 INFO org.apache.hadoop.io.compress.CodecPool: Got brand-new decompressor
+2014-04-13 12:26:23,906 INFO org.apache.hadoop.mapred.MapTask: Xiangyu: 1397409983906 mapper ends
+2014-04-13 12:26:24,014 INFO org.apache.hadoop.mapred.Task: Task:attempt_201404131223_0001_m_000028_0 is done. And is in the process of commiting true
+2014-04-13 12:26:25,047 INFO org.apache.hadoop.mapred.Task: Task attempt_201404131223_0001_m_000028_0 is allowed to commit now
+2014-04-13 12:26:25,072 INFO org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter: Saved output of task 'attempt_201404131223_0001_m_000028_0' to dirichlet.output
+2014-04-13 12:26:26,110 INFO org.apache.hadoop.mapred.Task: Task 'attempt_201404131223_0001_m_000028_0' done.
+2014-04-13 12:26:26,110 INFO org.apache.hadoop.mapred.Child: Xiangyu: time1397409986110 jvm1900537031 task ends
+2014-04-13 12:26:26,112 INFO org.apache.hadoop.mapred.TaskLogsTruncater: Initializing logs' truncater with mapRetainSize=-1 and reduceRetainSize=-1
+2014-04-13 12:26:26,119 WARN org.apache.hadoop.mapred.Child: Error running child
+java.lang.RuntimeException: Error while running command to get file permissions : org.apache.hadoop.util.Shell$ExitCodeException: 
+	at org.apache.hadoop.util.Shell.runCommand(Shell.java:255)
+	at org.apache.hadoop.util.Shell.run(Shell.java:182)
+	at org.apache.hadoop.util.Shell$ShellCommandExecutor.execute(Shell.java:375)
+	at org.apache.hadoop.util.Shell.execCommand(Shell.java:461)
+	at org.apache.hadoop.util.Shell.execCommand(Shell.java:444)
+	at org.apache.hadoop.fs.FileUtil.execCommand(FileUtil.java:710)
+	at org.apache.hadoop.fs.RawLocalFileSystem$RawLocalFileStatus.loadPermissionInfo(RawLocalFileSystem.java:443)
+	at org.apache.hadoop.fs.RawLocalFileSystem$RawLocalFileStatus.getOwner(RawLocalFileSystem.java:426)
+	at org.apache.hadoop.mapred.TaskLog.obtainLogDirOwner(TaskLog.java:267)
+	at org.apache.hadoop.mapred.TaskLog.getAllLogsFileDetails(TaskLog.java:191)
+	at org.apache.hadoop.mapred.TaskLogsTruncater.getAllLogsFileDetails(TaskLogsTruncater.java:342)
+	at org.apache.hadoop.mapred.TaskLogsTruncater.truncateLogs(TaskLogsTruncater.java:134)
+	at org.apache.hadoop.mapred.Child$4.run(Child.java:260)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:415)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1121)
+	at org.apache.hadoop.mapred.Child.main(Child.java:247)
+
+	at org.apache.hadoop.fs.RawLocalFileSystem$RawLocalFileStatus.loadPermissionInfo(RawLocalFileSystem.java:468)
+	at org.apache.hadoop.fs.RawLocalFileSystem$RawLocalFileStatus.getOwner(RawLocalFileSystem.java:426)
+	at org.apache.hadoop.mapred.TaskLog.obtainLogDirOwner(TaskLog.java:267)
+	at org.apache.hadoop.mapred.TaskLog.getAllLogsFileDetails(TaskLog.java:191)
+	at org.apache.hadoop.mapred.TaskLogsTruncater.getAllLogsFileDetails(TaskLogsTruncater.java:342)
+	at org.apache.hadoop.mapred.TaskLogsTruncater.truncateLogs(TaskLogsTruncater.java:134)
+	at org.apache.hadoop.mapred.Child$4.run(Child.java:260)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at javax.security.auth.Subject.doAs(Subject.java:415)
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1121)
+	at org.apache.hadoop.mapred.Child.main(Child.java:247)

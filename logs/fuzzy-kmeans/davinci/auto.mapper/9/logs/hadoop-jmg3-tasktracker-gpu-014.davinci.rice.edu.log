@@ -1,0 +1,1005 @@
+2014-04-13 01:59:02,988 INFO org.apache.hadoop.mapred.TaskTracker: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting TaskTracker
+STARTUP_MSG:   host = gpu-014.davinci.rice.edu/192.168.110.214
+STARTUP_MSG:   args = []
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Fri Apr 11 17:54:37 CDT 2014
+************************************************************/
+2014-04-13 01:59:03,158 INFO org.apache.hadoop.metrics2.impl.MetricsConfig: loaded properties from hadoop-metrics2.properties
+2014-04-13 01:59:03,213 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source MetricsSystem,sub=Stats registered.
+2014-04-13 01:59:03,214 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Scheduled snapshot period at 10 second(s).
+2014-04-13 01:59:03,214 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: TaskTracker metrics system started
+2014-04-13 01:59:03,358 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source ugi registered.
+2014-04-13 01:59:03,530 INFO org.mortbay.log: Logging to org.slf4j.impl.Log4jLoggerAdapter(org.mortbay.log) via org.mortbay.log.Slf4jLog
+2014-04-13 01:59:03,581 INFO org.apache.hadoop.http.HttpServer: Added global filtersafety (class=org.apache.hadoop.http.HttpServer$QuotingInputFilter)
+2014-04-13 01:59:03,603 INFO org.apache.hadoop.mapred.TaskLogsTruncater: Initializing logs' truncater with mapRetainSize=-1 and reduceRetainSize=-1
+2014-04-13 01:59:03,607 INFO org.apache.hadoop.mapred.TaskTracker: Starting tasktracker with owner as jmg3
+2014-04-13 01:59:03,608 INFO org.apache.hadoop.mapred.TaskTracker: Good mapred local directories are: /tmp/hadoop/hadoop-jmg3/mapred/local
+2014-04-13 01:59:03,611 WARN org.apache.hadoop.util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2014-04-13 01:59:03,618 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source jvm registered.
+2014-04-13 01:59:03,618 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source TaskTrackerMetrics registered.
+2014-04-13 01:59:03,632 INFO org.apache.hadoop.ipc.Server: Starting SocketReader
+2014-04-13 01:59:03,634 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source RpcDetailedActivityForPort60688 registered.
+2014-04-13 01:59:03,634 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source RpcActivityForPort60688 registered.
+2014-04-13 01:59:03,636 INFO org.apache.hadoop.ipc.Server: IPC Server Responder: starting
+2014-04-13 01:59:03,637 INFO org.apache.hadoop.ipc.Server: IPC Server listener on 60688: starting
+2014-04-13 01:59:03,638 INFO org.apache.hadoop.ipc.Server: IPC Server handler 0 on 60688: starting
+2014-04-13 01:59:03,638 INFO org.apache.hadoop.ipc.Server: IPC Server handler 1 on 60688: starting
+2014-04-13 01:59:03,639 INFO org.apache.hadoop.ipc.Server: IPC Server handler 2 on 60688: starting
+2014-04-13 01:59:03,639 INFO org.apache.hadoop.ipc.Server: IPC Server handler 3 on 60688: starting
+2014-04-13 01:59:03,640 INFO org.apache.hadoop.ipc.Server: IPC Server handler 4 on 60688: starting
+2014-04-13 01:59:03,640 INFO org.apache.hadoop.ipc.Server: IPC Server handler 5 on 60688: starting
+2014-04-13 01:59:03,641 INFO org.apache.hadoop.ipc.Server: IPC Server handler 6 on 60688: starting
+2014-04-13 01:59:03,641 INFO org.apache.hadoop.ipc.Server: IPC Server handler 7 on 60688: starting
+2014-04-13 01:59:03,642 INFO org.apache.hadoop.ipc.Server: IPC Server handler 8 on 60688: starting
+2014-04-13 01:59:03,642 INFO org.apache.hadoop.ipc.Server: IPC Server handler 9 on 60688: starting
+2014-04-13 01:59:03,643 INFO org.apache.hadoop.ipc.Server: IPC Server handler 10 on 60688: starting
+2014-04-13 01:59:03,643 INFO org.apache.hadoop.ipc.Server: IPC Server handler 11 on 60688: starting
+2014-04-13 01:59:03,644 INFO org.apache.hadoop.ipc.Server: IPC Server handler 12 on 60688: starting
+2014-04-13 01:59:03,644 INFO org.apache.hadoop.ipc.Server: IPC Server handler 13 on 60688: starting
+2014-04-13 01:59:03,644 INFO org.apache.hadoop.ipc.Server: IPC Server handler 14 on 60688: starting
+2014-04-13 01:59:03,645 INFO org.apache.hadoop.ipc.Server: IPC Server handler 15 on 60688: starting
+2014-04-13 01:59:03,645 INFO org.apache.hadoop.ipc.Server: IPC Server handler 16 on 60688: starting
+2014-04-13 01:59:03,646 INFO org.apache.hadoop.ipc.Server: IPC Server handler 17 on 60688: starting
+2014-04-13 01:59:03,646 INFO org.apache.hadoop.ipc.Server: IPC Server handler 18 on 60688: starting
+2014-04-13 01:59:03,646 INFO org.apache.hadoop.ipc.Server: IPC Server handler 19 on 60688: starting
+2014-04-13 01:59:03,647 INFO org.apache.hadoop.ipc.Server: IPC Server handler 20 on 60688: starting
+2014-04-13 01:59:03,647 INFO org.apache.hadoop.ipc.Server: IPC Server handler 21 on 60688: starting
+2014-04-13 01:59:03,647 INFO org.apache.hadoop.mapred.TaskTracker: TaskTracker up at: localhost/127.0.0.1:60688
+2014-04-13 01:59:03,647 INFO org.apache.hadoop.mapred.TaskTracker: Starting tracker tracker_gpu-014.davinci.rice.edu:localhost/127.0.0.1:60688
+2014-04-13 01:59:03,648 INFO org.apache.hadoop.ipc.Server: IPC Server handler 22 on 60688: starting
+2014-04-13 01:59:03,648 INFO org.apache.hadoop.ipc.Server: IPC Server handler 23 on 60688: starting
+2014-04-13 01:59:33,355 INFO org.apache.hadoop.mapred.TaskTracker: Starting thread: Map-events fetcher for all reduce tasks on tracker_gpu-014.davinci.rice.edu:localhost/127.0.0.1:60688
+2014-04-13 01:59:33,364 INFO org.apache.hadoop.util.ProcessTree: setsid exited with exit code 0
+2014-04-13 01:59:33,369 INFO org.apache.hadoop.mapred.TaskTracker:  Using ResourceCalculatorPlugin : org.apache.hadoop.util.LinuxResourceCalculatorPlugin@76789566
+2014-04-13 01:59:33,371 WARN org.apache.hadoop.mapred.TaskTracker: TaskTracker's totalMemoryAllottedForTasks is -1. TaskMemoryManager is disabled.
+2014-04-13 01:59:33,374 INFO org.apache.hadoop.mapred.IndexCache: IndexCache created with max memory = 10485760
+2014-04-13 01:59:34,065 INFO org.apache.hadoop.metrics2.impl.MetricsSourceAdapter: MBean for source ShuffleServerMetrics registered.
+2014-04-13 01:59:34,068 INFO org.apache.hadoop.http.HttpServer: Port returned by webServer.getConnectors()[0].getLocalPort() before open() is -1. Opening the listener on 50061
+2014-04-13 01:59:34,068 INFO org.apache.hadoop.http.HttpServer: listener.getLocalPort() returned 50061 webServer.getConnectors()[0].getLocalPort() returned 50061
+2014-04-13 01:59:34,068 INFO org.apache.hadoop.http.HttpServer: Jetty bound to port 50061
+2014-04-13 01:59:34,068 INFO org.mortbay.log: jetty-6.1.26
+2014-04-13 01:59:34,336 INFO org.mortbay.log: Started SelectChannelConnector@0.0.0.0:50061
+2014-04-13 01:59:34,350 INFO org.apache.hadoop.mapred.TaskTracker: FILE_CACHE_SIZE for mapOutputServlet set to : 2000
+2014-04-13 02:00:52,618 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000051_0 task's state:UNASSIGNED
+2014-04-13 02:00:52,622 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000051_0 which needs 1 slots
+2014-04-13 02:00:52,622 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 12 and trying to launch attempt_201404130159_0001_m_000051_0 which needs 1 slots
+2014-04-13 02:00:52,775 INFO org.apache.hadoop.mapred.JobLocalizer: Initializing user jmg3 on this TT.
+2014-04-13 02:00:52,915 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1948587105
+2014-04-13 02:00:52,915 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1948587105 spawned.
+2014-04-13 02:00:52,918 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000051_0/taskjvm.sh
+2014-04-13 02:00:53,572 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1948587105 given task: attempt_201404130159_0001_m_000051_0
+2014-04-13 02:00:57,005 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000051_0 0.0% setup
+2014-04-13 02:00:57,008 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000051_0 is done.
+2014-04-13 02:00:57,008 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000051_0  was -1
+2014-04-13 02:00:57,009 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 12
+2014-04-13 02:00:58,647 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000000_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,648 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000001_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,648 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000002_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,648 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000003_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,649 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000004_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,649 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000005_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,650 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000006_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,650 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000007_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,650 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000008_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,651 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000009_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,651 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000010_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,651 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000011_0 task's state:UNASSIGNED
+2014-04-13 02:00:58,651 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000000_0 which needs 1 slots
+2014-04-13 02:00:58,651 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 12 and trying to launch attempt_201404130159_0001_m_000000_0 which needs 1 slots
+2014-04-13 02:00:58,652 INFO org.apache.hadoop.mapred.TaskTracker: Received KillTaskAction for task: attempt_201404130159_0001_m_000051_0
+2014-04-13 02:00:58,652 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000001_0 which needs 1 slots
+2014-04-13 02:00:58,652 INFO org.apache.hadoop.mapred.TaskTracker: About to purge task: attempt_201404130159_0001_m_000051_0
+2014-04-13 02:00:58,652 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 11 and trying to launch attempt_201404130159_0001_m_000001_0 which needs 1 slots
+2014-04-13 02:00:58,653 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000002_0 which needs 1 slots
+2014-04-13 02:00:58,653 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 10 and trying to launch attempt_201404130159_0001_m_000002_0 which needs 1 slots
+2014-04-13 02:00:58,653 INFO org.apache.hadoop.mapred.IndexCache: Map ID attempt_201404130159_0001_m_000051_0 not found in cache
+2014-04-13 02:00:58,654 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000003_0 which needs 1 slots
+2014-04-13 02:00:58,655 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 9 and trying to launch attempt_201404130159_0001_m_000003_0 which needs 1 slots
+2014-04-13 02:00:58,656 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000004_0 which needs 1 slots
+2014-04-13 02:00:58,657 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 8 and trying to launch attempt_201404130159_0001_m_000004_0 which needs 1 slots
+2014-04-13 02:00:58,657 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000005_0 which needs 1 slots
+2014-04-13 02:00:58,658 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 7 and trying to launch attempt_201404130159_0001_m_000005_0 which needs 1 slots
+2014-04-13 02:00:58,659 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000006_0 which needs 1 slots
+2014-04-13 02:00:58,659 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 6 and trying to launch attempt_201404130159_0001_m_000006_0 which needs 1 slots
+2014-04-13 02:00:58,659 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000007_0 which needs 1 slots
+2014-04-13 02:00:58,660 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 5 and trying to launch attempt_201404130159_0001_m_000007_0 which needs 1 slots
+2014-04-13 02:00:58,660 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000008_0 which needs 1 slots
+2014-04-13 02:00:58,661 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000008_0 which needs 1 slots
+2014-04-13 02:00:58,662 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000009_0 which needs 1 slots
+2014-04-13 02:00:58,662 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000009_0 which needs 1 slots
+2014-04-13 02:00:58,662 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000010_0 which needs 1 slots
+2014-04-13 02:00:58,662 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000010_0 which needs 1 slots
+2014-04-13 02:00:58,663 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000011_0 which needs 1 slots
+2014-04-13 02:00:58,663 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000011_0 which needs 1 slots
+2014-04-13 02:00:59,261 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1309310967
+2014-04-13 02:00:59,262 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1309310967 spawned.
+2014-04-13 02:00:59,262 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1370541976
+2014-04-13 02:00:59,262 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1370541976 spawned.
+2014-04-13 02:00:59,262 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_2041631827
+2014-04-13 02:00:59,263 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_2041631827 spawned.
+2014-04-13 02:00:59,263 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_120833553
+2014-04-13 02:00:59,263 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_120833553 spawned.
+2014-04-13 02:00:59,264 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_999370929
+2014-04-13 02:00:59,264 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000003_0/taskjvm.sh
+2014-04-13 02:00:59,264 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_999370929 spawned.
+2014-04-13 02:00:59,264 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1507744448
+2014-04-13 02:00:59,265 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1507744448 spawned.
+2014-04-13 02:00:59,265 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000009_0/taskjvm.sh
+2014-04-13 02:00:59,265 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1843151871
+2014-04-13 02:00:59,265 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000001_0/taskjvm.sh
+2014-04-13 02:00:59,265 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1843151871 spawned.
+2014-04-13 02:00:59,266 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_616034081
+2014-04-13 02:00:59,266 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000006_0/taskjvm.sh
+2014-04-13 02:00:59,266 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_616034081 spawned.
+2014-04-13 02:00:59,266 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_725168397
+2014-04-13 02:00:59,267 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000011_0/taskjvm.sh
+2014-04-13 02:00:59,267 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_725168397 spawned.
+2014-04-13 02:00:59,267 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000000_0/taskjvm.sh
+2014-04-13 02:00:59,268 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1716872797
+2014-04-13 02:00:59,268 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1716872797 spawned.
+2014-04-13 02:00:59,268 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_468993522
+2014-04-13 02:00:59,268 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_468993522 spawned.
+2014-04-13 02:00:59,269 INFO org.apache.hadoop.mapred.JvmManager: Killing JVM: jvm_201404130159_0001_m_1948587105
+2014-04-13 02:00:59,269 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000010_0/taskjvm.sh
+2014-04-13 02:00:59,269 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000002_0/taskjvm.sh
+2014-04-13 02:00:59,269 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000007_0/taskjvm.sh
+2014-04-13 02:00:59,269 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/taskjvm.sh
+2014-04-13 02:00:59,271 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000004_0/taskjvm.sh
+2014-04-13 02:00:59,278 INFO org.apache.hadoop.util.ProcessTree: Killing process group10037 with signal TERM. Exit code 0
+2014-04-13 02:00:59,278 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_377384282
+2014-04-13 02:00:59,278 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_377384282 spawned.
+2014-04-13 02:00:59,280 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000008_0/taskjvm.sh
+2014-04-13 02:00:59,327 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1948587105 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:00,297 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_999370929 given task: attempt_201404130159_0001_m_000006_0
+2014-04-13 02:01:00,302 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_468993522 given task: attempt_201404130159_0001_m_000004_0
+2014-04-13 02:01:00,327 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1843151871 given task: attempt_201404130159_0001_m_000007_0
+2014-04-13 02:01:00,333 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1370541976 given task: attempt_201404130159_0001_m_000009_0
+2014-04-13 02:01:00,337 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_2041631827 given task: attempt_201404130159_0001_m_000001_0
+2014-04-13 02:01:00,339 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1507744448 given task: attempt_201404130159_0001_m_000000_0
+2014-04-13 02:01:00,341 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1309310967 given task: attempt_201404130159_0001_m_000003_0
+2014-04-13 02:01:00,390 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1716872797 given task: attempt_201404130159_0001_m_000005_0
+2014-04-13 02:01:00,429 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_120833553 given task: attempt_201404130159_0001_m_000011_0
+2014-04-13 02:01:00,445 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_616034081 given task: attempt_201404130159_0001_m_000002_0
+2014-04-13 02:01:00,446 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_725168397 given task: attempt_201404130159_0001_m_000010_0
+2014-04-13 02:01:00,455 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_377384282 given task: attempt_201404130159_0001_m_000008_0
+2014-04-13 02:01:07,662 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000009_0 0.36030945% 
+2014-04-13 02:01:07,727 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000001_0 0.33908817% 
+2014-04-13 02:01:07,730 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000002_0 0.29411227% 
+2014-04-13 02:01:07,743 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000011_0 0.31818354% 
+2014-04-13 02:01:07,752 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000003_0 0.32181615% 
+2014-04-13 02:01:07,806 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000005_0 0.29261535% 
+2014-04-13 02:01:07,988 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000010_0 0.27648297% 
+2014-04-13 02:01:10,347 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000000_0 1.0% 
+2014-04-13 02:01:10,450 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000004_0 1.0% 
+2014-04-13 02:01:10,470 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000006_0 1.0% 
+2014-04-13 02:01:10,511 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000007_0 1.0% 
+2014-04-13 02:01:10,560 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000008_0 1.0% 
+2014-04-13 02:01:10,768 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000009_0 1.0% 
+2014-04-13 02:01:10,813 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000003_0 1.0% 
+2014-04-13 02:01:10,815 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000001_0 1.0% 
+2014-04-13 02:01:10,833 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000011_0 1.0% 
+2014-04-13 02:01:10,838 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000002_0 1.0% 
+2014-04-13 02:01:10,891 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000005_0 1.0% 
+2014-04-13 02:01:11,064 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000010_0 1.0% 
+2014-04-13 02:01:13,398 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000000_0 1.0% 
+2014-04-13 02:01:14,512 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000010_0 1.0% 
+2014-04-13 02:01:14,512 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000005_0 1.0% 
+2014-04-13 02:01:14,513 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000002_0 1.0% 
+2014-04-13 02:01:14,514 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000011_0 1.0% 
+2014-04-13 02:01:14,514 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000003_0 1.0% 
+2014-04-13 02:01:14,515 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000001_0 1.0% 
+2014-04-13 02:01:14,516 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000009_0 1.0% 
+2014-04-13 02:01:14,517 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000008_0 1.0% 
+2014-04-13 02:01:14,517 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000007_0 1.0% 
+2014-04-13 02:01:14,518 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000006_0 1.0% 
+2014-04-13 02:01:14,518 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000004_0 1.0% 
+2014-04-13 02:01:17,516 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000010_0 1.0% 
+2014-04-13 02:01:17,518 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000010_0 is done.
+2014-04-13 02:01:17,519 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000010_0  was 3267787
+2014-04-13 02:01:17,531 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:17,532 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000003_0 1.0% 
+2014-04-13 02:01:17,534 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000003_0 is done.
+2014-04-13 02:01:17,534 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000003_0  was 3172873
+2014-04-13 02:01:17,535 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:17,547 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000012_0 task's state:UNASSIGNED
+2014-04-13 02:01:17,547 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000012_0 which needs 1 slots
+2014-04-13 02:01:17,547 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000012_0 which needs 1 slots
+2014-04-13 02:01:17,551 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000000_0 1.0% 
+2014-04-13 02:01:17,554 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000000_0 1.0% 
+2014-04-13 02:01:17,557 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000000_0 is done.
+2014-04-13 02:01:17,558 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000000_0  was 2982271
+2014-04-13 02:01:17,558 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:17,561 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000007_0 1.0% 
+2014-04-13 02:01:17,562 INFO org.apache.hadoop.mapred.JvmManager: Killing JVM: jvm_201404130159_0001_m_725168397
+2014-04-13 02:01:17,567 INFO org.apache.hadoop.util.ProcessTree: Killing process group10155 with signal TERM. Exit code 0
+2014-04-13 02:01:17,567 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_438254630
+2014-04-13 02:01:17,567 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_438254630 spawned.
+2014-04-13 02:01:17,568 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000004_0 1.0% 
+2014-04-13 02:01:17,568 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000005_0 1.0% 
+2014-04-13 02:01:17,569 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000006_0 1.0% 
+2014-04-13 02:01:17,569 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000012_0/taskjvm.sh
+2014-04-13 02:01:17,571 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000002_0 1.0% 
+2014-04-13 02:01:17,946 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_725168397 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:17,953 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1309310967 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:17,954 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1507744448 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:18,226 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_438254630 given task: attempt_201404130159_0001_m_000012_0
+2014-04-13 02:01:20,577 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000013_0 task's state:UNASSIGNED
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000014_0 task's state:UNASSIGNED
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000013_0 which needs 1 slots
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000013_0 which needs 1 slots
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_r_000000_0 task's state:UNASSIGNED
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_r_000000_0 which needs 1 slots
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000014_0 which needs 1 slots
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_r_000000_0 which needs 1 slots
+2014-04-13 02:01:20,578 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000014_0 which needs 1 slots
+2014-04-13 02:01:20,587 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_593706970
+2014-04-13 02:01:20,587 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_593706970 spawned.
+2014-04-13 02:01:20,587 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1051739477
+2014-04-13 02:01:20,588 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1051739477 spawned.
+2014-04-13 02:01:20,589 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000013_0/taskjvm.sh
+2014-04-13 02:01:20,589 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000014_0/taskjvm.sh
+2014-04-13 02:01:20,595 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_r_1948587105
+2014-04-13 02:01:20,595 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_r_1948587105 spawned.
+2014-04-13 02:01:20,597 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_r_000000_0/taskjvm.sh
+2014-04-13 02:01:21,280 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_593706970 given task: attempt_201404130159_0001_m_000013_0
+2014-04-13 02:01:21,302 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1051739477 given task: attempt_201404130159_0001_m_000014_0
+2014-04-13 02:01:21,303 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_r_1948587105 given task: attempt_201404130159_0001_r_000000_0
+2014-04-13 02:01:23,521 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000001_0 1.0% 
+2014-04-13 02:01:24,882 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000012_0 1.0% 
+2014-04-13 02:01:24,885 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000001_0 is done.
+2014-04-13 02:01:24,885 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000001_0  was 3279250
+2014-04-13 02:01:24,886 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:24,888 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000004_0 1.0% 
+2014-04-13 02:01:24,888 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000007_0 1.0% 
+2014-04-13 02:01:24,889 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000004_0 is done.
+2014-04-13 02:01:24,889 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000004_0  was 3296614
+2014-04-13 02:01:24,889 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000007_0 is done.
+2014-04-13 02:01:24,890 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000007_0  was 3047172
+2014-04-13 02:01:24,890 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:24,890 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:01:24,891 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_r_000001_0 task's state:UNASSIGNED
+2014-04-13 02:01:24,891 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_r_000001_0 which needs 1 slots
+2014-04-13 02:01:24,891 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_r_000001_0 which needs 1 slots
+2014-04-13 02:01:24,892 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000006_0 1.0% 
+2014-04-13 02:01:24,893 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000006_0 is done.
+2014-04-13 02:01:24,893 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000006_0  was 3149214
+2014-04-13 02:01:24,893 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:01:24,903 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_r_1309310967
+2014-04-13 02:01:24,903 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_r_1309310967 spawned.
+2014-04-13 02:01:24,917 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_r_000001_0/taskjvm.sh
+2014-04-13 02:01:25,057 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_999370929 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:25,347 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1843151871 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:25,347 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_2041631827 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:25,347 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_468993522 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:25,622 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_r_1309310967 given task: attempt_201404130159_0001_r_000001_0
+2014-04-13 02:01:26,524 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000008_0 1.0% 
+2014-04-13 02:01:26,526 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000008_0 is done.
+2014-04-13 02:01:26,526 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000008_0  was 3014635
+2014-04-13 02:01:26,526 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 5
+2014-04-13 02:01:27,890 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000005_0 1.0% 
+2014-04-13 02:01:29,018 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000005_0 is done.
+2014-04-13 02:01:29,018 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000005_0  was 3037171
+2014-04-13 02:01:29,018 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 6
+2014-04-13 02:01:29,031 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000015_0 task's state:UNASSIGNED
+2014-04-13 02:01:29,031 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000016_0 task's state:UNASSIGNED
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000017_0 task's state:UNASSIGNED
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000018_0 task's state:UNASSIGNED
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000019_0 task's state:UNASSIGNED
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000015_0 which needs 1 slots
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 6 and trying to launch attempt_201404130159_0001_m_000015_0 which needs 1 slots
+2014-04-13 02:01:29,032 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000016_0 which needs 1 slots
+2014-04-13 02:01:29,033 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 5 and trying to launch attempt_201404130159_0001_m_000016_0 which needs 1 slots
+2014-04-13 02:01:29,033 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000017_0 which needs 1 slots
+2014-04-13 02:01:29,033 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000017_0 which needs 1 slots
+2014-04-13 02:01:29,033 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000018_0 which needs 1 slots
+2014-04-13 02:01:29,033 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000018_0 which needs 1 slots
+2014-04-13 02:01:29,037 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000019_0 which needs 1 slots
+2014-04-13 02:01:29,037 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000019_0 which needs 1 slots
+2014-04-13 02:01:29,048 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1229067271
+2014-04-13 02:01:29,049 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1229067271 spawned.
+2014-04-13 02:01:29,049 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1306283469
+2014-04-13 02:01:29,050 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1306283469 spawned.
+2014-04-13 02:01:29,050 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1535976258
+2014-04-13 02:01:29,050 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1535976258 spawned.
+2014-04-13 02:01:29,050 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_837389696
+2014-04-13 02:01:29,057 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_837389696 spawned.
+2014-04-13 02:01:29,057 INFO org.apache.hadoop.mapred.JvmManager: Killing JVM: jvm_201404130159_0001_m_1716872797
+2014-04-13 02:01:29,060 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000015_0/taskjvm.sh
+2014-04-13 02:01:29,060 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000018_0/taskjvm.sh
+2014-04-13 02:01:29,060 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000017_0/taskjvm.sh
+2014-04-13 02:01:29,061 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000016_0/taskjvm.sh
+2014-04-13 02:01:29,063 INFO org.apache.hadoop.util.ProcessTree: Killing process group10162 with signal TERM. Exit code 0
+2014-04-13 02:01:29,064 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_908204031
+2014-04-13 02:01:29,064 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_908204031 spawned.
+2014-04-13 02:01:29,068 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000019_0/taskjvm.sh
+2014-04-13 02:01:29,120 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_377384282 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:29,422 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000013_0 1.0% 
+2014-04-13 02:01:29,432 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000014_0 1.0% 
+2014-04-13 02:01:29,470 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.0% reduce > copy > 
+2014-04-13 02:01:29,487 WARN org.apache.hadoop.mapred.DefaultTaskController: Exit code from task is : 143
+2014-04-13 02:01:29,487 INFO org.apache.hadoop.mapred.DefaultTaskController: Output from command export JVM_PID=`echo $$`
+export HADOOP_CLIENT_OPTS="-Dhadoop.tasklog.taskid=attempt_201404130159_0001_m_000005_0 -Dhadoop.tasklog.iscleanup=false -Dhadoop.tasklog.totalLogFileSize=0"
+export SHELL="/bin/bash"
+export HADOOP_WORK_DIR="/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/work"
+export HOME="/homes/"
+export LOGNAME="jmg3"
+export HADOOP_TOKEN_FILE_LOCATION="/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/jobToken"
+export HADOOP_ROOT_LOGGER="INFO,TLA"
+export LD_LIBRARY_PATH="/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/work"
+export USER="jmg3"
+
+exec setsid '/opt/apps/jdk/1.7.0.21/jre/bin/java' '-Dopencl.device=0' '-Dopencl.device_slot=-1' '-Djava.library.path=/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib:/home/jmg3/lzo-install/lib::/home/jmg3/hadoop-1.0.3/libexec/../lib/native/Linux-amd64-64:/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/work' '-Xms2G' '-Xmx4G' '-Dopencl.mapper.threadsPerGroup.gpu=256' '-Dopencl.mapper.threadsPerGroup.cpu=64' '-Dopencl.reducer.threadsPerGroup.gpu=256' '-Dopencl.reducer.threadsPerGroup.cpu=64' '-Dopencl.scheduler=BALANCED' '-Dopencl.vectorsToBuffer=32768' '-Djava.net.preferIPv4Stack=true' '-Dhadoop.metrics.log.level=WARN' '-Djava.io.tmpdir=/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/work/tmp' '-classpath' '/home/jmg3/hadoop-1.0.3/conf:/opt/apps/jdk/1.7.0.21/lib/tools.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/classes:/home/jmg3/hadoop-1.0.3/libexec/../build:/home/jmg3/hadoop-1.0.3/libexec/../build/test/classes:/home/jmg3/hadoop-1.0.3/libexec/../build/tools:/home/jmg3/hadoop-1.0.3/libexec/..:/home/jmg3/hadoop-1.0.3/libexec/../hadoop-core-*.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aparapi.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-1.7.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-beanutils-core-1.8.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-cli-1.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-codec-1.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-collections-3.2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-configuration-1.6.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-daemon-1.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-digester-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-el-1.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-httpclient-3.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-io-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-lang-2.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-1.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-logging-api-1.0.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-math-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-math-3.1-SNAPSHOT.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/commons-net-1.4.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/core-3.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/guava-14.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-capacity-scheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-fairscheduler-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hadoop-thriftfs-1.0.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/hsqldb-1.8.0.10.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-core-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jackson-mapper-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-compiler-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jasper-runtime-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jdeb-0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-core-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-json-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jersey-server-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jets3t-0.6.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jetty-util-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jsch-0.1.42.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/junit-4.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/kfs-0.2.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/log4j-1.2.15.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/mockito-all-1.8.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/oro-2.0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/servlet-api-2.5-20081211.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-api-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/slf4j-log4j12-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/xmlenc-0.52.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/asm-3.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjrt-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/aspectjtools-1.6.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-beanutils-1.7.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-beanutils-core-1.8.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-cli-1.2.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-codec-1.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-collections-3.2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-configuration-1.6.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-daemon-1.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-digester-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-el-1.0.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-httpclient-3.0.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-io-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-lang-2.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-logging-1.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-logging-api-1.0.4.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-math-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/commons-net-1.4.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/core-3.1.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jackson-core-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jackson-mapper-asl-1.8.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jasper-compiler-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jasper-runtime-5.5.12.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jdeb-0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jersey-core-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jersey-json-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jersey-server-1.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jets3t-0.6.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jetty-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jetty-util-6.1.26.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/jsch-0.1.42.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/junit-4.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/log4j-1.2.15.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/mockito-all-1.8.5.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/oro-2.0.8.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/servlet-api-2.5-20081211.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/slf4j-api-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/slf4j-log4j12-1.4.3.jar:/home/jmg3/hadoop-1.0.3/libexec/../build/ivy/lib/Hadoop/common/xmlenc-0.52.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jsp-2.1/jsp-2.1.jar:/home/jmg3/hadoop-1.0.3/libexec/../lib/jsp-2.1/jsp-api-2.1.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.::/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.::/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/aparapi-read-only/com.amd.aparapi/dist/aparapi.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:/home/jmg3/hadoop-1.0.3/build/hadoop-core-1.0.4-SNAPSHOT.jar:/home/jmg3/jfreechart-1.0.14.jar:.::/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar::/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar:/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/jars/classes:/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/jars:/tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/work' '-Dhadoop.log.dir=/tmp/hadoop/logs' '-Dhadoop.root.logger=INFO,TLA' '-Dhadoop.tasklog.taskid=attempt_201404130159_0001_m_000005_0' '-Dhadoop.tasklog.iscleanup=false' '-Dhadoop.tasklog.totalLogFileSize=0' 'org.apache.hadoop.mapred.Child' '127.0.0.1' '60688' 'attempt_201404130159_0001_m_000005_0' '/tmp/hadoop/logs/userlogs/job_201404130159_0001/attempt_201404130159_0001_m_000005_0' '1716872797'  < /dev/null  1>> /tmp/hadoop/logs/userlogs/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/stdout 2>> /tmp/hadoop/logs/userlogs/job_201404130159_0001/attempt_201404130159_0001_m_000005_0/stderr
+2014-04-13 02:01:29,487 INFO org.apache.hadoop.mapred.DefaultTaskController: Output from exception  org.apache.hadoop.util.Shell$ExitCodeException: 
+2014-04-13 02:01:29,487 INFO org.apache.hadoop.mapred.DefaultTaskController: Output from DefaultTaskController's launchTask follows:
+2014-04-13 02:01:29,487 INFO org.apache.hadoop.mapred.TaskController: 
+2014-04-13 02:01:29,487 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1716872797 exited with exit code 143. Number of tasks it ran: 1
+2014-04-13 02:01:29,523 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000011_0 1.0% 
+2014-04-13 02:01:29,524 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000009_0 1.0% 
+2014-04-13 02:01:29,524 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000011_0 is done.
+2014-04-13 02:01:29,524 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000011_0  was 3430782
+2014-04-13 02:01:29,525 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000009_0 is done.
+2014-04-13 02:01:29,525 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000009_0  was 3063452
+2014-04-13 02:01:29,525 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:29,525 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:01:29,693 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38891, bytes: 1525594, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000010_0, duration: 51241570
+2014-04-13 02:01:29,755 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38892, bytes: 1439956, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000000_0, duration: 38731386
+2014-04-13 02:01:29,774 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38892, bytes: 1557546, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000003_0, duration: 14752292
+2014-04-13 02:01:29,924 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1370541976 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:29,925 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_120833553 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:30,010 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1229067271 given task: attempt_201404130159_0001_m_000015_0
+2014-04-13 02:01:30,014 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1535976258 given task: attempt_201404130159_0001_m_000017_0
+2014-04-13 02:01:30,018 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1306283469 given task: attempt_201404130159_0001_m_000018_0
+2014-04-13 02:01:30,029 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_837389696 given task: attempt_201404130159_0001_m_000016_0
+2014-04-13 02:01:30,033 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_908204031 given task: attempt_201404130159_0001_m_000019_0
+2014-04-13 02:01:30,889 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000012_0 1.0% 
+2014-04-13 02:01:30,889 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000002_0 1.0% 
+2014-04-13 02:01:30,890 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000012_0 is done.
+2014-04-13 02:01:30,890 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000012_0  was 3051823
+2014-04-13 02:01:30,890 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000002_0 is done.
+2014-04-13 02:01:30,890 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000002_0  was 3377446
+2014-04-13 02:01:30,891 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:01:30,891 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 5
+2014-04-13 02:01:31,263 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_616034081 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:31,263 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_438254630 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:31,343 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38911, bytes: 1742187, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000010_0, duration: 18068774
+2014-04-13 02:01:31,355 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38912, bytes: 1542309, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000000_0, duration: 8871763
+2014-04-13 02:01:31,370 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38913, bytes: 1615321, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000003_0, duration: 11811657
+2014-04-13 02:01:32,048 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000020_0 task's state:UNASSIGNED
+2014-04-13 02:01:32,048 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000021_0 task's state:UNASSIGNED
+2014-04-13 02:01:32,049 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000022_0 task's state:UNASSIGNED
+2014-04-13 02:01:32,049 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000023_0 task's state:UNASSIGNED
+2014-04-13 02:01:32,049 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000024_0 task's state:UNASSIGNED
+2014-04-13 02:01:32,049 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000020_0 which needs 1 slots
+2014-04-13 02:01:32,049 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 5 and trying to launch attempt_201404130159_0001_m_000020_0 which needs 1 slots
+2014-04-13 02:01:32,051 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000021_0 which needs 1 slots
+2014-04-13 02:01:32,051 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000021_0 which needs 1 slots
+2014-04-13 02:01:32,059 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000022_0 which needs 1 slots
+2014-04-13 02:01:32,060 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000022_0 which needs 1 slots
+2014-04-13 02:01:32,060 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000023_0 which needs 1 slots
+2014-04-13 02:01:32,060 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000023_0 which needs 1 slots
+2014-04-13 02:01:32,060 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000024_0 which needs 1 slots
+2014-04-13 02:01:32,060 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000024_0 which needs 1 slots
+2014-04-13 02:01:32,092 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_710016277
+2014-04-13 02:01:32,093 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_710016277 spawned.
+2014-04-13 02:01:32,094 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000022_0/taskjvm.sh
+2014-04-13 02:01:32,122 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1167705683
+2014-04-13 02:01:32,122 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1167705683 spawned.
+2014-04-13 02:01:32,123 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.02% reduce > copy (3 of 50 at 0.78 MB/s) > 
+2014-04-13 02:01:32,138 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_829011999
+2014-04-13 02:01:32,139 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_829011999 spawned.
+2014-04-13 02:01:32,140 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000023_0/taskjvm.sh
+2014-04-13 02:01:32,165 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1111799777
+2014-04-13 02:01:32,166 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000020_0/taskjvm.sh
+2014-04-13 02:01:32,169 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1111799777 spawned.
+2014-04-13 02:01:32,169 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_764276875
+2014-04-13 02:01:32,181 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_764276875 spawned.
+2014-04-13 02:01:32,199 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000021_0/taskjvm.sh
+2014-04-13 02:01:32,219 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000024_0/taskjvm.sh
+2014-04-13 02:01:32,598 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000014_0 1.0% 
+2014-04-13 02:01:32,604 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000013_0 1.0% 
+2014-04-13 02:01:32,605 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000014_0 1.0% 
+2014-04-13 02:01:32,606 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000014_0 is done.
+2014-04-13 02:01:32,607 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000014_0  was 3133241
+2014-04-13 02:01:32,607 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:32,607 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000013_0 1.0% 
+2014-04-13 02:01:32,609 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000013_0 is done.
+2014-04-13 02:01:32,609 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000013_0  was 3086314
+2014-04-13 02:01:32,609 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:33,044 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_593706970 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:33,060 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1051739477 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:33,765 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_829011999 given task: attempt_201404130159_0001_m_000020_0
+2014-04-13 02:01:33,779 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_710016277 given task: attempt_201404130159_0001_m_000022_0
+2014-04-13 02:01:33,831 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1167705683 given task: attempt_201404130159_0001_m_000023_0
+2014-04-13 02:01:33,849 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1111799777 given task: attempt_201404130159_0001_m_000021_0
+2014-04-13 02:01:33,858 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_764276875 given task: attempt_201404130159_0001_m_000024_0
+2014-04-13 02:01:34,791 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38942, bytes: 1605125, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000001_0, duration: 13413761
+2014-04-13 02:01:34,803 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38943, bytes: 1528949, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000004_0, duration: 9972487
+2014-04-13 02:01:34,837 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38944, bytes: 1503675, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000006_0, duration: 31498422
+2014-04-13 02:01:34,856 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38945, bytes: 1556800, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000007_0, duration: 16532786
+2014-04-13 02:01:34,875 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38946, bytes: 1503353, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000008_0, duration: 14631578
+2014-04-13 02:01:35,058 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000025_0 task's state:UNASSIGNED
+2014-04-13 02:01:35,058 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000026_0 task's state:UNASSIGNED
+2014-04-13 02:01:35,058 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000025_0 which needs 1 slots
+2014-04-13 02:01:35,058 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000025_0 which needs 1 slots
+2014-04-13 02:01:35,074 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000026_0 which needs 1 slots
+2014-04-13 02:01:35,074 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000026_0 which needs 1 slots
+2014-04-13 02:01:35,123 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_2044875711
+2014-04-13 02:01:35,123 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_2044875711 spawned.
+2014-04-13 02:01:35,141 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000025_0/taskjvm.sh
+2014-04-13 02:01:35,142 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_357618360
+2014-04-13 02:01:35,143 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_357618360 spawned.
+2014-04-13 02:01:35,153 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000026_0/taskjvm.sh
+2014-04-13 02:01:35,184 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.02% reduce > copy (3 of 50 at 0.78 MB/s) > 
+2014-04-13 02:01:35,525 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.053333335% reduce > copy (8 of 50 at 0.90 MB/s) > 
+2014-04-13 02:01:36,423 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1674119, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000001_0, duration: 47210943
+2014-04-13 02:01:36,467 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1767659, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000004_0, duration: 19241497
+2014-04-13 02:01:36,527 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1645533, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000006_0, duration: 43805714
+2014-04-13 02:01:36,563 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1490366, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000007_0, duration: 34440607
+2014-04-13 02:01:36,621 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1511276, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000008_0, duration: 55487199
+2014-04-13 02:01:36,673 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000018_0 1.0% 
+2014-04-13 02:01:36,684 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000015_0 1.0% 
+2014-04-13 02:01:36,704 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000019_0 1.0% 
+2014-04-13 02:01:36,707 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1785995, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000002_0, duration: 85016279
+2014-04-13 02:01:36,753 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000016_0 1.0% 
+2014-04-13 02:01:36,757 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1573868, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000005_0, duration: 47324441
+2014-04-13 02:01:36,780 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000017_0 1.0% 
+2014-04-13 02:01:36,804 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_357618360 given task: attempt_201404130159_0001_m_000026_0
+2014-04-13 02:01:36,811 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1502735, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000009_0, duration: 51846135
+2014-04-13 02:01:36,894 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1775983, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000011_0, duration: 69385478
+2014-04-13 02:01:36,950 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_2044875711 given task: attempt_201404130159_0001_m_000025_0
+2014-04-13 02:01:36,958 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38966, bytes: 1590549, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000012_0, duration: 60809832
+2014-04-13 02:01:38,588 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.053333335% reduce > copy (8 of 50 at 0.90 MB/s) > 
+2014-04-13 02:01:39,776 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000015_0 1.0% 
+2014-04-13 02:01:39,806 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000018_0 1.0% 
+2014-04-13 02:01:39,822 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000019_0 1.0% 
+2014-04-13 02:01:39,840 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000016_0 1.0% 
+2014-04-13 02:01:39,870 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000017_0 1.0% 
+2014-04-13 02:01:39,912 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38980, bytes: 1591445, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000002_0, duration: 35893831
+2014-04-13 02:01:39,942 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1463297, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000005_0, duration: 26322682
+2014-04-13 02:01:39,993 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1560711, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000009_0, duration: 43422033
+2014-04-13 02:01:40,039 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1654793, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000011_0, duration: 42088896
+2014-04-13 02:01:40,093 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1461268, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000012_0, duration: 42773334
+2014-04-13 02:01:40,152 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1394007, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000013_0, duration: 57396198
+2014-04-13 02:01:40,201 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38981, bytes: 1442367, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000014_0, duration: 47067149
+2014-04-13 02:01:40,620 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000022_0 1.0% 
+2014-04-13 02:01:40,711 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000023_0 1.0% 
+2014-04-13 02:01:40,745 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000024_0 1.0% 
+2014-04-13 02:01:40,893 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000020_0 1.0% 
+2014-04-13 02:01:40,964 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000021_0 1.0% 
+2014-04-13 02:01:41,226 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.086666666% reduce > copy (13 of 50 at 1.84 MB/s) > 
+2014-04-13 02:01:41,990 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38986, bytes: 1692301, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000013_0, duration: 29596036
+2014-04-13 02:01:42,020 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:38987, bytes: 1690868, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000014_0, duration: 28056390
+2014-04-13 02:01:43,661 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000022_0 1.0% 
+2014-04-13 02:01:43,765 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000023_0 1.0% 
+2014-04-13 02:01:43,788 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000024_0 1.0% 
+2014-04-13 02:01:43,938 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000020_0 1.0% 
+2014-04-13 02:01:44,017 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000021_0 1.0% 
+2014-04-13 02:01:44,145 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000026_0 1.0% 
+2014-04-13 02:01:44,313 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000025_0 1.0% 
+2014-04-13 02:01:44,623 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.099999994% reduce > copy (15 of 50 at 1.14 MB/s) > 
+2014-04-13 02:01:45,781 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000015_0 1.0% 
+2014-04-13 02:01:45,783 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000015_0 is done.
+2014-04-13 02:01:45,783 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000015_0  was 3110094
+2014-04-13 02:01:45,784 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:45,831 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000019_0 1.0% 
+2014-04-13 02:01:45,833 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000019_0 is done.
+2014-04-13 02:01:45,833 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000019_0  was 3027703
+2014-04-13 02:01:45,833 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:45,855 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000016_0 1.0% 
+2014-04-13 02:01:45,856 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000016_0 is done.
+2014-04-13 02:01:45,856 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000016_0  was 3327072
+2014-04-13 02:01:45,857 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:01:45,875 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000017_0 1.0% 
+2014-04-13 02:01:45,876 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000017_0 is done.
+2014-04-13 02:01:45,876 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000017_0  was 3421493
+2014-04-13 02:01:45,877 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:01:46,769 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000023_0 1.0% 
+2014-04-13 02:01:46,770 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000023_0 is done.
+2014-04-13 02:01:46,770 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000023_0  was 3119380
+2014-04-13 02:01:46,770 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 5
+2014-04-13 02:01:46,794 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000024_0 1.0% 
+2014-04-13 02:01:46,796 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000024_0 is done.
+2014-04-13 02:01:46,796 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000024_0  was 3458848
+2014-04-13 02:01:46,796 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 6
+2014-04-13 02:01:46,819 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_908204031 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:46,819 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_837389696 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:46,819 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1535976258 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:46,820 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1229067271 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:47,082 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_764276875 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:47,082 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1167705683 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:47,090 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000027_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,091 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000028_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,091 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000029_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,091 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000030_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,091 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000031_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000032_0 task's state:UNASSIGNED
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000027_0 which needs 1 slots
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 6 and trying to launch attempt_201404130159_0001_m_000027_0 which needs 1 slots
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000028_0 which needs 1 slots
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 5 and trying to launch attempt_201404130159_0001_m_000028_0 which needs 1 slots
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000029_0 which needs 1 slots
+2014-04-13 02:01:47,092 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000029_0 which needs 1 slots
+2014-04-13 02:01:47,093 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000030_0 which needs 1 slots
+2014-04-13 02:01:47,093 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000030_0 which needs 1 slots
+2014-04-13 02:01:47,093 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000031_0 which needs 1 slots
+2014-04-13 02:01:47,093 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000031_0 which needs 1 slots
+2014-04-13 02:01:47,094 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000032_0 which needs 1 slots
+2014-04-13 02:01:47,094 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000032_0 which needs 1 slots
+2014-04-13 02:01:47,098 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_2093327521
+2014-04-13 02:01:47,098 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_2093327521 spawned.
+2014-04-13 02:01:47,098 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1189246886
+2014-04-13 02:01:47,099 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1189246886 spawned.
+2014-04-13 02:01:47,099 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_712135380
+2014-04-13 02:01:47,099 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_712135380 spawned.
+2014-04-13 02:01:47,100 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_676718388
+2014-04-13 02:01:47,100 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_676718388 spawned.
+2014-04-13 02:01:47,101 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_117698115
+2014-04-13 02:01:47,101 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_117698115 spawned.
+2014-04-13 02:01:47,101 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000028_0/taskjvm.sh
+2014-04-13 02:01:47,102 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000027_0/taskjvm.sh
+2014-04-13 02:01:47,102 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_360454224
+2014-04-13 02:01:47,102 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_360454224 spawned.
+2014-04-13 02:01:47,103 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000030_0/taskjvm.sh
+2014-04-13 02:01:47,103 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000029_0/taskjvm.sh
+2014-04-13 02:01:47,103 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000031_0/taskjvm.sh
+2014-04-13 02:01:47,103 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000032_0/taskjvm.sh
+2014-04-13 02:01:47,190 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000026_0 1.0% 
+2014-04-13 02:01:47,277 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.099999994% reduce > copy (15 of 50 at 1.47 MB/s) > 
+2014-04-13 02:01:47,356 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000025_0 1.0% 
+2014-04-13 02:01:47,862 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_360454224 given task: attempt_201404130159_0001_m_000032_0
+2014-04-13 02:01:47,918 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1189246886 given task: attempt_201404130159_0001_m_000027_0
+2014-04-13 02:01:47,941 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_676718388 given task: attempt_201404130159_0001_m_000030_0
+2014-04-13 02:01:47,942 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_712135380 given task: attempt_201404130159_0001_m_000029_0
+2014-04-13 02:01:47,969 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_2093327521 given task: attempt_201404130159_0001_m_000028_0
+2014-04-13 02:01:48,037 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_117698115 given task: attempt_201404130159_0001_m_000031_0
+2014-04-13 02:01:48,813 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000018_0 1.0% 
+2014-04-13 02:01:48,813 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000018_0 is done.
+2014-04-13 02:01:48,814 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000018_0  was 3023607
+2014-04-13 02:01:48,814 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:49,124 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1306283469 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:50,028 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000021_0 1.0% 
+2014-04-13 02:01:50,030 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000021_0 is done.
+2014-04-13 02:01:50,030 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000021_0  was 2953354
+2014-04-13 02:01:50,031 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:01:50,112 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000033_0 task's state:UNASSIGNED
+2014-04-13 02:01:50,112 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000034_0 task's state:UNASSIGNED
+2014-04-13 02:01:50,112 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000033_0 which needs 1 slots
+2014-04-13 02:01:50,112 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000033_0 which needs 1 slots
+2014-04-13 02:01:50,126 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000034_0 which needs 1 slots
+2014-04-13 02:01:50,126 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000034_0 which needs 1 slots
+2014-04-13 02:01:50,189 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1006661127
+2014-04-13 02:01:50,197 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1006661127 spawned.
+2014-04-13 02:01:50,218 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000033_0/taskjvm.sh
+2014-04-13 02:01:50,273 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39027, bytes: 1433391, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000015_0, duration: 50876827
+2014-04-13 02:01:50,279 INFO org.apache.hadoop.mapred.JvmManager: Killing JVM: jvm_201404130159_0001_m_1111799777
+2014-04-13 02:01:50,344 INFO org.apache.hadoop.util.ProcessTree: Killing process group11975 with signal TERM. Exit code 0
+2014-04-13 02:01:50,344 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1698504497
+2014-04-13 02:01:50,358 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1698504497 spawned.
+2014-04-13 02:01:50,359 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.099999994% reduce > copy (15 of 50 at 1.47 MB/s) > 
+2014-04-13 02:01:50,389 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1111799777 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:50,389 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000034_0/taskjvm.sh
+2014-04-13 02:01:50,391 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000025_0 1.0% 
+2014-04-13 02:01:50,392 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000025_0 is done.
+2014-04-13 02:01:50,392 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000025_0  was 3318590
+2014-04-13 02:01:50,392 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:01:50,398 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39027, bytes: 1555264, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000016_0, duration: 67385500
+2014-04-13 02:01:50,459 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39027, bytes: 1716974, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000017_0, duration: 58995821
+2014-04-13 02:01:50,516 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39028, bytes: 1416467, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000019_0, duration: 32491666
+2014-04-13 02:01:50,630 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39029, bytes: 1478104, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000023_0, duration: 112556873
+2014-04-13 02:01:50,691 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_2044875711 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:01:50,696 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.12666667% reduce > copy (19 of 50 at 0.95 MB/s) > 
+2014-04-13 02:01:50,753 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39029, bytes: 1919104, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000024_0, duration: 61527753
+2014-04-13 02:01:52,085 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39030, bytes: 1676697, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000015_0, duration: 50839119
+2014-04-13 02:01:52,108 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1698504497 given task: attempt_201404130159_0001_m_000034_0
+2014-04-13 02:01:52,121 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39032, bytes: 1771802, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000016_0, duration: 29800719
+2014-04-13 02:01:52,158 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39032, bytes: 1704513, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000017_0, duration: 32630575
+2014-04-13 02:01:52,178 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1006661127 given task: attempt_201404130159_0001_m_000033_0
+2014-04-13 02:01:52,184 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39032, bytes: 1611230, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000019_0, duration: 24652690
+2014-04-13 02:01:52,206 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39032, bytes: 1641270, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000023_0, duration: 20460661
+2014-04-13 02:01:52,231 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39032, bytes: 1539738, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000024_0, duration: 23029800
+2014-04-13 02:01:53,118 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000035_0 task's state:UNASSIGNED
+2014-04-13 02:01:53,118 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000035_0 which needs 1 slots
+2014-04-13 02:01:53,118 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000035_0 which needs 1 slots
+2014-04-13 02:01:53,150 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1168410393
+2014-04-13 02:01:53,150 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1168410393 spawned.
+2014-04-13 02:01:53,152 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000035_0/taskjvm.sh
+2014-04-13 02:01:53,742 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.14% reduce > copy (21 of 50 at 1.06 MB/s) > 
+2014-04-13 02:01:54,392 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1168410393 given task: attempt_201404130159_0001_m_000035_0
+2014-04-13 02:01:54,538 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000032_0 1.0% 
+2014-04-13 02:01:54,603 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000027_0 1.0% 
+2014-04-13 02:01:54,614 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000029_0 1.0% 
+2014-04-13 02:01:54,717 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000030_0 1.0% 
+2014-04-13 02:01:54,764 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000031_0 1.0% 
+2014-04-13 02:01:54,791 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000028_0 1.0% 
+2014-04-13 02:01:55,782 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39056, bytes: 1418769, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000018_0, duration: 18673133
+2014-04-13 02:01:55,827 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39057, bytes: 1396059, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000021_0, duration: 42915440
+2014-04-13 02:01:56,424 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.14% reduce > copy (21 of 50 at 1.22 MB/s) > 
+2014-04-13 02:01:56,778 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.15333334% reduce > copy (23 of 50 at 0.99 MB/s) > 
+2014-04-13 02:01:57,264 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39060, bytes: 1604832, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000018_0, duration: 30849689
+2014-04-13 02:01:57,285 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39060, bytes: 1557289, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000021_0, duration: 19044188
+2014-04-13 02:01:57,337 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39060, bytes: 1724415, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000025_0, duration: 47024045
+2014-04-13 02:01:57,581 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000032_0 1.0% 
+2014-04-13 02:01:57,646 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000027_0 1.0% 
+2014-04-13 02:01:57,657 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000029_0 1.0% 
+2014-04-13 02:01:57,780 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000030_0 1.0% 
+2014-04-13 02:01:57,812 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000031_0 1.0% 
+2014-04-13 02:01:57,837 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000028_0 1.0% 
+2014-04-13 02:01:58,765 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000033_0 1.0% 
+2014-04-13 02:01:58,817 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000034_0 1.0% 
+2014-04-13 02:01:59,813 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.15333334% reduce > copy (23 of 50 at 0.99 MB/s) > 
+2014-04-13 02:02:00,816 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000031_0 1.0% 
+2014-04-13 02:02:00,817 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000031_0 is done.
+2014-04-13 02:02:00,817 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000031_0  was 3320349
+2014-04-13 02:02:00,817 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:00,841 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000028_0 1.0% 
+2014-04-13 02:02:00,842 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000028_0 is done.
+2014-04-13 02:02:00,842 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000028_0  was 2993357
+2014-04-13 02:02:00,842 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:02:00,849 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39065, bytes: 1594169, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000025_0, duration: 10059792
+2014-04-13 02:02:01,115 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000035_0 1.0% 
+2014-04-13 02:02:01,185 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_2093327521 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:01,185 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_117698115 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:01,684 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000022_0 1.0% 
+2014-04-13 02:02:01,685 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000022_0 is done.
+2014-04-13 02:02:01,685 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000022_0  was 3514654
+2014-04-13 02:02:01,686 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:02:01,807 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000033_0 1.0% 
+2014-04-13 02:02:01,869 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000034_0 1.0% 
+2014-04-13 02:02:01,902 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_710016277 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:01,954 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000020_0 1.0% 
+2014-04-13 02:02:01,955 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000020_0 is done.
+2014-04-13 02:02:01,955 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000020_0  was 2946005
+2014-04-13 02:02:01,956 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:02:02,141 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000036_0 task's state:UNASSIGNED
+2014-04-13 02:02:02,141 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000037_0 task's state:UNASSIGNED
+2014-04-13 02:02:02,141 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000038_0 task's state:UNASSIGNED
+2014-04-13 02:02:02,141 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000039_0 task's state:UNASSIGNED
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000036_0 which needs 1 slots
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000036_0 which needs 1 slots
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000037_0 which needs 1 slots
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000037_0 which needs 1 slots
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000038_0 which needs 1 slots
+2014-04-13 02:02:02,142 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000038_0 which needs 1 slots
+2014-04-13 02:02:02,144 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000039_0 which needs 1 slots
+2014-04-13 02:02:02,144 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000039_0 which needs 1 slots
+2014-04-13 02:02:02,151 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1774487480
+2014-04-13 02:02:02,152 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1774487480 spawned.
+2014-04-13 02:02:02,153 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_685981341
+2014-04-13 02:02:02,154 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_685981341 spawned.
+2014-04-13 02:02:02,154 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1363611238
+2014-04-13 02:02:02,154 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1363611238 spawned.
+2014-04-13 02:02:02,155 INFO org.apache.hadoop.mapred.JvmManager: Killing JVM: jvm_201404130159_0001_m_829011999
+2014-04-13 02:02:02,155 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000036_0/taskjvm.sh
+2014-04-13 02:02:02,155 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000039_0/taskjvm.sh
+2014-04-13 02:02:02,156 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000037_0/taskjvm.sh
+2014-04-13 02:02:02,160 INFO org.apache.hadoop.util.ProcessTree: Killing process group11965 with signal TERM. Exit code 0
+2014-04-13 02:02:02,160 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_191742460
+2014-04-13 02:02:02,160 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_191742460 spawned.
+2014-04-13 02:02:02,161 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000038_0/taskjvm.sh
+2014-04-13 02:02:02,172 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_829011999 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:02,225 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000026_0 1.0% 
+2014-04-13 02:02:02,226 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000026_0 is done.
+2014-04-13 02:02:02,226 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000026_0  was 3428721
+2014-04-13 02:02:02,226 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:02,444 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_357618360 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:02,465 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.16% reduce > copy (24 of 50 at 1.18 MB/s) > 
+2014-04-13 02:02:02,844 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1774487480 given task: attempt_201404130159_0001_m_000036_0
+2014-04-13 02:02:02,852 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_191742460 given task: attempt_201404130159_0001_m_000038_0
+2014-04-13 02:02:02,875 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1363611238 given task: attempt_201404130159_0001_m_000037_0
+2014-04-13 02:02:02,887 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_685981341 given task: attempt_201404130159_0001_m_000039_0
+2014-04-13 02:02:05,148 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000040_0 task's state:UNASSIGNED
+2014-04-13 02:02:05,148 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000040_0 which needs 1 slots
+2014-04-13 02:02:05,148 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000040_0 which needs 1 slots
+2014-04-13 02:02:05,195 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_652961609
+2014-04-13 02:02:05,195 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_652961609 spawned.
+2014-04-13 02:02:05,207 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000040_0/taskjvm.sh
+2014-04-13 02:02:05,517 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.16% reduce > copy (24 of 50 at 1.18 MB/s) > 
+2014-04-13 02:02:05,847 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.16% reduce > copy (24 of 50 at 0.90 MB/s) > 
+2014-04-13 02:02:05,887 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39094, bytes: 1315569, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000020_0, duration: 35964560
+2014-04-13 02:02:05,922 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39094, bytes: 1777170, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000022_0, duration: 19697062
+2014-04-13 02:02:05,943 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39094, bytes: 1534637, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000028_0, duration: 19852615
+2014-04-13 02:02:05,962 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39094, bytes: 1632978, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000031_0, duration: 17089556
+2014-04-13 02:02:06,048 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_652961609 given task: attempt_201404130159_0001_m_000040_0
+2014-04-13 02:02:06,587 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000032_0 1.0% 
+2014-04-13 02:02:06,588 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000032_0 is done.
+2014-04-13 02:02:06,588 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000032_0  was 3395993
+2014-04-13 02:02:06,589 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:06,653 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000027_0 1.0% 
+2014-04-13 02:02:06,655 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000027_0 is done.
+2014-04-13 02:02:06,655 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000027_0  was 3249905
+2014-04-13 02:02:06,655 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:02:06,664 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000029_0 1.0% 
+2014-04-13 02:02:06,666 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000029_0 is done.
+2014-04-13 02:02:06,666 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000029_0  was 3353362
+2014-04-13 02:02:06,666 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:02:06,710 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_360454224 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:06,786 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000030_0 1.0% 
+2014-04-13 02:02:06,787 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000030_0 is done.
+2014-04-13 02:02:06,787 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000030_0  was 3138384
+2014-04-13 02:02:06,788 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:02:07,077 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_712135380 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:07,078 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1189246886 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:07,078 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_676718388 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:07,121 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000035_0 1.0% 
+2014-04-13 02:02:07,126 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000035_0 is done.
+2014-04-13 02:02:07,127 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000035_0  was 3272504
+2014-04-13 02:02:07,127 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 5
+2014-04-13 02:02:07,261 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1168410393 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:07,352 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39106, bytes: 1630430, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000020_0, duration: 12781058
+2014-04-13 02:02:07,370 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39106, bytes: 1737478, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000022_0, duration: 9694216
+2014-04-13 02:02:07,385 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39107, bytes: 1458714, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000028_0, duration: 13239981
+2014-04-13 02:02:07,395 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39108, bytes: 1687365, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000031_0, duration: 8112924
+2014-04-13 02:02:07,812 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000033_0 1.0% 
+2014-04-13 02:02:07,814 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000033_0 is done.
+2014-04-13 02:02:07,814 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000033_0  was 3087721
+2014-04-13 02:02:07,814 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 6
+2014-04-13 02:02:07,874 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000034_0 1.0% 
+2014-04-13 02:02:07,875 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000034_0 is done.
+2014-04-13 02:02:07,875 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000034_0  was 3015340
+2014-04-13 02:02:07,876 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 7
+2014-04-13 02:02:08,043 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1006661127 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:08,172 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000041_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,172 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000042_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,172 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000043_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,175 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000044_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,175 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000045_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,175 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000046_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,176 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000047_0 task's state:UNASSIGNED
+2014-04-13 02:02:08,176 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000041_0 which needs 1 slots
+2014-04-13 02:02:08,176 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 7 and trying to launch attempt_201404130159_0001_m_000041_0 which needs 1 slots
+2014-04-13 02:02:08,184 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000042_0 which needs 1 slots
+2014-04-13 02:02:08,184 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 6 and trying to launch attempt_201404130159_0001_m_000042_0 which needs 1 slots
+2014-04-13 02:02:08,202 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000043_0 which needs 1 slots
+2014-04-13 02:02:08,202 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 5 and trying to launch attempt_201404130159_0001_m_000043_0 which needs 1 slots
+2014-04-13 02:02:08,202 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000044_0 which needs 1 slots
+2014-04-13 02:02:08,202 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 4 and trying to launch attempt_201404130159_0001_m_000044_0 which needs 1 slots
+2014-04-13 02:02:08,203 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000045_0 which needs 1 slots
+2014-04-13 02:02:08,203 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 3 and trying to launch attempt_201404130159_0001_m_000045_0 which needs 1 slots
+2014-04-13 02:02:08,203 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000046_0 which needs 1 slots
+2014-04-13 02:02:08,203 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000046_0 which needs 1 slots
+2014-04-13 02:02:08,204 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000047_0 which needs 1 slots
+2014-04-13 02:02:08,204 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000047_0 which needs 1 slots
+2014-04-13 02:02:08,208 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1698504497 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:08,209 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1003769062
+2014-04-13 02:02:08,210 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1003769062 spawned.
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1451356847
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1451356847 spawned.
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000041_0/taskjvm.sh
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1979589128
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1979589128 spawned.
+2014-04-13 02:02:08,212 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_965776497
+2014-04-13 02:02:08,213 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_965776497 spawned.
+2014-04-13 02:02:08,213 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_593851619
+2014-04-13 02:02:08,213 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000044_0/taskjvm.sh
+2014-04-13 02:02:08,214 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000045_0/taskjvm.sh
+2014-04-13 02:02:08,214 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_593851619 spawned.
+2014-04-13 02:02:08,214 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000046_0/taskjvm.sh
+2014-04-13 02:02:08,216 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000047_0/taskjvm.sh
+2014-04-13 02:02:08,217 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_885081827
+2014-04-13 02:02:08,220 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_885081827 spawned.
+2014-04-13 02:02:08,221 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1509276225
+2014-04-13 02:02:08,221 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1509276225 spawned.
+2014-04-13 02:02:08,222 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000043_0/taskjvm.sh
+2014-04-13 02:02:08,223 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000042_0/taskjvm.sh
+2014-04-13 02:02:09,127 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1509276225 given task: attempt_201404130159_0001_m_000042_0
+2014-04-13 02:02:09,133 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_965776497 given task: attempt_201404130159_0001_m_000046_0
+2014-04-13 02:02:09,144 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_593851619 given task: attempt_201404130159_0001_m_000047_0
+2014-04-13 02:02:09,161 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_885081827 given task: attempt_201404130159_0001_m_000043_0
+2014-04-13 02:02:09,164 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1979589128 given task: attempt_201404130159_0001_m_000045_0
+2014-04-13 02:02:09,215 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1451356847 given task: attempt_201404130159_0001_m_000044_0
+2014-04-13 02:02:09,306 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1003769062 given task: attempt_201404130159_0001_m_000041_0
+2014-04-13 02:02:09,452 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000036_0 1.0% 
+2014-04-13 02:02:09,508 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000037_0 1.0% 
+2014-04-13 02:02:09,536 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000039_0 1.0% 
+2014-04-13 02:02:09,539 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000038_0 1.0% 
+2014-04-13 02:02:11,001 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39135, bytes: 1946132, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000026_0, duration: 33895637
+2014-04-13 02:02:11,594 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.18666667% reduce > copy (28 of 50 at 1.04 MB/s) > 
+2014-04-13 02:02:11,943 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.19333333% reduce > copy (29 of 50 at 0.86 MB/s) > 
+2014-04-13 02:02:12,453 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39154, bytes: 1482583, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000026_0, duration: 51614770
+2014-04-13 02:02:12,541 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39154, bytes: 1770344, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000027_0, duration: 68051722
+2014-04-13 02:02:12,587 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000036_0 1.0% 
+2014-04-13 02:02:12,626 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39155, bytes: 1627159, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000029_0, duration: 71784686
+2014-04-13 02:02:12,652 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000040_0 1.0% 
+2014-04-13 02:02:12,686 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000038_0 1.0% 
+2014-04-13 02:02:12,698 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39155, bytes: 1611847, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000030_0, duration: 64529762
+2014-04-13 02:02:12,715 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000037_0 1.0% 
+2014-04-13 02:02:12,720 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000039_0 1.0% 
+2014-04-13 02:02:12,743 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39155, bytes: 1680578, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000032_0, duration: 43123329
+2014-04-13 02:02:12,867 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39156, bytes: 1571648, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000033_0, duration: 120984840
+2014-04-13 02:02:12,930 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39156, bytes: 1488164, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000034_0, duration: 60330193
+2014-04-13 02:02:13,028 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39156, bytes: 1603340, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000035_0, duration: 77185174
+2014-04-13 02:02:14,985 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.19333333% reduce > copy (29 of 50 at 0.86 MB/s) > 
+2014-04-13 02:02:15,721 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000037_0 1.0% 
+2014-04-13 02:02:15,722 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000037_0 is done.
+2014-04-13 02:02:15,722 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000037_0  was 3125403
+2014-04-13 02:02:15,723 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:15,740 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000039_0 1.0% 
+2014-04-13 02:02:15,741 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000039_0 is done.
+2014-04-13 02:02:15,741 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000039_0  was 3025015
+2014-04-13 02:02:15,742 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:02:15,757 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000040_0 1.0% 
+2014-04-13 02:02:15,970 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1363611238 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:16,026 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39164, bytes: 1479555, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000027_0, duration: 17274434
+2014-04-13 02:02:16,052 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39164, bytes: 1726197, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000029_0, duration: 16109943
+2014-04-13 02:02:16,081 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000043_0 1.0% 
+2014-04-13 02:02:16,087 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_685981341 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:16,095 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39164, bytes: 1526531, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000030_0, duration: 38691032
+2014-04-13 02:02:16,113 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000042_0 1.0% 
+2014-04-13 02:02:16,131 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39165, bytes: 1715409, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000032_0, duration: 26380533
+2014-04-13 02:02:16,149 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000046_0 1.0% 
+2014-04-13 02:02:16,150 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000047_0 1.0% 
+2014-04-13 02:02:16,165 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39165, bytes: 1516067, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000033_0, duration: 20698765
+2014-04-13 02:02:16,198 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39165, bytes: 1527170, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000034_0, duration: 30354960
+2014-04-13 02:02:16,234 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000041_0 1.0% 
+2014-04-13 02:02:16,239 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39166, bytes: 1669158, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000035_0, duration: 35415777
+2014-04-13 02:02:16,344 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000045_0 1.0% 
+2014-04-13 02:02:16,364 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000044_0 1.0% 
+2014-04-13 02:02:17,193 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000048_0 task's state:UNASSIGNED
+2014-04-13 02:02:17,194 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000049_0 task's state:UNASSIGNED
+2014-04-13 02:02:17,194 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000048_0 which needs 1 slots
+2014-04-13 02:02:17,194 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 2 and trying to launch attempt_201404130159_0001_m_000048_0 which needs 1 slots
+2014-04-13 02:02:17,194 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000049_0 which needs 1 slots
+2014-04-13 02:02:17,194 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 1 and trying to launch attempt_201404130159_0001_m_000049_0 which needs 1 slots
+2014-04-13 02:02:17,199 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_1859254135
+2014-04-13 02:02:17,199 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_1859254135 spawned.
+2014-04-13 02:02:17,200 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_371827048
+2014-04-13 02:02:17,200 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_371827048 spawned.
+2014-04-13 02:02:17,201 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000048_0/taskjvm.sh
+2014-04-13 02:02:17,201 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000049_0/taskjvm.sh
+2014-04-13 02:02:17,636 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.24% reduce > copy (36 of 50 at 1.19 MB/s) > 
+2014-04-13 02:02:17,834 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_371827048 given task: attempt_201404130159_0001_m_000049_0
+2014-04-13 02:02:17,834 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_1859254135 given task: attempt_201404130159_0001_m_000048_0
+2014-04-13 02:02:18,596 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000036_0 1.0% 
+2014-04-13 02:02:18,597 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000036_0 is done.
+2014-04-13 02:02:18,597 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000036_0  was 3052750
+2014-04-13 02:02:18,598 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:18,695 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000038_0 1.0% 
+2014-04-13 02:02:18,698 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000038_0 is done.
+2014-04-13 02:02:18,698 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000038_0  was 2909083
+2014-04-13 02:02:18,698 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:02:18,761 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000040_0 1.0% 
+2014-04-13 02:02:18,762 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000040_0 is done.
+2014-04-13 02:02:18,762 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000040_0  was 2900534
+2014-04-13 02:02:18,762 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 3
+2014-04-13 02:02:19,132 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000043_0 1.0% 
+2014-04-13 02:02:19,211 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000042_0 1.0% 
+2014-04-13 02:02:19,212 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1774487480 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:19,225 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000047_0 1.0% 
+2014-04-13 02:02:19,249 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000046_0 1.0% 
+2014-04-13 02:02:19,256 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_191742460 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:19,257 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_652961609 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:19,301 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000041_0 1.0% 
+2014-04-13 02:02:19,389 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000045_0 1.0% 
+2014-04-13 02:02:19,417 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000044_0 1.0% 
+2014-04-13 02:02:21,016 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.24% reduce > copy (36 of 50 at 0.97 MB/s) > 
+2014-04-13 02:02:21,262 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39182, bytes: 1591868, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000037_0, duration: 20221104
+2014-04-13 02:02:21,307 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39182, bytes: 1481638, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000039_0, duration: 40346977
+2014-04-13 02:02:22,136 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000043_0 1.0% 
+2014-04-13 02:02:22,137 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000043_0 is done.
+2014-04-13 02:02:22,137 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000043_0  was 2892763
+2014-04-13 02:02:22,138 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 4
+2014-04-13 02:02:22,363 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_885081827 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:22,421 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000044_0 1.0% 
+2014-04-13 02:02:22,422 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000044_0 is done.
+2014-04-13 02:02:22,422 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000044_0  was 3391681
+2014-04-13 02:02:22,423 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 5
+2014-04-13 02:02:22,658 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1451356847 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:23,040 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39184, bytes: 1533529, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000037_0, duration: 8612148
+2014-04-13 02:02:23,049 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39185, bytes: 1543371, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000039_0, duration: 7433484
+2014-04-13 02:02:23,667 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.25333333% reduce > copy (38 of 50 at 1.03 MB/s) > 
+2014-04-13 02:02:24,310 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000049_0 1.0% 
+2014-04-13 02:02:24,315 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000048_0 1.0% 
+2014-04-13 02:02:25,216 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000042_0 1.0% 
+2014-04-13 02:02:25,218 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000042_0 is done.
+2014-04-13 02:02:25,218 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000042_0  was 3305959
+2014-04-13 02:02:25,218 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 6
+2014-04-13 02:02:25,619 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1509276225 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:26,320 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39186, bytes: 1593428, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000036_0, duration: 11097947
+2014-04-13 02:02:26,331 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39187, bytes: 1342862, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000038_0, duration: 9311225
+2014-04-13 02:02:26,343 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39188, bytes: 1408161, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000040_0, duration: 9775798
+2014-04-13 02:02:26,353 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39189, bytes: 1364838, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000043_0, duration: 9285508
+2014-04-13 02:02:26,366 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39190, bytes: 1859112, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000044_0, duration: 11241433
+2014-04-13 02:02:26,695 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.25333333% reduce > copy (38 of 50 at 1.03 MB/s) > 
+2014-04-13 02:02:27,045 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.28666666% reduce > copy (43 of 50 at 0.98 MB/s) > 
+2014-04-13 02:02:28,060 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39192, bytes: 1459316, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000036_0, duration: 8319656
+2014-04-13 02:02:28,068 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39193, bytes: 1566215, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000038_0, duration: 7509847
+2014-04-13 02:02:28,078 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39194, bytes: 1492367, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000040_0, duration: 7675657
+2014-04-13 02:02:28,086 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39195, bytes: 1527919, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000043_0, duration: 6538710
+2014-04-13 02:02:28,097 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39196, bytes: 1532563, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000044_0, duration: 7429821
+2014-04-13 02:02:28,232 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000047_0 1.0% 
+2014-04-13 02:02:28,233 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000047_0 is done.
+2014-04-13 02:02:28,233 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000047_0  was 3088488
+2014-04-13 02:02:28,234 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 7
+2014-04-13 02:02:28,480 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_593851619 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:30,074 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.28666666% reduce > copy (43 of 50 at 0.98 MB/s) > 
+2014-04-13 02:02:31,380 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39198, bytes: 1687590, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000042_0, duration: 11971655
+2014-04-13 02:02:31,397 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000045_0 1.0% 
+2014-04-13 02:02:31,398 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000045_0 is done.
+2014-04-13 02:02:31,398 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000045_0  was 2961865
+2014-04-13 02:02:31,399 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 8
+2014-04-13 02:02:32,019 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1979589128 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:32,725 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.28666666% reduce > copy (43 of 50 at 1.07 MB/s) > 
+2014-04-13 02:02:33,107 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39202, bytes: 1618363, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000042_0, duration: 8923442
+2014-04-13 02:02:33,316 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000049_0 1.0% 
+2014-04-13 02:02:33,318 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000049_0 is done.
+2014-04-13 02:02:33,318 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000049_0  was 3069863
+2014-04-13 02:02:33,318 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 9
+2014-04-13 02:02:33,552 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_371827048 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:34,263 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000046_0 1.0% 
+2014-04-13 02:02:34,285 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000046_0 is done.
+2014-04-13 02:02:34,285 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000046_0  was 2886306
+2014-04-13 02:02:34,285 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 10
+2014-04-13 02:02:34,310 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000041_0 1.0% 
+2014-04-13 02:02:34,310 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000041_0 is done.
+2014-04-13 02:02:34,311 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000041_0  was 3366069
+2014-04-13 02:02:34,311 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 11
+2014-04-13 02:02:35,064 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1003769062 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:35,064 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_965776497 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:36,102 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.29333335% reduce > copy (44 of 50 at 0.93 MB/s) > 
+2014-04-13 02:02:36,392 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39203, bytes: 1625513, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000047_0, duration: 10328543
+2014-04-13 02:02:36,403 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39204, bytes: 1660730, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000045_0, duration: 9892903
+2014-04-13 02:02:38,118 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39205, bytes: 1462969, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000047_0, duration: 8168843
+2014-04-13 02:02:38,239 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39206, bytes: 1301129, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000045_0, duration: 8326085
+2014-04-13 02:02:38,755 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.30666667% reduce > copy (46 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:41,416 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39208, bytes: 1807036, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000041_0, duration: 10985217
+2014-04-13 02:02:41,429 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39209, bytes: 1548476, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000046_0, duration: 11109895
+2014-04-13 02:02:41,440 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39210, bytes: 1299938, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000049_0, duration: 9256913
+2014-04-13 02:02:41,782 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.30666667% reduce > copy (46 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:42,130 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:42,325 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000048_0 1.0% 
+2014-04-13 02:02:42,326 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000048_0 is done.
+2014-04-13 02:02:42,326 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000048_0  was 2993733
+2014-04-13 02:02:42,327 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 12
+2014-04-13 02:02:42,566 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_1859254135 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:43,252 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39211, bytes: 1559027, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000041_0, duration: 7745532
+2014-04-13 02:02:43,259 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39212, bytes: 1337824, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000046_0, duration: 6260704
+2014-04-13 02:02:43,268 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39213, bytes: 1769919, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000049_0, duration: 7019266
+2014-04-13 02:02:45,156 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:47,811 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.32666665% reduce > copy (49 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:48,281 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39214, bytes: 1291790, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000048_0, duration: 11781219
+2014-04-13 02:02:49,129 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.32666665% reduce > copy (49 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:49,359 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.32666665% reduce > copy (49 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:50,744 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_r_000001_0 is in commit-pending, task state:COMMIT_PENDING
+2014-04-13 02:02:50,745 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 0.32666665% reduce > copy (49 of 50 at 0.96 MB/s) > 
+2014-04-13 02:02:51,182 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:51,452 INFO org.apache.hadoop.mapred.TaskTracker.clienttrace: src: 192.168.110.214:50061, dest: 192.168.110.214:39219, bytes: 1701937, op: MAPRED_SHUFFLE, cliID: attempt_201404130159_0001_m_000048_0, duration: 10148441
+2014-04-13 02:02:52,138 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:52,364 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:53,258 INFO org.apache.hadoop.mapred.TaskTracker: Received commit task action for attempt_201404130159_0001_r_000001_0
+2014-04-13 02:02:53,716 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_r_000000_0 is in commit-pending, task state:COMMIT_PENDING
+2014-04-13 02:02:53,716 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 0.32666665% reduce > copy (49 of 50 at 0.91 MB/s) > 
+2014-04-13 02:02:53,839 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 1.0% reduce > reduce
+2014-04-13 02:02:53,841 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000001_0 1.0% reduce > reduce
+2014-04-13 02:02:53,842 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_r_000001_0 is done.
+2014-04-13 02:02:53,842 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_r_000001_0  was -1
+2014-04-13 02:02:53,843 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 1
+2014-04-13 02:02:54,005 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_r_1309310967 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:56,265 INFO org.apache.hadoop.mapred.TaskTracker: Received commit task action for attempt_201404130159_0001_r_000000_0
+2014-04-13 02:02:56,265 INFO org.apache.hadoop.mapred.TaskTracker: Received KillTaskAction for task: attempt_201404130159_0001_r_000001_0
+2014-04-13 02:02:56,265 INFO org.apache.hadoop.mapred.TaskTracker: About to purge task: attempt_201404130159_0001_r_000001_0
+2014-04-13 02:02:57,207 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 1.0% reduce > reduce
+2014-04-13 02:02:57,209 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_r_000000_0 1.0% reduce > reduce
+2014-04-13 02:02:57,210 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_r_000000_0 is done.
+2014-04-13 02:02:57,210 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_r_000000_0  was -1
+2014-04-13 02:02:57,210 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 2
+2014-04-13 02:02:57,371 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_r_1948587105 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:02:59,281 INFO org.apache.hadoop.mapred.TaskTracker: LaunchTaskAction (registerTask): attempt_201404130159_0001_m_000050_0 task's state:UNASSIGNED
+2014-04-13 02:02:59,281 INFO org.apache.hadoop.mapred.TaskTracker: Trying to launch : attempt_201404130159_0001_m_000050_0 which needs 1 slots
+2014-04-13 02:02:59,281 INFO org.apache.hadoop.mapred.TaskTracker: In TaskLauncher, current free slots : 12 and trying to launch attempt_201404130159_0001_m_000050_0 which needs 1 slots
+2014-04-13 02:02:59,281 INFO org.apache.hadoop.mapred.TaskTracker: Received KillTaskAction for task: attempt_201404130159_0001_r_000000_0
+2014-04-13 02:02:59,281 INFO org.apache.hadoop.mapred.TaskTracker: About to purge task: attempt_201404130159_0001_r_000000_0
+2014-04-13 02:02:59,286 INFO org.apache.hadoop.mapred.JvmManager: In JvmRunner constructed JVM ID: jvm_201404130159_0001_m_505640170
+2014-04-13 02:02:59,286 INFO org.apache.hadoop.mapred.JvmManager: JVM Runner jvm_201404130159_0001_m_505640170 spawned.
+2014-04-13 02:02:59,288 INFO org.apache.hadoop.mapred.TaskController: Writing commands to /tmp/hadoop/hadoop-jmg3/mapred/local/ttprivate/taskTracker/jmg3/jobcache/job_201404130159_0001/attempt_201404130159_0001_m_000050_0/taskjvm.sh
+2014-04-13 02:02:59,925 INFO org.apache.hadoop.mapred.TaskTracker: JVM with ID: jvm_201404130159_0001_m_505640170 given task: attempt_201404130159_0001_m_000050_0
+2014-04-13 02:03:00,431 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000050_0 0.0% 
+2014-04-13 02:03:03,348 INFO org.apache.hadoop.mapred.TaskTracker: attempt_201404130159_0001_m_000050_0 0.0% cleanup
+2014-04-13 02:03:03,349 INFO org.apache.hadoop.mapred.TaskTracker: Task attempt_201404130159_0001_m_000050_0 is done.
+2014-04-13 02:03:03,349 INFO org.apache.hadoop.mapred.TaskTracker: reported output size for attempt_201404130159_0001_m_000050_0  was -1
+2014-04-13 02:03:03,349 INFO org.apache.hadoop.mapred.TaskTracker: addFreeSlot : current free slots : 12
+2014-04-13 02:03:03,502 INFO org.apache.hadoop.mapred.JvmManager: JVM : jvm_201404130159_0001_m_505640170 exited with exit code 0. Number of tasks it ran: 1
+2014-04-13 02:03:05,335 INFO org.apache.hadoop.mapred.TaskTracker: Received 'KillJobAction' for job: job_201404130159_0001
+2014-04-13 02:03:05,339 INFO org.apache.hadoop.mapred.IndexCache: Map ID attempt_201404130159_0001_m_000050_0 not found in cache
+2014-04-13 02:03:05,340 INFO org.apache.hadoop.mapred.UserLogCleaner: Adding job_201404130159_0001 for user-log deletion with retainTimeStamp:1397458985339
