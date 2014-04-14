@@ -103,19 +103,20 @@ else
     sleep 3
     ./KILL.sh
     ./CLEAN.sh
+    sleep 3
 
     ./startup.sh ${mapper} ${reducer} ${GPU_THREAD} \
         ${CPU_THREAD} \
         ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
-    sleep 60
+    sleep 120
     echo Putting inputs from \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
     ${HADOOP_HOME}/bin/hadoop fs -put \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} \
         ${BENCHMARK}.input
     echo Done
-    sleep 10
+    sleep 120
     echo Running Application with ${EXE_NAME}.jar
     time ${HADOOP_HOME}/bin/hadoop jar ${EXE_NAME}.jar ${EXE_NAME} \
         ${BENCHMARK}.input ${BENCHMARK}.output ${MAP_OUTPUTFORMAT} 
