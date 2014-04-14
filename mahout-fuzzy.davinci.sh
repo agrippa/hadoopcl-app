@@ -26,7 +26,7 @@ for i in $(seq $1); do
     ./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 67108864 ${JAVA_HEAP}
     sleep 60
 
-    ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-32-combined-merged/ input
+    ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/9.tfidf-vectors-transformed-lengthpruned-32-combined-merged.30/ input
     ${HADOOP_HOME}/bin/hadoop fs -mkdir clusters
     ${HADOOP_HOME}/bin/hadoop fs -put /scratch/jmg3/wiki-sparse/random-seed-cluster.128 clusters/
 

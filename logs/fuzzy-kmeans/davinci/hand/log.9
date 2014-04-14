@@ -1,0 +1,297 @@
+run_opencl_test.sh: Running fuzzy with input compression none, intermediate compression none
+Java heap size 4G
+Killing
+gpu-003
+gpu-013
+gpu-003
+jmg3      3663  0.0  0.0 106084  1400 ?        Ss   03:03   0:00 bash -c ps aux | grep java
+jmg3      3679  0.0  0.0 107360   888 ?        S    03:03   0:00 grep java
+gpu-013
+jmg3     31298  0.0  0.0  61440  3684 pts/0    S+   03:03   0:00 ssh -o ConnectTimeout=2 gpu-013 ps aux | grep java
+jmg3     31304  0.0  0.0 106084  1396 ?        Ss   03:03   0:00 bash -c ps aux | grep java
+jmg3     31320  0.0  0.0 107360   888 ?        S    03:03   0:00 grep java
+gpu-003
+gpu-013
+Done
+gpu-003
+java: no process killed
+gpu-013
+java: no process killed
+gpu-003
+jmg3      3725  0.0  0.0 106084  1400 ?        Ss   03:03   0:00 bash -c ps aux | grep java
+jmg3      3741  0.0  0.0 107360   892 ?        S    03:03   0:00 grep java
+gpu-013
+jmg3     31381  0.0  0.0  61440  3688 pts/0    S+   03:03   0:00 ssh -o ConnectTimeout=2 gpu-013 ps aux | grep java
+jmg3     31387  0.0  0.0 106084  1396 ?        Ss   03:03   0:00 bash -c ps aux | grep java
+jmg3     31403  0.0  0.0 107360   888 ?        S    03:03   0:00 grep java
+gpu-003
+gpu-013
+Setting path to /tmp/yiskylee
+4 1 256 64 256 64 268435456 4
+Max. num tasks = 4 mappers, 1 reducers
+Mapper thread configs = GPU ( 256 ), CPU ( 64 )
+Reducer thread configs = GPU ( 256 ), CPU ( 64 )
+HDFS block size = 268435456
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.7.0.21
+export HOME=/home/jmg3
+export HADOOP_HOME=${HOME}/hadoop-1.0.3
+export APARAPI_HOME=${HOME}/aparapi-read-only
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOP_APP_DIR=${HOME}/app
+export CLASSPATH=${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar
+export HADOOP_CLASSPATH=${HOME}/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+export PYTHONPATH=${SCIKIT_HOME}/lib64/python2.6/site-packages:${NUMPY_HOME}/lib64/python2.6/site-packages:${SCIPY_HOME}/lib64/python2.6/site-packages:${PYTHONPATH}
+
+export LD_PRELOAD=/opt/apps/jdk/1.7.0.21/jre/lib/amd64/server/libjsig.so
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-013.davinci.rice.edu:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>24</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>12</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx4G -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=64 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=64 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>4194304</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>4194304</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>163840</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>163840</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>20</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>25165824</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>25165824</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/scratch/jmg3/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-013.davinci.rice.edu:54313</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-003
+-----------------------------------------------------
+gpu-013
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/11 03:04:00 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-013.davinci.rice.edu/192.168.110.213
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Wed Apr  9 19:46:39 CDT 2014
+************************************************************/
+14/04/11 03:04:00 INFO util.GSet: VM type       = 64-bit
+14/04/11 03:04:00 INFO util.GSet: 2% max memory = 1747.6275 MB
+14/04/11 03:04:00 INFO util.GSet: capacity      = 2^28 = 268435456 entries
+14/04/11 03:04:00 INFO util.GSet: recommended=268435456, actual=268435456
+14/04/11 03:04:00 INFO namenode.FSNamesystem: fsOwner=jmg3
+14/04/11 03:04:01 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/11 03:04:01 INFO namenode.FSNamesystem: isPermissionEnabled=true
+14/04/11 03:04:01 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/11 03:04:01 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/11 03:04:01 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/11 03:04:01 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+14/04/11 03:04:01 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-jmg3/dfs/name has been successfully formatted.
+14/04/11 03:04:01 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-013.davinci.rice.edu/192.168.110.213
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-003: Warning: $HADOOP_HOME is deprecated.
+gpu-003: 
+gpu-003: no tasktracker to stop
+no namenode to stop
+gpu-003: Warning: $HADOOP_HOME is deprecated.
+gpu-003: 
+gpu-003: no datanode to stop
+gpu-013: Warning: $HADOOP_HOME is deprecated.
+gpu-013: 
+gpu-013: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-jmg3-namenode-gpu-013.davinci.rice.edu.out
+gpu-003: Warning: $HADOOP_HOME is deprecated.
+gpu-003: 
+gpu-003: starting datanode, logging to /tmp/hadoop/logs/hadoop-jmg3-datanode-gpu-003.davinci.rice.edu.out
+gpu-013: Warning: $HADOOP_HOME is deprecated.
+gpu-013: 
+gpu-013: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-jmg3-secondarynamenode-gpu-013.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-jmg3-jobtracker-gpu-013.davinci.rice.edu.out
+gpu-003: Warning: $HADOOP_HOME is deprecated.
+gpu-003: 
+gpu-003: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-jmg3-tasktracker-gpu-003.davinci.rice.edu.out
+Completed start all
+Putting inputs from /scratch/jmg3/fuzzy.input/block.none
+Warning: $HADOOP_HOME is deprecated.
+
+Done
+Running Application with FuzzyKMeans.jar
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/11 03:05:40 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+14/04/11 03:05:40 INFO compress.CodecPool: Got brand-new decompressor
+Sending 64 to HDFS took 93 ms
+Sending 0 to HDFS for stage MAPPER took 21 ms
+Sending 0 to HDFS for stage COMBINER took 17 ms
+Sending 0 to HDFS for stage REDUCER took 16 ms
+14/04/11 03:05:41 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/11 03:05:41 INFO input.FileInputFormat: Total input paths to process : 50
+14/04/11 03:05:41 INFO mapred.JobClient: Running job: job_201404110304_0001
+14/04/11 03:05:42 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/11 03:05:59 INFO mapred.JobClient:  map 14% reduce 0%
+14/04/11 03:06:02 INFO mapred.JobClient:  map 23% reduce 0%
+14/04/11 03:06:25 INFO mapred.JobClient:  map 43% reduce 0%
+14/04/11 03:06:28 INFO mapred.JobClient:  map 48% reduce 0%
+14/04/11 03:06:31 INFO mapred.JobClient:  map 48% reduce 7%
+14/04/11 03:06:46 INFO mapred.JobClient:  map 55% reduce 10%
+14/04/11 03:06:55 INFO mapred.JobClient:  map 63% reduce 13%
+14/04/11 03:06:58 INFO mapred.JobClient:  map 71% reduce 13%
+14/04/11 03:07:01 INFO mapred.JobClient:  map 77% reduce 18%
+14/04/11 03:07:04 INFO mapred.JobClient:  map 79% reduce 18%
+14/04/11 03:07:07 INFO mapred.JobClient:  map 79% reduce 20%
+14/04/11 03:07:10 INFO mapred.JobClient:  map 87% reduce 21%
+14/04/11 03:07:13 INFO mapred.JobClient:  map 89% reduce 21%
+14/04/11 03:07:16 INFO mapred.JobClient:  map 91% reduce 25%
+14/04/11 03:07:19 INFO mapred.JobClient:  map 99% reduce 25%
+14/04/11 03:07:22 INFO mapred.JobClient:  map 99% reduce 28%
+14/04/11 03:07:31 INFO mapred.JobClient:  map 99% reduce 30%
+14/04/11 03:07:34 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/11 03:07:37 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/11 03:07:40 INFO mapred.JobClient:  map 100% reduce 32%
+14/04/11 03:07:46 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/11 03:07:49 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/11 03:07:54 INFO mapred.JobClient: Job complete: job_201404110304_0001
+14/04/11 03:07:54 INFO mapred.JobClient: Counters: 29
+14/04/11 03:07:54 INFO mapred.JobClient:   Job Counters 
+14/04/11 03:07:54 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/11 03:07:54 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=1015172
+14/04/11 03:07:54 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/11 03:07:54 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/11 03:07:54 INFO mapred.JobClient:     Launched map tasks=50
+14/04/11 03:07:54 INFO mapred.JobClient:     Data-local map tasks=50
+14/04/11 03:07:54 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=182832
+14/04/11 03:07:54 INFO mapred.JobClient:   File Output Format Counters 
+14/04/11 03:07:54 INFO mapred.JobClient:     Bytes Written=58555180
+14/04/11 03:07:54 INFO mapred.JobClient:   FileSystemCounters
+14/04/11 03:07:54 INFO mapred.JobClient:     FILE_BYTES_READ=157835105
+14/04/11 03:07:54 INFO mapred.JobClient:     HDFS_BYTES_READ=1348916270
+14/04/11 03:07:54 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=317072004
+14/04/11 03:07:54 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=58555180
+14/04/11 03:07:54 INFO mapred.JobClient:   File Input Format Counters 
+14/04/11 03:07:54 INFO mapred.JobClient:     Bytes Read=1348080106
+14/04/11 03:07:54 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/11 03:07:54 INFO mapred.JobClient:     Map output materialized bytes=157835993
+14/04/11 03:07:54 INFO mapred.JobClient:     Map input records=7151687
+14/04/11 03:07:54 INFO mapred.JobClient:     Reduce shuffle bytes=154765836
+14/04/11 03:07:54 INFO mapred.JobClient:     Spilled Records=5766
+14/04/11 03:07:54 INFO mapred.JobClient:     Map output bytes=1578603524
+14/04/11 03:07:54 INFO mapred.JobClient:     Total committed heap usage (bytes)=107017404416
+14/04/11 03:07:54 INFO mapred.JobClient:     CPU time spent (ms)=655880
+14/04/11 03:07:54 INFO mapred.JobClient:     Combine input records=0
+14/04/11 03:07:54 INFO mapred.JobClient:     SPLIT_RAW_BYTES=6900
+14/04/11 03:07:54 INFO mapred.JobClient:     Reduce input records=2883
+14/04/11 03:07:54 INFO mapred.JobClient:     Reduce input groups=0
+14/04/11 03:07:54 INFO mapred.JobClient:     Combine output records=2883
+14/04/11 03:07:54 INFO mapred.JobClient:     Physical memory (bytes) snapshot=64954843136
+14/04/11 03:07:54 INFO mapred.JobClient:     Reduce output records=64
+14/04/11 03:07:54 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=3989599342592
+14/04/11 03:07:54 INFO mapred.JobClient:     Map output records=7151687
+Execution Time 133932 ms
+# clusters = 64
+
+real	2m14.865s
+user	0m2.106s
+sys	0m0.154s

@@ -109,7 +109,8 @@ public class MahoutNaiveBayes {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
         Configuration conf = new Configuration();
         Job job = new Job(conf, "mahout-bayes");
-		((JobConf)job.getConfiguration()).setJar("/home-nis/mgrossman/hadoopcl-app/MahoutNaiveBayes.jar");
+		// ((JobConf)job.getConfiguration()).setJar("/home-nis/mgrossman/hadoopcl-app/MahoutNaiveBayes.jar");
+		((JobConf)job.getConfiguration()).setJar("/home/jmg3/app/MahoutNaiveBayes.jar");
 
         job.setMapperClass(ThetaMapper.class);
         job.setMapOutputKeyClass(Text.class);
