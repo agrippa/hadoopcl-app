@@ -1,0 +1,688 @@
+run_opencl_test.sh: Running bayes with input compression none, intermediate compression none
+Java heap size 4G
+Killing
+gpu-014
+java: no process killed
+gpu-015
+java: no process killed
+gpu-014
+jmg3     28757  0.0  0.0 106084  1400 ?        Ss   18:53   0:00 bash -c ps aux | grep java
+jmg3     28773  0.0  0.0 107360   888 ?        S    18:53   0:00 grep java
+gpu-015
+jmg3      4155  0.0  0.0  61440  3684 pts/0    S+   18:53   0:00 ssh -o ConnectTimeout=2 gpu-015 ps aux | grep java
+jmg3      4161  0.0  0.0 106084  1400 ?        Ss   18:53   0:00 bash -c ps aux | grep java
+jmg3      4177  0.0  0.0 107360   892 ?        S    18:53   0:00 grep java
+gpu-014
+gpu-015
+Done
+gpu-014
+java: no process killed
+gpu-015
+java: no process killed
+gpu-014
+jmg3     28819  0.0  0.0 106084  1400 ?        Ss   18:53   0:00 bash -c ps aux | grep java
+jmg3     28835  0.0  0.0 107360   888 ?        S    18:53   0:00 grep java
+gpu-015
+jmg3      4238  0.0  0.0  61572  3684 pts/0    S+   18:53   0:00 ssh -o ConnectTimeout=2 gpu-015 ps aux | grep java
+jmg3      4244  0.0  0.0 106084  1396 ?        Ss   18:53   0:00 bash -c ps aux | grep java
+jmg3      4260  0.0  0.0 107360   888 ?        S    18:53   0:00 grep java
+gpu-014
+gpu-015
+Setting path to /tmp/yiskylee
+4 1 256 64 256 64 268435456 4
+Max. num tasks = 4 mappers, 1 reducers
+Mapper thread configs = GPU ( 256 ), CPU ( 64 )
+Reducer thread configs = GPU ( 256 ), CPU ( 64 )
+HDFS block size = 268435456
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/opt/apps/jdk/1.7.0.21
+export HOME=/home/jmg3
+export HADOOP_HOME=${HOME}/hadoop-1.0.3
+export APARAPI_HOME=${HOME}/aparapi-read-only
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOP_APP_DIR=${HOME}/app
+export CLASSPATH=${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar
+export HADOOP_CLASSPATH=${HOME}/hadoop-gpl-compression-read-only/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}:/home/jmg3/mahout/math/target/mahout-math-0.9-SNAPSHOT.jar:/home/jmg3/mahout/integration/target/dependency/mahout-core-0.9-SNAPSHOT.jar
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+export PYTHONPATH=${SCIKIT_HOME}/lib64/python2.6/site-packages:${NUMPY_HOME}/lib64/python2.6/site-packages:${SCIPY_HOME}/lib64/python2.6/site-packages:${PYTHONPATH}
+
+export LD_PRELOAD=/opt/apps/jdk/1.7.0.21/jre/lib/amd64/server/libjsig.so
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>gpu-015.davinci.rice.edu:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>24</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>12</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx4G -Dopencl.mapper.threadsPerGroup.gpu=256 -Dopencl.mapper.threadsPerGroup.cpu=64 -Dopencl.reducer.threadsPerGroup.gpu=256 -Dopencl.reducer.threadsPerGroup.cpu=64 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value-->
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>4194304</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>4194304</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>163840</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>163840</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>20</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>6291456</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>0</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>25165824</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>25165824</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>0</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/scratch/jmg3/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>268435456</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://gpu-015.davinci.rice.edu:54313</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+gpu-014
+-----------------------------------------------------
+gpu-015
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/13 18:53:12 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = gpu-015.davinci.rice.edu/192.168.110.215
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = 1.0.4-SNAPSHOT
+STARTUP_MSG:   build =  -r ; compiled by 'jmg3' on Fri Apr 11 17:54:37 CDT 2014
+************************************************************/
+14/04/13 18:53:12 INFO util.GSet: VM type       = 64-bit
+14/04/13 18:53:12 INFO util.GSet: 2% max memory = 1747.6275 MB
+14/04/13 18:53:12 INFO util.GSet: capacity      = 2^28 = 268435456 entries
+14/04/13 18:53:12 INFO util.GSet: recommended=268435456, actual=268435456
+14/04/13 18:53:13 INFO namenode.FSNamesystem: fsOwner=jmg3
+14/04/13 18:53:13 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/13 18:53:13 INFO namenode.FSNamesystem: isPermissionEnabled=true
+14/04/13 18:53:13 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/13 18:53:13 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/13 18:53:13 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/13 18:53:13 INFO common.Storage: Image file of size 110 saved in 0 seconds.
+14/04/13 18:53:13 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-jmg3/dfs/name has been successfully formatted.
+14/04/13 18:53:13 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at gpu-015.davinci.rice.edu/192.168.110.215
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+gpu-014: Warning: $HADOOP_HOME is deprecated.
+gpu-014: 
+gpu-014: no tasktracker to stop
+no namenode to stop
+gpu-014: Warning: $HADOOP_HOME is deprecated.
+gpu-014: 
+gpu-014: no datanode to stop
+gpu-015: Warning: $HADOOP_HOME is deprecated.
+gpu-015: 
+gpu-015: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-jmg3-namenode-gpu-015.davinci.rice.edu.out
+gpu-014: Warning: $HADOOP_HOME is deprecated.
+gpu-014: 
+gpu-014: starting datanode, logging to /tmp/hadoop/logs/hadoop-jmg3-datanode-gpu-014.davinci.rice.edu.out
+gpu-015: Warning: $HADOOP_HOME is deprecated.
+gpu-015: 
+gpu-015: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-jmg3-secondarynamenode-gpu-015.davinci.rice.edu.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-jmg3-jobtracker-gpu-015.davinci.rice.edu.out
+gpu-014: Warning: $HADOOP_HOME is deprecated.
+gpu-014: 
+gpu-014: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-jmg3-tasktracker-gpu-014.davinci.rice.edu.out
+Completed start all
+Putting inputs from /scratch/jmg3/bayes.input/block.none
+Warning: $HADOOP_HOME is deprecated.
+
+Done
+Running Application with NaiveBayes.jar
+Warning: $HADOOP_HOME is deprecated.
+
+Sending 2 to HDFS took 1082 ms
+Sending 1 to HDFS for stage MAPPER took 16 ms
+Sending 0 to HDFS for stage COMBINER took 17 ms
+Sending 0 to HDFS for stage REDUCER took 16 ms
+14/04/13 18:55:19 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/13 18:55:19 INFO input.FileInputFormat: Total input paths to process : 100
+14/04/13 18:55:19 INFO mapred.JobClient: Running job: job_201404131853_0001
+14/04/13 18:55:20 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/13 18:55:46 INFO mapred.JobClient:  map 4% reduce 0%
+14/04/13 18:55:49 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/13 18:55:51 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000006_0, Status : FAILED
+attempt_201404131853_0001_m_000006_0: Error setting kernel array arg for 14,outputValVals: -38 0x7fad2c441440 (nil)
+14/04/13 18:55:54 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000008_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000008_0: Error setting kernel array arg for 14,outputValVals: -38 0x7f9b8c441360 (nil)
+14/04/13 18:55:57 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000009_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: #  SIGSEGV (0xb) at pc=0x00007fa6c98dc7da, pid=29578, tid=140354300933888
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000009_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000009_0: # Problematic frame:
+attempt_201404131853_0001_m_000009_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000009_0/work/core or core.29578
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000009_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000009_0/work/hs_err_pid29578.log
+attempt_201404131853_0001_m_000009_0: #
+attempt_201404131853_0001_m_000009_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000009_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000009_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000009_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000009_0: #
+14/04/13 18:56:01 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000010_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: #  SIGSEGV (0xb) at pc=0x00007f7030f3a7da, pid=29564, tid=140119050610432
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000010_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000010_0: # Problematic frame:
+attempt_201404131853_0001_m_000010_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000010_0/work/core or core.29564
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000010_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000010_0/work/hs_err_pid29564.log
+attempt_201404131853_0001_m_000010_0: #
+attempt_201404131853_0001_m_000010_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000010_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000010_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000010_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000010_0: #
+14/04/13 18:56:04 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000011_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: #  SIGSEGV (0xb) at pc=0x00007f671c0737da, pid=29579, tid=140080310916864
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000011_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000011_0: # Problematic frame:
+attempt_201404131853_0001_m_000011_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000011_0/work/core or core.29579
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000011_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000011_0/work/hs_err_pid29579.log
+attempt_201404131853_0001_m_000011_0: #
+attempt_201404131853_0001_m_000011_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000011_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000011_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000011_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000011_0: #
+14/04/13 18:56:06 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000000_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: #  SIGSEGV (0xb) at pc=0x00007f33b68517da, pid=29543, tid=139859835254528
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000000_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000000_0: # Problematic frame:
+attempt_201404131853_0001_m_000000_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000000_0/work/core or core.29543
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000000_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000000_0/work/hs_err_pid29543.log
+attempt_201404131853_0001_m_000000_0: #
+attempt_201404131853_0001_m_000000_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000000_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000000_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000000_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000000_0: #
+14/04/13 18:56:14 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000001_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: #  SIGSEGV (0xb) at pc=0x00007f168050f7da, pid=29554, tid=139734438831872
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000001_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000001_0: # Problematic frame:
+attempt_201404131853_0001_m_000001_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000001_0/work/core or core.29554
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000001_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000001_0/work/hs_err_pid29554.log
+attempt_201404131853_0001_m_000001_0: #
+attempt_201404131853_0001_m_000001_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000001_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000001_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000001_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000001_0: #
+14/04/13 18:56:14 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000002_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000002_0: Error setting kernel array arg for 14,outputValVals: -38 0x7feaf8441360 (nil)
+14/04/13 18:56:17 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000003_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: #  SIGSEGV (0xb) at pc=0x00007ff88c7407da, pid=29544, tid=140705170773760
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000003_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000003_0: # Problematic frame:
+attempt_201404131853_0001_m_000003_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000003_0/work/core or core.29544
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000003_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000003_0/work/hs_err_pid29544.log
+attempt_201404131853_0001_m_000003_0: #
+attempt_201404131853_0001_m_000003_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000003_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000003_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000003_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000003_0: #
+14/04/13 18:56:27 INFO mapred.JobClient:  map 7% reduce 0%
+14/04/13 18:56:32 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000009_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000009_1: Error setting kernel array arg for 14,outputValVals: -38 0x7fe3c4004e50 (nil)
+14/04/13 18:56:35 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000010_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000010_1: Error setting kernel array arg for 14,outputValVals: -38 0x7fec784410d0 (nil)
+14/04/13 18:56:36 INFO mapred.JobClient:  map 8% reduce 0%
+14/04/13 18:56:38 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000011_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000011_1: Error setting kernel array arg for 14,outputValVals: -38 0x7fbd60441360 (nil)
+14/04/13 18:56:41 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000012_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000012_0: Error setting kernel array arg for 14,outputValVals: -38 0x7ffc04441360 (nil)
+14/04/13 18:56:44 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000006_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: #  SIGSEGV (0xb) at pc=0x00007f5e06e3e7da, pid=31107, tid=140041774335744
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000006_1: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000006_1: # Problematic frame:
+attempt_201404131853_0001_m_000006_1: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000006_1/work/core or core.31107
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000006_1: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000006_1/work/hs_err_pid31107.log
+attempt_201404131853_0001_m_000006_1: #
+attempt_201404131853_0001_m_000006_1: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000006_1: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000006_1: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000006_1: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000006_1: #
+14/04/13 18:56:47 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000008_1, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: #  SIGSEGV (0xb) at pc=0x00007f3b000737da, pid=31112, tid=139890728376064
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000008_1: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000008_1: # Problematic frame:
+attempt_201404131853_0001_m_000008_1: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000008_1/work/core or core.31112
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000008_1: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000008_1/work/hs_err_pid31112.log
+attempt_201404131853_0001_m_000008_1: #
+attempt_201404131853_0001_m_000008_1: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000008_1: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000008_1: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000008_1: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000008_1: #
+14/04/13 18:56:54 INFO mapred.JobClient:  map 16% reduce 1%
+14/04/13 18:56:57 INFO mapred.JobClient:  map 16% reduce 3%
+14/04/13 18:57:02 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000016_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: #  SIGSEGV (0xb) at pc=0x00007f89e25fd7da, pid=32479, tid=140230163171072
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000016_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000016_0: # Problematic frame:
+attempt_201404131853_0001_m_000016_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000016_0/work/core or core.32479
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000016_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000016_0/work/hs_err_pid32479.log
+attempt_201404131853_0001_m_000016_0: #
+attempt_201404131853_0001_m_000016_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000016_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000016_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000016_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000016_0: #
+14/04/13 18:57:03 INFO mapred.JobClient:  map 22% reduce 4%
+14/04/13 18:57:05 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000017_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: #  SIGSEGV (0xb) at pc=0x00007f4e3c9ea7da, pid=32480, tid=139973217769216
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000017_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000017_0: # Problematic frame:
+attempt_201404131853_0001_m_000017_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000017_0/work/core or core.32480
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000017_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000017_0/work/hs_err_pid32480.log
+attempt_201404131853_0001_m_000017_0: #
+attempt_201404131853_0001_m_000017_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000017_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000017_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000017_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000017_0: #
+14/04/13 18:57:06 INFO mapred.JobClient:  map 22% reduce 5%
+14/04/13 18:57:08 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000018_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 134.
+Throwable.getMessage: Task process exit with nonzero status of 134.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 134.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: # A fatal error has been detected by the Java Runtime Environment:
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: #  SIGSEGV (0xb) at pc=0x00007f0f6e3717da, pid=32476, tid=139704228333312
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: # JRE version: 7.0_21-b11
+attempt_201404131853_0001_m_000018_0: # Java VM: Java HotSpot(TM) 64-Bit Server VM (23.21-b01 mixed mode linux-amd64 compressed oops)
+attempt_201404131853_0001_m_000018_0: # Problematic frame:
+attempt_201404131853_0001_m_000018_0: # C  [libaparapi_x86_64.so+0x77da]  Java_com_amd_aparapi_internal_jni_KernelRunnerJNI_hadoopclReadbackJNI+0xfa
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: # Core dump written. Default location: /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000018_0/work/core or core.32476
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: # An error report file with more information is saved as:
+attempt_201404131853_0001_m_000018_0: # /tmp/hadoop/hadoop-jmg3/mapred/local/taskTracker/jmg3/jobcache/job_201404131853_0001/attempt_201404131853_0001_m_000018_0/work/hs_err_pid32476.log
+attempt_201404131853_0001_m_000018_0: #
+attempt_201404131853_0001_m_000018_0: # If you would like to submit a bug report, please visit:
+attempt_201404131853_0001_m_000018_0: #   http://bugreport.sun.com/bugreport/crash.jsp
+attempt_201404131853_0001_m_000018_0: # The crash happened outside the Java Virtual Machine in native code.
+attempt_201404131853_0001_m_000018_0: # See problematic frame for where to report the bug.
+attempt_201404131853_0001_m_000018_0: #
+14/04/13 18:57:09 INFO mapred.JobClient:  map 22% reduce 6%
+14/04/13 18:57:11 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000025_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000025_0: Error setting kernel array arg for 14,outputValVals: -38 0x7f51f4005170 (nil)
+14/04/13 18:57:12 INFO mapred.JobClient:  map 22% reduce 7%
+14/04/13 18:57:14 INFO mapred.JobClient: Task Id : attempt_201404131853_0001_m_000026_0, Status : FAILED
+Throwable.toString: java.io.IOException: Task process exit with nonzero status of 9.
+Throwable.getMessage: Task process exit with nonzero status of 9.
+baos: java.lang.Throwable: Child Error
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:290)
+Caused by: java.io.IOException: Task process exit with nonzero status of 9.
+	at org.apache.hadoop.mapred.TaskRunner.run(TaskRunner.java:278)
+
+attempt_201404131853_0001_m_000026_0: Error setting kernel array arg for 14,outputValVals: -38 0x7f02a84413e0 (nil)
+14/04/13 18:57:20 INFO mapred.JobClient:  map 31% reduce 7%
+14/04/13 18:57:27 INFO mapred.JobClient:  map 31% reduce 9%
+14/04/13 18:57:30 INFO mapred.JobClient:  map 41% reduce 9%
+14/04/13 18:57:33 INFO mapred.JobClient:  map 41% reduce 10%
+14/04/13 18:57:36 INFO mapred.JobClient:  map 43% reduce 10%
+14/04/13 18:57:39 INFO mapred.JobClient:  map 51% reduce 12%
+14/04/13 18:57:42 INFO mapred.JobClient:  map 51% reduce 14%
+14/04/13 18:57:45 INFO mapred.JobClient:  map 53% reduce 14%
+14/04/13 18:57:48 INFO mapred.JobClient:  map 62% reduce 16%
+14/04/13 18:57:51 INFO mapred.JobClient:  map 63% reduce 16%
+14/04/13 18:57:54 INFO mapred.JobClient:  map 65% reduce 19%
+14/04/13 18:57:57 INFO mapred.JobClient:  map 73% reduce 21%
+14/04/13 18:58:00 INFO mapred.JobClient:  map 77% reduce 21%
+14/04/13 18:58:03 INFO mapred.JobClient:  map 77% reduce 23%
+14/04/13 18:58:06 INFO mapred.JobClient:  map 86% reduce 23%
+14/04/13 18:58:09 INFO mapred.JobClient:  map 88% reduce 25%
+14/04/13 18:58:12 INFO mapred.JobClient:  map 89% reduce 25%
+14/04/13 18:58:15 INFO mapred.JobClient:  map 97% reduce 25%
+14/04/13 18:58:18 INFO mapred.JobClient:  map 100% reduce 29%
+14/04/13 18:58:24 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/13 18:58:27 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/13 18:58:30 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/13 18:58:35 INFO mapred.JobClient: Job complete: job_201404131853_0001
+14/04/13 18:58:35 INFO mapred.JobClient: Counters: 29
+14/04/13 18:58:35 INFO mapred.JobClient:   Job Counters 
+14/04/13 18:58:35 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/13 18:58:35 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=847056
+14/04/13 18:58:35 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/13 18:58:35 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/13 18:58:35 INFO mapred.JobClient:     Launched map tasks=120
+14/04/13 18:58:36 INFO mapred.JobClient:     Data-local map tasks=120
+14/04/13 18:58:36 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=203432
+14/04/13 18:58:36 INFO mapred.JobClient:   File Output Format Counters 
+14/04/13 18:58:36 INFO mapred.JobClient:     Bytes Written=204
+14/04/13 18:58:36 INFO mapred.JobClient:   FileSystemCounters
+14/04/13 18:58:36 INFO mapred.JobClient:     FILE_BYTES_READ=820412
+14/04/13 18:58:36 INFO mapred.JobClient:     HDFS_BYTES_READ=7687081261
+14/04/13 18:58:36 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=4389648
+14/04/13 18:58:36 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=8412
+14/04/13 18:58:36 INFO mapred.JobClient:   File Input Format Counters 
+14/04/13 18:58:36 INFO mapred.JobClient:     Bytes Read=2715732173
+14/04/13 18:58:36 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/13 18:58:36 INFO mapred.JobClient:     Map output materialized bytes=822200
+14/04/13 18:58:36 INFO mapred.JobClient:     Map input records=14303334
+14/04/13 18:58:36 INFO mapred.JobClient:     Reduce shuffle bytes=813384
+14/04/13 18:58:36 INFO mapred.JobClient:     Spilled Records=200
+14/04/13 18:58:36 INFO mapred.JobClient:     Map output bytes=820000
+14/04/13 18:58:36 INFO mapred.JobClient:     Total committed heap usage (bytes)=209918754816
+14/04/13 18:58:36 INFO mapred.JobClient:     CPU time spent (ms)=450680
+14/04/13 18:58:36 INFO mapred.JobClient:     Combine input records=0
+14/04/13 18:58:36 INFO mapred.JobClient:     SPLIT_RAW_BYTES=13800
+14/04/13 18:58:36 INFO mapred.JobClient:     Reduce input records=0
+14/04/13 18:58:36 INFO mapred.JobClient:     Reduce input groups=0
+14/04/13 18:58:36 INFO mapred.JobClient:     Combine output records=100
+14/04/13 18:58:36 INFO mapred.JobClient:     Physical memory (bytes) snapshot=101136465920
+14/04/13 18:58:36 INFO mapred.JobClient:     Reduce output records=0
+14/04/13 18:58:36 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=7816446849024
+14/04/13 18:58:36 INFO mapred.JobClient:     Map output records=100
+Execution Time 198142 ms
+
+real	3m19.197s
+user	0m3.247s
+sys	0m0.352s
