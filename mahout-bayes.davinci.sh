@@ -27,7 +27,7 @@ sleep 2
 ./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 30
 
-${HADOOP} fs -put /scratch/jmg3/bayes-dataset/classified-points.splitless.vector/ input
+${HADOOP} fs -put /scratch/jmg3/bayes-dataset/classified-points.splitless.vector2/ input
 ${HADOOP} fs -put /scratch/jmg3/bayes-dataset/weights.bayes weights
 
 sleep 30

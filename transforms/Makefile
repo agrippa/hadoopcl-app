@@ -73,7 +73,7 @@ get-num-unique-tokens-asf:
 ###########################################################
 ################### Mergers ###############################
 ###########################################################
-merges: merge-int-sparse merge-text-vector merge-int-fsparse merge-int-bsparse
+merges: merge-int-sparse merge-text-vector merge-int-fsparse merge-int-bsparse merge-int-vector
 
 merge-int-sparse: file-merger merge/MergeIntSparseFiles.java
 	javac -cp ${CLASSPATH} merge/MergeIntSparseFiles.java
@@ -83,6 +83,8 @@ merge-int-fsparse: file-merger merge/MergeIntFSparseFiles.java
 	javac -cp ${CLASSPATH} merge/MergeIntFSparseFiles.java
 merge-text-vector: file-merger merge/MergeTextVector.java
 	javac -cp ${CLASSPATH} merge/MergeTextVector.java
+merge-int-vector: file-merger merge/MergeIntVector.java
+	javac -cp ${CLASSPATH} merge/MergeIntVector.java
 file-merger:
 	javac -cp ${CLASSPATH} merge/FileMerger.java
 

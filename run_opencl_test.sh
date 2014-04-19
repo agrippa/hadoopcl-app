@@ -109,14 +109,14 @@ else
         ${CPU_THREAD} \
         ${GPU_THREAD} ${CPU_THREAD} ${hdfs_chunk_size} \
         ${java_heap}
-    sleep 120
+    sleep 20
     echo Putting inputs from \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT}
     ${HADOOP_HOME}/bin/hadoop fs -put \
         ${HADOOP_INPUT_DIR}/${BENCHMARK}.input/block.${FORMAT} \
         ${BENCHMARK}.input
     echo Done
-    sleep 120
+    sleep 20
     echo Running Application with ${EXE_NAME}.jar
     time ${HADOOP_HOME}/bin/hadoop jar ${EXE_NAME}.jar ${EXE_NAME} \
         ${BENCHMARK}.input ${BENCHMARK}.output ${MAP_OUTPUTFORMAT} 
