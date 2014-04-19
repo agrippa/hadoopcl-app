@@ -5,7 +5,7 @@ fi
 
 FOLDER=$2
 
-for i in {1..10}; do
+for i in {6..10}; do
     echo $i;
     source ${1} &> log
     cp log ${FOLDER}/${i}/

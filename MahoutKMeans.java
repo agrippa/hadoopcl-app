@@ -178,7 +178,8 @@ public class MahoutKMeans {
 
        FileSystem fs = FileSystem.get(conf);
        FileSystem localFs = FileSystem.getLocal(conf);
-       Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
+       Path path = new Path("/home-nis/mgrossman/hadoopcl-input/wiki-sparse/random-seed-sparse");
+       // Path path = new Path("/scratch/jmg3/wiki-sparse/random-seed-sparse");
        // Path path = new Path("/home/yiskylee/hadoopcl-input/for-yiskylee/random-seed-sparse");
        SequenceFile.Reader reader = new SequenceFile.Reader(localFs, path, conf);
        IntWritable tmpKey = new IntWritable();

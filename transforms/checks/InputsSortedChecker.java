@@ -51,8 +51,8 @@ public class InputsSortedChecker {
                 throw new RuntimeException(io);
             }
             final IntWritable key = new IntWritable();
-            final org.apache.hadoop.io.SparseVectorWritable val =
-                new org.apache.hadoop.io.SparseVectorWritable();
+            final org.apache.hadoop.io.BSparseVectorWritable val =
+                new org.apache.hadoop.io.BSparseVectorWritable();
 
             try {
                 int count = 0;
