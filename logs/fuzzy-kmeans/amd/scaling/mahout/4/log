@@ -1,0 +1,1397 @@
+===== node06 =====
+===== node08 =====
+===== node09 =====
+===== node10 =====
+===== node05 =====
+===== node06 =====
+1007     15357  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     15359  0.0  0.0   9692   936 ?        S    06:34   0:00 grep java
+===== node08 =====
+1007     22140  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     22142  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+===== node09 =====
+1007     21108  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     21110  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+===== node10 =====
+1007     15078  0.0  0.0  12600  1484 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     15080  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+===== node05 =====
+1007     19874  0.0  0.0  43908  2976 pts/0    S+   06:34   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     19912  0.0  0.0  12600  1484 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     19914  0.0  0.0   9692   936 ?        S    06:34   0:00 grep java
+===== node06 =====
+java: no process found
+===== node08 =====
+java: no process found
+===== node09 =====
+java: no process found
+===== node10 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node06 =====
+1007     15476  0.0  0.0  12600  1480 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     15478  0.0  0.0   9692   936 ?        S    06:34   0:00 grep java
+===== node08 =====
+1007     22259  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     22261  0.0  0.0   9692   936 ?        S    06:34   0:00 grep java
+===== node09 =====
+1007     21227  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     21229  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+===== node10 =====
+1007     15197  0.0  0.0  12600  1488 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     15199  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+===== node05 =====
+1007     20020  0.0  0.0  43908  2976 pts/0    S+   06:34   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     20058  0.0  0.0  12600  1484 ?        Ss   06:34   0:00 bash -c ps aux | grep java
+1007     20060  0.0  0.0   9692   932 ?        S    06:34   0:00 grep java
+Setting path to /tmp/hadoop
+4 2 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 2 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node06
+node08
+node09
+node10
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 06:34:30 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/20 06:34:30 INFO util.GSet: VM type       = 64-bit
+14/04/20 06:34:30 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/20 06:34:30 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/20 06:34:30 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/20 06:34:31 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/20 06:34:31 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/20 06:34:31 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/20 06:34:31 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/20 06:34:31 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/20 06:34:31 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/20 06:34:31 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/20 06:34:31 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/20 06:34:31 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node09: no tasktracker to stop
+node10: no tasktracker to stop
+node06: no tasktracker to stop
+node08: no tasktracker to stop
+no namenode to stop
+node09: no datanode to stop
+node10: no datanode to stop
+node08: no datanode to stop
+node06: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node10: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node10.out
+node09: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node09.out
+node06: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node06.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+node09: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node09.out
+node10: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node10.out
+node06: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node06.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Running on hadoop, using /home-nis/mgrossman/hadoopcl/bin/hadoop and HADOOP_CONF_DIR=
+MAHOUT-JOB: /home-nis/mgrossman/mahout/examples/target/mahout-examples-0.9-SNAPSHOT-job.jar
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 06:36:28 INFO common.AbstractJob: Command line arguments: {--clusters=[clusters], --convergenceDelta=[0.5], --distanceMeasure=[org.apache.mahout.common.distance.CosineDistanceMeasure], --emitMostLikely=[true], --endPhase=[2147483647], --input=[input], --m=[2.0], --maxIter=[1], --method=[mapreduce], --output=[output], --overwrite=null, --startPhase=[0], --tempDir=[temp], --threshold=[0]}
+14/04/20 06:36:28 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+14/04/20 06:36:29 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+14/04/20 06:36:29 INFO compress.CodecPool: Got brand-new decompressor
+Cluster Iterator running iteration 1/1 over priorPath: output/clusters-0
+Sending 0 to HDFS took 46 ms
+Sending 0 to HDFS for stage MAPPER took 33 ms
+Sending 0 to HDFS for stage COMBINER took 33 ms
+Sending 0 to HDFS for stage REDUCER took 34 ms
+14/04/20 06:36:35 INFO input.FileInputFormat: Total input paths to process : 40
+14/04/20 06:36:36 INFO mapred.JobClient: Running job: job_201404200634_0001
+14/04/20 06:36:37 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/20 06:37:10 INFO mapred.JobClient:  map 1% reduce 0%
+14/04/20 06:37:16 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/20 06:37:22 INFO mapred.JobClient:  map 3% reduce 0%
+14/04/20 06:37:31 INFO mapred.JobClient:  map 4% reduce 0%
+14/04/20 06:37:37 INFO mapred.JobClient:  map 5% reduce 0%
+14/04/20 06:37:43 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/20 06:37:52 INFO mapred.JobClient:  map 7% reduce 0%
+14/04/20 06:37:58 INFO mapred.JobClient:  map 8% reduce 0%
+14/04/20 06:38:04 INFO mapred.JobClient:  map 9% reduce 0%
+14/04/20 06:38:13 INFO mapred.JobClient:  map 10% reduce 0%
+14/04/20 06:38:19 INFO mapred.JobClient:  map 11% reduce 0%
+14/04/20 06:38:25 INFO mapred.JobClient:  map 12% reduce 0%
+14/04/20 06:38:34 INFO mapred.JobClient:  map 13% reduce 0%
+14/04/20 06:38:40 INFO mapred.JobClient:  map 14% reduce 0%
+14/04/20 06:38:49 INFO mapred.JobClient:  map 15% reduce 0%
+14/04/20 06:38:55 INFO mapred.JobClient:  map 16% reduce 0%
+14/04/20 06:39:04 INFO mapred.JobClient:  map 17% reduce 0%
+14/04/20 06:39:10 INFO mapred.JobClient:  map 18% reduce 0%
+14/04/20 06:39:19 INFO mapred.JobClient:  map 19% reduce 0%
+14/04/20 06:39:25 INFO mapred.JobClient:  map 20% reduce 0%
+14/04/20 06:39:34 INFO mapred.JobClient:  map 21% reduce 0%
+14/04/20 06:39:41 INFO mapred.JobClient:  map 22% reduce 0%
+14/04/20 06:39:50 INFO mapred.JobClient:  map 23% reduce 0%
+14/04/20 06:39:56 INFO mapred.JobClient:  map 24% reduce 0%
+14/04/20 06:40:05 INFO mapred.JobClient:  map 25% reduce 0%
+14/04/20 06:40:11 INFO mapred.JobClient:  map 26% reduce 0%
+14/04/20 06:40:20 INFO mapred.JobClient:  map 27% reduce 0%
+14/04/20 06:40:26 INFO mapred.JobClient:  map 28% reduce 0%
+14/04/20 06:40:35 INFO mapred.JobClient:  map 29% reduce 0%
+14/04/20 06:40:41 INFO mapred.JobClient:  map 30% reduce 0%
+14/04/20 06:40:50 INFO mapred.JobClient:  map 31% reduce 0%
+14/04/20 06:40:56 INFO mapred.JobClient:  map 32% reduce 0%
+14/04/20 06:41:05 INFO mapred.JobClient:  map 33% reduce 0%
+14/04/20 06:41:11 INFO mapred.JobClient:  map 34% reduce 0%
+14/04/20 06:41:20 INFO mapred.JobClient:  map 35% reduce 0%
+14/04/20 06:41:26 INFO mapred.JobClient:  map 36% reduce 0%
+14/04/20 06:41:35 INFO mapred.JobClient:  map 37% reduce 0%
+14/04/20 06:41:44 INFO mapred.JobClient:  map 38% reduce 0%
+14/04/20 06:41:50 INFO mapred.JobClient:  map 39% reduce 0%
+14/04/20 06:42:16 INFO mapred.JobClient:  map 40% reduce 0%
+14/04/20 06:42:25 INFO mapred.JobClient:  map 41% reduce 0%
+14/04/20 06:42:26 INFO mapred.JobClient:  map 41% reduce 1%
+14/04/20 06:42:29 INFO mapred.JobClient:  map 41% reduce 2%
+14/04/20 06:42:32 INFO mapred.JobClient:  map 41% reduce 4%
+14/04/20 06:42:34 INFO mapred.JobClient:  map 42% reduce 4%
+14/04/20 06:42:38 INFO mapred.JobClient:  map 42% reduce 5%
+14/04/20 06:42:40 INFO mapred.JobClient:  map 42% reduce 6%
+14/04/20 06:42:41 INFO mapred.JobClient:  map 42% reduce 7%
+14/04/20 06:42:43 INFO mapred.JobClient:  map 43% reduce 7%
+14/04/20 06:42:44 INFO mapred.JobClient:  map 43% reduce 8%
+14/04/20 06:42:46 INFO mapred.JobClient:  map 43% reduce 9%
+14/04/20 06:42:49 INFO mapred.JobClient:  map 43% reduce 10%
+14/04/20 06:42:50 INFO mapred.JobClient:  map 44% reduce 10%
+14/04/20 06:42:55 INFO mapred.JobClient:  map 44% reduce 11%
+14/04/20 06:42:58 INFO mapred.JobClient:  map 45% reduce 11%
+14/04/20 06:43:01 INFO mapred.JobClient:  map 45% reduce 12%
+14/04/20 06:43:05 INFO mapred.JobClient:  map 46% reduce 12%
+14/04/20 06:43:10 INFO mapred.JobClient:  map 46% reduce 13%
+14/04/20 06:43:13 INFO mapred.JobClient:  map 47% reduce 13%
+14/04/20 06:43:19 INFO mapred.JobClient:  map 48% reduce 13%
+14/04/20 06:43:28 INFO mapred.JobClient:  map 49% reduce 13%
+14/04/20 06:43:34 INFO mapred.JobClient:  map 50% reduce 13%
+14/04/20 06:43:40 INFO mapred.JobClient:  map 51% reduce 13%
+14/04/20 06:43:49 INFO mapred.JobClient:  map 52% reduce 13%
+14/04/20 06:43:56 INFO mapred.JobClient:  map 53% reduce 13%
+14/04/20 06:44:02 INFO mapred.JobClient:  map 54% reduce 13%
+14/04/20 06:44:11 INFO mapred.JobClient:  map 55% reduce 13%
+14/04/20 06:44:17 INFO mapred.JobClient:  map 56% reduce 13%
+14/04/20 06:44:26 INFO mapred.JobClient:  map 57% reduce 13%
+14/04/20 06:44:32 INFO mapred.JobClient:  map 58% reduce 13%
+14/04/20 06:44:41 INFO mapred.JobClient:  map 59% reduce 13%
+14/04/20 06:44:47 INFO mapred.JobClient:  map 60% reduce 13%
+14/04/20 06:44:53 INFO mapred.JobClient:  map 61% reduce 13%
+14/04/20 06:45:02 INFO mapred.JobClient:  map 62% reduce 13%
+14/04/20 06:45:08 INFO mapred.JobClient:  map 63% reduce 13%
+14/04/20 06:45:17 INFO mapred.JobClient:  map 64% reduce 13%
+14/04/20 06:45:23 INFO mapred.JobClient:  map 65% reduce 13%
+14/04/20 06:45:29 INFO mapred.JobClient:  map 66% reduce 13%
+14/04/20 06:45:38 INFO mapred.JobClient:  map 67% reduce 13%
+14/04/20 06:45:44 INFO mapred.JobClient:  map 68% reduce 13%
+14/04/20 06:45:50 INFO mapred.JobClient:  map 69% reduce 13%
+14/04/20 06:45:59 INFO mapred.JobClient:  map 70% reduce 13%
+14/04/20 06:46:05 INFO mapred.JobClient:  map 71% reduce 13%
+14/04/20 06:46:14 INFO mapred.JobClient:  map 72% reduce 13%
+14/04/20 06:46:20 INFO mapred.JobClient:  map 73% reduce 13%
+14/04/20 06:46:29 INFO mapred.JobClient:  map 74% reduce 13%
+14/04/20 06:46:35 INFO mapred.JobClient:  map 75% reduce 13%
+14/04/20 06:46:41 INFO mapred.JobClient:  map 76% reduce 13%
+14/04/20 06:46:50 INFO mapred.JobClient:  map 77% reduce 13%
+14/04/20 06:46:56 INFO mapred.JobClient:  map 78% reduce 13%
+14/04/20 06:47:05 INFO mapred.JobClient:  map 79% reduce 13%
+14/04/20 06:47:26 INFO mapred.JobClient:  map 80% reduce 14%
+14/04/20 06:47:44 INFO mapred.JobClient:  map 80% reduce 15%
+14/04/20 06:47:47 INFO mapred.JobClient:  map 80% reduce 16%
+14/04/20 06:47:50 INFO mapred.JobClient:  map 81% reduce 17%
+14/04/20 06:47:56 INFO mapred.JobClient:  map 81% reduce 18%
+14/04/20 06:47:59 INFO mapred.JobClient:  map 81% reduce 19%
+14/04/20 06:48:05 INFO mapred.JobClient:  map 82% reduce 20%
+14/04/20 06:48:14 INFO mapred.JobClient:  map 82% reduce 21%
+14/04/20 06:48:17 INFO mapred.JobClient:  map 83% reduce 21%
+14/04/20 06:48:33 INFO mapred.JobClient:  map 84% reduce 21%
+14/04/20 06:48:45 INFO mapred.JobClient:  map 85% reduce 21%
+14/04/20 06:48:47 INFO mapred.JobClient:  map 85% reduce 22%
+14/04/20 06:48:50 INFO mapred.JobClient:  map 85% reduce 23%
+14/04/20 06:48:53 INFO mapred.JobClient:  map 85% reduce 24%
+14/04/20 06:48:57 INFO mapred.JobClient:  map 86% reduce 24%
+14/04/20 06:49:11 INFO mapred.JobClient:  map 87% reduce 24%
+14/04/20 06:49:21 INFO mapred.JobClient:  map 87% reduce 25%
+14/04/20 06:49:24 INFO mapred.JobClient:  map 88% reduce 25%
+14/04/20 06:49:27 INFO mapred.JobClient:  map 88% reduce 26%
+14/04/20 06:49:38 INFO mapred.JobClient:  map 89% reduce 26%
+14/04/20 06:49:53 INFO mapred.JobClient:  map 90% reduce 26%
+14/04/20 06:50:05 INFO mapred.JobClient:  map 91% reduce 26%
+14/04/20 06:50:20 INFO mapred.JobClient:  map 92% reduce 26%
+14/04/20 06:50:35 INFO mapred.JobClient:  map 93% reduce 26%
+14/04/20 06:50:47 INFO mapred.JobClient:  map 94% reduce 26%
+14/04/20 06:51:02 INFO mapred.JobClient:  map 95% reduce 26%
+14/04/20 06:51:17 INFO mapred.JobClient:  map 96% reduce 26%
+14/04/20 06:51:32 INFO mapred.JobClient:  map 97% reduce 26%
+14/04/20 06:51:47 INFO mapred.JobClient:  map 98% reduce 26%
+14/04/20 06:52:02 INFO mapred.JobClient:  map 99% reduce 26%
+14/04/20 06:52:20 INFO mapred.JobClient:  map 99% reduce 27%
+14/04/20 06:52:29 INFO mapred.JobClient:  map 99% reduce 28%
+14/04/20 06:52:33 INFO mapred.JobClient:  map 99% reduce 29%
+14/04/20 06:52:41 INFO mapred.JobClient:  map 100% reduce 29%
+14/04/20 06:52:44 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/20 06:52:51 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/20 06:52:56 INFO mapred.JobClient:  map 100% reduce 32%
+14/04/20 06:53:03 INFO mapred.JobClient:  map 100% reduce 49%
+14/04/20 06:53:09 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/20 06:53:10 INFO mapred.JobClient:  map 100% reduce 67%
+14/04/20 06:53:19 INFO mapred.JobClient:  map 100% reduce 68%
+14/04/20 06:53:30 INFO mapred.JobClient:  map 100% reduce 69%
+14/04/20 06:53:40 INFO mapred.JobClient:  map 100% reduce 70%
+14/04/20 06:53:49 INFO mapred.JobClient:  map 100% reduce 71%
+14/04/20 06:54:00 INFO mapred.JobClient:  map 100% reduce 72%
+14/04/20 06:54:09 INFO mapred.JobClient:  map 100% reduce 73%
+14/04/20 06:54:18 INFO mapred.JobClient:  map 100% reduce 74%
+14/04/20 06:54:28 INFO mapred.JobClient:  map 100% reduce 75%
+14/04/20 06:54:37 INFO mapred.JobClient:  map 100% reduce 76%
+14/04/20 06:54:48 INFO mapred.JobClient:  map 100% reduce 77%
+14/04/20 06:54:57 INFO mapred.JobClient:  map 100% reduce 78%
+14/04/20 06:55:06 INFO mapred.JobClient:  map 100% reduce 79%
+14/04/20 06:55:14 INFO mapred.JobClient:  map 100% reduce 80%
+14/04/20 06:55:24 INFO mapred.JobClient:  map 100% reduce 81%
+14/04/20 06:55:33 INFO mapred.JobClient:  map 100% reduce 82%
+14/04/20 06:55:42 INFO mapred.JobClient:  map 100% reduce 83%
+14/04/20 06:55:53 INFO mapred.JobClient:  map 100% reduce 84%
+14/04/20 06:56:02 INFO mapred.JobClient:  map 100% reduce 85%
+14/04/20 06:56:12 INFO mapred.JobClient:  map 100% reduce 86%
+14/04/20 06:56:21 INFO mapred.JobClient:  map 100% reduce 87%
+14/04/20 06:56:32 INFO mapred.JobClient:  map 100% reduce 88%
+14/04/20 06:56:41 INFO mapred.JobClient:  map 100% reduce 89%
+14/04/20 06:56:50 INFO mapred.JobClient:  map 100% reduce 90%
+14/04/20 06:57:00 INFO mapred.JobClient:  map 100% reduce 91%
+14/04/20 06:57:09 INFO mapred.JobClient:  map 100% reduce 92%
+14/04/20 06:57:18 INFO mapred.JobClient:  map 100% reduce 93%
+14/04/20 06:57:27 INFO mapred.JobClient:  map 100% reduce 94%
+14/04/20 06:57:38 INFO mapred.JobClient:  map 100% reduce 95%
+14/04/20 06:57:47 INFO mapred.JobClient:  map 100% reduce 96%
+14/04/20 06:57:58 INFO mapred.JobClient:  map 100% reduce 97%
+14/04/20 06:58:07 INFO mapred.JobClient:  map 100% reduce 98%
+14/04/20 06:58:16 INFO mapred.JobClient:  map 100% reduce 99%
+14/04/20 06:58:33 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/20 06:58:41 INFO mapred.JobClient: Job complete: job_201404200634_0001
+14/04/20 06:58:41 INFO mapred.JobClient: Counters: 29
+14/04/20 06:58:41 INFO mapred.JobClient:   Job Counters 
+14/04/20 06:58:41 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/20 06:58:41 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=12925604
+14/04/20 06:58:41 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/20 06:58:41 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/20 06:58:41 INFO mapred.JobClient:     Launched map tasks=40
+14/04/20 06:58:41 INFO mapred.JobClient:     Data-local map tasks=40
+14/04/20 06:58:41 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=1968788
+14/04/20 06:58:41 INFO mapred.JobClient:   File Output Format Counters 
+14/04/20 06:58:41 INFO mapred.JobClient:     Bytes Written=4223901626
+14/04/20 06:58:41 INFO mapred.JobClient:   FileSystemCounters
+14/04/20 06:58:41 INFO mapred.JobClient:     FILE_BYTES_READ=19363866104
+14/04/20 06:58:41 INFO mapred.JobClient:     HDFS_BYTES_READ=630834793
+14/04/20 06:58:41 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=29045999090
+14/04/20 06:58:41 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=4223901626
+14/04/20 06:58:41 INFO mapred.JobClient:   File Input Format Counters 
+14/04/20 06:58:41 INFO mapred.JobClient:     Bytes Read=628118849
+14/04/20 06:58:41 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/20 06:58:41 INFO mapred.JobClient:     Map output materialized bytes=9681624520
+14/04/20 06:58:41 INFO mapred.JobClient:     Map input records=2860655
+14/04/20 06:58:41 INFO mapred.JobClient:     Reduce shuffle bytes=9438860899
+14/04/20 06:58:41 INFO mapred.JobClient:     Spilled Records=15360
+14/04/20 06:58:41 INFO mapred.JobClient:     Map output bytes=9681598440
+14/04/20 06:58:41 INFO mapred.JobClient:     Total committed heap usage (bytes)=109502267392
+14/04/20 06:58:41 INFO mapred.JobClient:     CPU time spent (ms)=13441400
+14/04/20 06:58:41 INFO mapred.JobClient:     Combine input records=0
+14/04/20 06:58:41 INFO mapred.JobClient:     SPLIT_RAW_BYTES=4760
+14/04/20 06:58:41 INFO mapred.JobClient:     Reduce input records=5120
+14/04/20 06:58:41 INFO mapred.JobClient:     Reduce input groups=128
+14/04/20 06:58:41 INFO mapred.JobClient:     Combine output records=0
+14/04/20 06:58:41 INFO mapred.JobClient:     Physical memory (bytes) snapshot=95402213376
+14/04/20 06:58:41 INFO mapred.JobClient:     Reduce output records=128
+14/04/20 06:58:41 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=207971667968
+14/04/20 06:58:41 INFO mapred.JobClient:     Map output records=5120
+14/04/20 06:58:41 INFO driver.MahoutDriver: Program took 1332960 ms (Minutes: 22.216)
+
+real	22m17.240s
+user	0m11.704s
+sys	0m3.180s
+===== node06 =====
+===== node08 =====
+===== node09 =====
+===== node10 =====
+===== node05 =====
+===== node06 =====
+1007     18616  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     18618  0.0  0.0   9692   936 ?        S    06:58   0:00 grep java
+===== node08 =====
+1007     25091  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     25093  0.0  0.0   9692   932 ?        S    06:58   0:00 grep java
+===== node09 =====
+1007     24252  0.0  0.0  12600  1488 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     24254  0.0  0.0   9692   936 ?        S    06:58   0:00 grep java
+===== node10 =====
+1007     18019  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     18021  0.0  0.0   9692   936 ?        S    06:58   0:00 grep java
+===== node05 =====
+1007     21709  0.0  0.0  43908  2976 pts/0    S+   06:58   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     21747  0.0  0.0  12600  1488 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     21749  0.0  0.0   9692   936 ?        S    06:58   0:00 grep java
+===== node06 =====
+java: no process found
+===== node08 =====
+java: no process found
+===== node09 =====
+java: no process found
+===== node10 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node06 =====
+1007     18736  0.0  0.0  12600  1488 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     18738  0.0  0.0   9692   932 ?        S    06:58   0:00 grep java
+===== node08 =====
+1007     25210  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     25212  0.0  0.0   9692   936 ?        S    06:58   0:00 grep java
+===== node09 =====
+1007     24371  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     24373  0.0  0.0   9692   932 ?        S    06:58   0:00 grep java
+===== node10 =====
+1007     18139  0.0  0.0  12600  1488 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     18141  0.0  0.0   9692   928 ?        S    06:58   0:00 grep java
+===== node05 =====
+1007     21855  0.0  0.0  43908  2972 pts/0    S+   06:58   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     21893  0.0  0.0  12600  1484 ?        Ss   06:58   0:00 bash -c ps aux | grep java
+1007     21895  0.0  0.0   9692   932 ?        S    06:58   0:00 grep java
+Setting path to /tmp/hadoop
+4 2 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 2 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node06
+node08
+node09
+node10
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 06:59:02 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/20 06:59:02 INFO util.GSet: VM type       = 64-bit
+14/04/20 06:59:02 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/20 06:59:02 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/20 06:59:02 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/20 06:59:03 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/20 06:59:03 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/20 06:59:03 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/20 06:59:03 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/20 06:59:03 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/20 06:59:03 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/20 06:59:03 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/20 06:59:04 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/20 06:59:04 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node09: no tasktracker to stop
+node06: no tasktracker to stop
+node10: no tasktracker to stop
+node08: no tasktracker to stop
+no namenode to stop
+node09: no datanode to stop
+node06: no datanode to stop
+node10: no datanode to stop
+node08: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node09: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node09.out
+node06: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node06.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+node10: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node10.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node06: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node06.out
+node09: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node09.out
+node10: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node10.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Running on hadoop, using /home-nis/mgrossman/hadoopcl/bin/hadoop and HADOOP_CONF_DIR=
+MAHOUT-JOB: /home-nis/mgrossman/mahout/examples/target/mahout-examples-0.9-SNAPSHOT-job.jar
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 07:01:00 INFO common.AbstractJob: Command line arguments: {--clusters=[clusters], --convergenceDelta=[0.5], --distanceMeasure=[org.apache.mahout.common.distance.CosineDistanceMeasure], --emitMostLikely=[true], --endPhase=[2147483647], --input=[input], --m=[2.0], --maxIter=[1], --method=[mapreduce], --output=[output], --overwrite=null, --startPhase=[0], --tempDir=[temp], --threshold=[0]}
+14/04/20 07:01:01 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+14/04/20 07:01:01 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+14/04/20 07:01:01 INFO compress.CodecPool: Got brand-new decompressor
+Cluster Iterator running iteration 1/1 over priorPath: output/clusters-0
+Sending 0 to HDFS took 46 ms
+Sending 0 to HDFS for stage MAPPER took 33 ms
+Sending 0 to HDFS for stage COMBINER took 33 ms
+Sending 0 to HDFS for stage REDUCER took 33 ms
+14/04/20 07:01:07 INFO input.FileInputFormat: Total input paths to process : 40
+14/04/20 07:01:08 INFO mapred.JobClient: Running job: job_201404200659_0001
+14/04/20 07:01:09 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/20 07:01:39 INFO mapred.JobClient:  map 1% reduce 0%
+14/04/20 07:01:48 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/20 07:01:54 INFO mapred.JobClient:  map 3% reduce 0%
+14/04/20 07:02:00 INFO mapred.JobClient:  map 4% reduce 0%
+14/04/20 07:02:09 INFO mapred.JobClient:  map 5% reduce 0%
+14/04/20 07:02:15 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/20 07:02:21 INFO mapred.JobClient:  map 7% reduce 0%
+14/04/20 07:02:30 INFO mapred.JobClient:  map 8% reduce 0%
+14/04/20 07:02:36 INFO mapred.JobClient:  map 9% reduce 0%
+14/04/20 07:02:42 INFO mapred.JobClient:  map 10% reduce 0%
+14/04/20 07:02:52 INFO mapred.JobClient:  map 11% reduce 0%
+14/04/20 07:02:58 INFO mapred.JobClient:  map 12% reduce 0%
+14/04/20 07:03:07 INFO mapred.JobClient:  map 13% reduce 0%
+14/04/20 07:03:13 INFO mapred.JobClient:  map 14% reduce 0%
+14/04/20 07:03:19 INFO mapred.JobClient:  map 15% reduce 0%
+14/04/20 07:03:28 INFO mapred.JobClient:  map 16% reduce 0%
+14/04/20 07:03:34 INFO mapred.JobClient:  map 17% reduce 0%
+14/04/20 07:03:43 INFO mapred.JobClient:  map 18% reduce 0%
+14/04/20 07:03:49 INFO mapred.JobClient:  map 19% reduce 0%
+14/04/20 07:03:58 INFO mapred.JobClient:  map 20% reduce 0%
+14/04/20 07:04:04 INFO mapred.JobClient:  map 21% reduce 0%
+14/04/20 07:04:13 INFO mapred.JobClient:  map 22% reduce 0%
+14/04/20 07:04:19 INFO mapred.JobClient:  map 23% reduce 0%
+14/04/20 07:04:28 INFO mapred.JobClient:  map 24% reduce 0%
+14/04/20 07:04:34 INFO mapred.JobClient:  map 25% reduce 0%
+14/04/20 07:04:43 INFO mapred.JobClient:  map 26% reduce 0%
+14/04/20 07:04:49 INFO mapred.JobClient:  map 27% reduce 0%
+14/04/20 07:04:58 INFO mapred.JobClient:  map 28% reduce 0%
+14/04/20 07:05:04 INFO mapred.JobClient:  map 29% reduce 0%
+14/04/20 07:05:13 INFO mapred.JobClient:  map 30% reduce 0%
+14/04/20 07:05:19 INFO mapred.JobClient:  map 31% reduce 0%
+14/04/20 07:05:28 INFO mapred.JobClient:  map 32% reduce 0%
+14/04/20 07:05:37 INFO mapred.JobClient:  map 33% reduce 0%
+14/04/20 07:05:43 INFO mapred.JobClient:  map 34% reduce 0%
+14/04/20 07:05:52 INFO mapred.JobClient:  map 35% reduce 0%
+14/04/20 07:05:58 INFO mapred.JobClient:  map 36% reduce 0%
+14/04/20 07:06:07 INFO mapred.JobClient:  map 37% reduce 0%
+14/04/20 07:06:15 INFO mapred.JobClient:  map 38% reduce 0%
+14/04/20 07:06:22 INFO mapred.JobClient:  map 39% reduce 0%
+14/04/20 07:06:46 INFO mapred.JobClient:  map 40% reduce 0%
+14/04/20 07:06:57 INFO mapred.JobClient:  map 41% reduce 2%
+14/04/20 07:07:00 INFO mapred.JobClient:  map 41% reduce 3%
+14/04/20 07:07:03 INFO mapred.JobClient:  map 41% reduce 4%
+14/04/20 07:07:07 INFO mapred.JobClient:  map 42% reduce 5%
+14/04/20 07:07:13 INFO mapred.JobClient:  map 42% reduce 8%
+14/04/20 07:07:16 INFO mapred.JobClient:  map 43% reduce 9%
+14/04/20 07:07:22 INFO mapred.JobClient:  map 44% reduce 9%
+14/04/20 07:07:25 INFO mapred.JobClient:  map 44% reduce 10%
+14/04/20 07:07:28 INFO mapred.JobClient:  map 44% reduce 11%
+14/04/20 07:07:31 INFO mapred.JobClient:  map 45% reduce 12%
+14/04/20 07:07:37 INFO mapred.JobClient:  map 46% reduce 13%
+14/04/20 07:07:46 INFO mapred.JobClient:  map 47% reduce 13%
+14/04/20 07:07:52 INFO mapred.JobClient:  map 48% reduce 13%
+14/04/20 07:08:01 INFO mapred.JobClient:  map 49% reduce 13%
+14/04/20 07:08:07 INFO mapred.JobClient:  map 50% reduce 13%
+14/04/20 07:08:13 INFO mapred.JobClient:  map 51% reduce 13%
+14/04/20 07:08:22 INFO mapred.JobClient:  map 52% reduce 13%
+14/04/20 07:08:28 INFO mapred.JobClient:  map 53% reduce 13%
+14/04/20 07:08:34 INFO mapred.JobClient:  map 54% reduce 13%
+14/04/20 07:08:43 INFO mapred.JobClient:  map 55% reduce 13%
+14/04/20 07:08:49 INFO mapred.JobClient:  map 56% reduce 13%
+14/04/20 07:08:55 INFO mapred.JobClient:  map 57% reduce 13%
+14/04/20 07:09:04 INFO mapred.JobClient:  map 58% reduce 13%
+14/04/20 07:09:13 INFO mapred.JobClient:  map 59% reduce 13%
+14/04/20 07:09:19 INFO mapred.JobClient:  map 60% reduce 13%
+14/04/20 07:09:25 INFO mapred.JobClient:  map 61% reduce 13%
+14/04/20 07:09:34 INFO mapred.JobClient:  map 62% reduce 13%
+14/04/20 07:09:40 INFO mapred.JobClient:  map 63% reduce 13%
+14/04/20 07:09:49 INFO mapred.JobClient:  map 64% reduce 13%
+14/04/20 07:09:55 INFO mapred.JobClient:  map 65% reduce 13%
+14/04/20 07:10:01 INFO mapred.JobClient:  map 66% reduce 13%
+14/04/20 07:10:10 INFO mapred.JobClient:  map 67% reduce 13%
+14/04/20 07:10:16 INFO mapred.JobClient:  map 68% reduce 13%
+14/04/20 07:10:22 INFO mapred.JobClient:  map 69% reduce 13%
+14/04/20 07:10:31 INFO mapred.JobClient:  map 70% reduce 13%
+14/04/20 07:10:37 INFO mapred.JobClient:  map 71% reduce 13%
+14/04/20 07:10:46 INFO mapred.JobClient:  map 72% reduce 13%
+14/04/20 07:10:52 INFO mapred.JobClient:  map 73% reduce 13%
+14/04/20 07:11:01 INFO mapred.JobClient:  map 74% reduce 13%
+14/04/20 07:11:07 INFO mapred.JobClient:  map 75% reduce 13%
+14/04/20 07:11:16 INFO mapred.JobClient:  map 76% reduce 13%
+14/04/20 07:11:23 INFO mapred.JobClient:  map 77% reduce 13%
+14/04/20 07:11:32 INFO mapred.JobClient:  map 78% reduce 13%
+14/04/20 07:11:38 INFO mapred.JobClient:  map 79% reduce 13%
+14/04/20 07:11:59 INFO mapred.JobClient:  map 80% reduce 13%
+14/04/20 07:12:05 INFO mapred.JobClient:  map 80% reduce 14%
+14/04/20 07:12:08 INFO mapred.JobClient:  map 80% reduce 15%
+14/04/20 07:12:11 INFO mapred.JobClient:  map 80% reduce 16%
+14/04/20 07:12:14 INFO mapred.JobClient:  map 81% reduce 17%
+14/04/20 07:12:20 INFO mapred.JobClient:  map 81% reduce 18%
+14/04/20 07:12:23 INFO mapred.JobClient:  map 81% reduce 20%
+14/04/20 07:12:26 INFO mapred.JobClient:  map 81% reduce 21%
+14/04/20 07:12:29 INFO mapred.JobClient:  map 82% reduce 22%
+14/04/20 07:12:32 INFO mapred.JobClient:  map 82% reduce 23%
+14/04/20 07:12:35 INFO mapred.JobClient:  map 82% reduce 24%
+14/04/20 07:12:38 INFO mapred.JobClient:  map 82% reduce 25%
+14/04/20 07:12:41 INFO mapred.JobClient:  map 83% reduce 26%
+14/04/20 07:12:53 INFO mapred.JobClient:  map 84% reduce 26%
+14/04/20 07:13:08 INFO mapred.JobClient:  map 85% reduce 26%
+14/04/20 07:13:20 INFO mapred.JobClient:  map 86% reduce 26%
+14/04/20 07:13:35 INFO mapred.JobClient:  map 87% reduce 26%
+14/04/20 07:13:47 INFO mapred.JobClient:  map 88% reduce 26%
+14/04/20 07:14:02 INFO mapred.JobClient:  map 89% reduce 26%
+14/04/20 07:14:17 INFO mapred.JobClient:  map 90% reduce 26%
+14/04/20 07:14:29 INFO mapred.JobClient:  map 91% reduce 26%
+14/04/20 07:14:43 INFO mapred.JobClient:  map 92% reduce 26%
+14/04/20 07:14:58 INFO mapred.JobClient:  map 93% reduce 26%
+14/04/20 07:15:10 INFO mapred.JobClient:  map 94% reduce 26%
+14/04/20 07:15:25 INFO mapred.JobClient:  map 95% reduce 26%
+14/04/20 07:15:40 INFO mapred.JobClient:  map 96% reduce 26%
+14/04/20 07:15:55 INFO mapred.JobClient:  map 97% reduce 26%
+14/04/20 07:16:11 INFO mapred.JobClient:  map 98% reduce 26%
+14/04/20 07:16:23 INFO mapred.JobClient:  map 99% reduce 26%
+14/04/20 07:16:47 INFO mapred.JobClient:  map 100% reduce 26%
+14/04/20 07:16:50 INFO mapred.JobClient:  map 100% reduce 27%
+14/04/20 07:16:56 INFO mapred.JobClient:  map 100% reduce 28%
+14/04/20 07:17:08 INFO mapred.JobClient:  map 100% reduce 29%
+14/04/20 07:17:14 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/20 07:17:20 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/20 07:17:23 INFO mapred.JobClient:  map 100% reduce 32%
+14/04/20 07:17:29 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/20 07:17:32 INFO mapred.JobClient:  map 100% reduce 67%
+14/04/20 07:17:41 INFO mapred.JobClient:  map 100% reduce 68%
+14/04/20 07:17:50 INFO mapred.JobClient:  map 100% reduce 69%
+14/04/20 07:17:59 INFO mapred.JobClient:  map 100% reduce 70%
+14/04/20 07:18:11 INFO mapred.JobClient:  map 100% reduce 71%
+14/04/20 07:18:20 INFO mapred.JobClient:  map 100% reduce 72%
+14/04/20 07:18:29 INFO mapred.JobClient:  map 100% reduce 73%
+14/04/20 07:18:38 INFO mapred.JobClient:  map 100% reduce 74%
+14/04/20 07:18:47 INFO mapred.JobClient:  map 100% reduce 75%
+14/04/20 07:18:59 INFO mapred.JobClient:  map 100% reduce 76%
+14/04/20 07:19:08 INFO mapred.JobClient:  map 100% reduce 77%
+14/04/20 07:19:17 INFO mapred.JobClient:  map 100% reduce 78%
+14/04/20 07:19:26 INFO mapred.JobClient:  map 100% reduce 79%
+14/04/20 07:19:35 INFO mapred.JobClient:  map 100% reduce 80%
+14/04/20 07:19:47 INFO mapred.JobClient:  map 100% reduce 81%
+14/04/20 07:19:56 INFO mapred.JobClient:  map 100% reduce 82%
+14/04/20 07:20:05 INFO mapred.JobClient:  map 100% reduce 83%
+14/04/20 07:20:14 INFO mapred.JobClient:  map 100% reduce 84%
+14/04/20 07:20:23 INFO mapred.JobClient:  map 100% reduce 85%
+14/04/20 07:20:32 INFO mapred.JobClient:  map 100% reduce 86%
+14/04/20 07:20:41 INFO mapred.JobClient:  map 100% reduce 87%
+14/04/20 07:20:51 INFO mapred.JobClient:  map 100% reduce 88%
+14/04/20 07:21:03 INFO mapred.JobClient:  map 100% reduce 89%
+14/04/20 07:21:12 INFO mapred.JobClient:  map 100% reduce 90%
+14/04/20 07:21:21 INFO mapred.JobClient:  map 100% reduce 91%
+14/04/20 07:21:30 INFO mapred.JobClient:  map 100% reduce 92%
+14/04/20 07:21:39 INFO mapred.JobClient:  map 100% reduce 93%
+14/04/20 07:21:48 INFO mapred.JobClient:  map 100% reduce 94%
+14/04/20 07:21:59 INFO mapred.JobClient:  map 100% reduce 95%
+14/04/20 07:22:08 INFO mapred.JobClient:  map 100% reduce 96%
+14/04/20 07:22:17 INFO mapred.JobClient:  map 100% reduce 97%
+14/04/20 07:22:26 INFO mapred.JobClient:  map 100% reduce 98%
+14/04/20 07:22:35 INFO mapred.JobClient:  map 100% reduce 99%
+14/04/20 07:22:50 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/20 07:22:55 INFO mapred.JobClient: Job complete: job_201404200659_0001
+14/04/20 07:22:55 INFO mapred.JobClient: Counters: 29
+14/04/20 07:22:55 INFO mapred.JobClient:   Job Counters 
+14/04/20 07:22:55 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/20 07:22:55 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=12526021
+14/04/20 07:22:55 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/20 07:22:55 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/20 07:22:55 INFO mapred.JobClient:     Launched map tasks=40
+14/04/20 07:22:55 INFO mapred.JobClient:     Data-local map tasks=40
+14/04/20 07:22:55 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=1945291
+14/04/20 07:22:55 INFO mapred.JobClient:   File Output Format Counters 
+14/04/20 07:22:55 INFO mapred.JobClient:     Bytes Written=4223901626
+14/04/20 07:22:55 INFO mapred.JobClient:   FileSystemCounters
+14/04/20 07:22:55 INFO mapred.JobClient:     FILE_BYTES_READ=19363866104
+14/04/20 07:22:55 INFO mapred.JobClient:     HDFS_BYTES_READ=630834793
+14/04/20 07:22:55 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=29045999090
+14/04/20 07:22:55 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=4223901626
+14/04/20 07:22:55 INFO mapred.JobClient:   File Input Format Counters 
+14/04/20 07:22:55 INFO mapred.JobClient:     Bytes Read=628118849
+14/04/20 07:22:55 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/20 07:22:55 INFO mapred.JobClient:     Map output materialized bytes=9681624520
+14/04/20 07:22:55 INFO mapred.JobClient:     Map input records=2860655
+14/04/20 07:22:55 INFO mapred.JobClient:     Reduce shuffle bytes=9438860899
+14/04/20 07:22:55 INFO mapred.JobClient:     Spilled Records=15360
+14/04/20 07:22:55 INFO mapred.JobClient:     Map output bytes=9681598440
+14/04/20 07:22:55 INFO mapred.JobClient:     Total committed heap usage (bytes)=107811962880
+14/04/20 07:22:55 INFO mapred.JobClient:     CPU time spent (ms)=13249850
+14/04/20 07:22:55 INFO mapred.JobClient:     Combine input records=0
+14/04/20 07:22:55 INFO mapred.JobClient:     SPLIT_RAW_BYTES=4760
+14/04/20 07:22:55 INFO mapred.JobClient:     Reduce input records=5120
+14/04/20 07:22:55 INFO mapred.JobClient:     Reduce input groups=128
+14/04/20 07:22:55 INFO mapred.JobClient:     Combine output records=0
+14/04/20 07:22:55 INFO mapred.JobClient:     Physical memory (bytes) snapshot=93976952832
+14/04/20 07:22:55 INFO mapred.JobClient:     Reduce output records=128
+14/04/20 07:22:55 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=207904325632
+14/04/20 07:22:55 INFO mapred.JobClient:     Map output records=5120
+14/04/20 07:22:55 INFO driver.MahoutDriver: Program took 1314936 ms (Minutes: 21.9156)
+
+real	21m59.132s
+user	0m11.590s
+sys	0m3.124s
+===== node06 =====
+===== node08 =====
+===== node09 =====
+===== node10 =====
+===== node05 =====
+===== node06 =====
+1007     21659  0.0  0.0  12600  1488 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     21661  0.0  0.0   9692   932 ?        S    07:22   0:00 grep java
+===== node08 =====
+1007     28231  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     28233  0.0  0.0   9692   928 ?        S    07:22   0:00 grep java
+===== node09 =====
+1007     27217  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     27219  0.0  0.0   9692   936 ?        S    07:23   0:00 grep java
+===== node10 =====
+1007     21099  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     21101  0.0  0.0   9692   932 ?        S    07:22   0:00 grep java
+===== node05 =====
+1007     23497  1.0  0.0  43908  2972 pts/0    S+   07:22   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     23535  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     23537  0.0  0.0   9692   936 ?        S    07:22   0:00 grep java
+===== node06 =====
+java: no process found
+===== node08 =====
+java: no process found
+===== node09 =====
+java: no process found
+===== node10 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node06 =====
+1007     21778  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     21780  0.0  0.0   9692   932 ?        S    07:22   0:00 grep java
+===== node08 =====
+1007     28350  0.0  0.0  12600  1484 ?        Ss   07:22   0:00 bash -c ps aux | grep java
+1007     28352  0.0  0.0   9692   932 ?        S    07:22   0:00 grep java
+===== node09 =====
+1007     27337  0.0  0.0  12600  1488 ?        Ss   07:23   0:00 bash -c ps aux | grep java
+1007     27339  0.0  0.0   9692   932 ?        S    07:23   0:00 grep java
+===== node10 =====
+1007     21218  0.0  0.0  12600  1484 ?        Ss   07:23   0:00 bash -c ps aux | grep java
+1007     21220  0.0  0.0   9692   936 ?        S    07:23   0:00 grep java
+===== node05 =====
+1007     23643  0.0  0.0  43908  2976 pts/0    S+   07:23   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     23681  0.0  0.0  12600  1484 ?        Ss   07:23   0:00 bash -c ps aux | grep java
+1007     23683  0.0  0.0   9692   936 ?        S    07:23   0:00 grep java
+Setting path to /tmp/hadoop
+4 2 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 2 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node06
+node08
+node09
+node10
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 07:23:15 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/20 07:23:16 INFO util.GSet: VM type       = 64-bit
+14/04/20 07:23:16 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/20 07:23:16 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/20 07:23:16 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/20 07:23:16 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/20 07:23:16 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/20 07:23:16 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/20 07:23:16 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/20 07:23:16 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/20 07:23:16 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/20 07:23:17 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/20 07:23:17 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/20 07:23:17 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node10: no tasktracker to stop
+node08: no tasktracker to stop
+node06: no tasktracker to stop
+node09: no tasktracker to stop
+no namenode to stop
+node08: no datanode to stop
+node10: no datanode to stop
+node09: no datanode to stop
+node06: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node10: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node10.out
+node09: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node09.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+node06: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node06.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node06: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node06.out
+node10: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node10.out
+node09: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node09.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Running on hadoop, using /home-nis/mgrossman/hadoopcl/bin/hadoop and HADOOP_CONF_DIR=
+MAHOUT-JOB: /home-nis/mgrossman/mahout/examples/target/mahout-examples-0.9-SNAPSHOT-job.jar
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/20 07:25:13 INFO common.AbstractJob: Command line arguments: {--clusters=[clusters], --convergenceDelta=[0.5], --distanceMeasure=[org.apache.mahout.common.distance.CosineDistanceMeasure], --emitMostLikely=[true], --endPhase=[2147483647], --input=[input], --m=[2.0], --maxIter=[1], --method=[mapreduce], --output=[output], --overwrite=null, --startPhase=[0], --tempDir=[temp], --threshold=[0]}
+14/04/20 07:25:14 INFO util.NativeCodeLoader: Loaded the native-hadoop library
+14/04/20 07:25:14 INFO zlib.ZlibFactory: Successfully loaded & initialized native-zlib library
+14/04/20 07:25:14 INFO compress.CodecPool: Got brand-new decompressor
+Cluster Iterator running iteration 1/1 over priorPath: output/clusters-0
+Sending 0 to HDFS took 46 ms
+Sending 0 to HDFS for stage MAPPER took 33 ms
+Sending 0 to HDFS for stage COMBINER took 42 ms
+Sending 0 to HDFS for stage REDUCER took 33 ms
+14/04/20 07:25:20 INFO input.FileInputFormat: Total input paths to process : 40
+14/04/20 07:25:21 INFO mapred.JobClient: Running job: job_201404200723_0001
+14/04/20 07:25:22 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/20 07:25:55 INFO mapred.JobClient:  map 1% reduce 0%
+14/04/20 07:26:01 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/20 07:26:07 INFO mapred.JobClient:  map 3% reduce 0%
+14/04/20 07:26:16 INFO mapred.JobClient:  map 4% reduce 0%
+14/04/20 07:26:22 INFO mapred.JobClient:  map 5% reduce 0%
+14/04/20 07:26:28 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/20 07:26:37 INFO mapred.JobClient:  map 7% reduce 0%
+14/04/20 07:26:43 INFO mapred.JobClient:  map 8% reduce 0%
+14/04/20 07:26:49 INFO mapred.JobClient:  map 9% reduce 0%
+14/04/20 07:26:59 INFO mapred.JobClient:  map 10% reduce 0%
+14/04/20 07:27:05 INFO mapred.JobClient:  map 11% reduce 0%
+14/04/20 07:27:11 INFO mapred.JobClient:  map 12% reduce 0%
+14/04/20 07:27:20 INFO mapred.JobClient:  map 13% reduce 0%
+14/04/20 07:27:26 INFO mapred.JobClient:  map 14% reduce 0%
+14/04/20 07:27:35 INFO mapred.JobClient:  map 15% reduce 0%
+14/04/20 07:27:41 INFO mapred.JobClient:  map 16% reduce 0%
+14/04/20 07:27:50 INFO mapred.JobClient:  map 17% reduce 0%
+14/04/20 07:27:56 INFO mapred.JobClient:  map 18% reduce 0%
+14/04/20 07:28:05 INFO mapred.JobClient:  map 19% reduce 0%
+14/04/20 07:28:11 INFO mapred.JobClient:  map 20% reduce 0%
+14/04/20 07:28:20 INFO mapred.JobClient:  map 21% reduce 0%
+14/04/20 07:28:26 INFO mapred.JobClient:  map 22% reduce 0%
+14/04/20 07:28:35 INFO mapred.JobClient:  map 23% reduce 0%
+14/04/20 07:28:41 INFO mapred.JobClient:  map 24% reduce 0%
+14/04/20 07:28:50 INFO mapred.JobClient:  map 25% reduce 0%
+14/04/20 07:28:56 INFO mapred.JobClient:  map 26% reduce 0%
+14/04/20 07:29:05 INFO mapred.JobClient:  map 27% reduce 0%
+14/04/20 07:29:11 INFO mapred.JobClient:  map 28% reduce 0%
+14/04/20 07:29:17 INFO mapred.JobClient:  map 29% reduce 0%
+14/04/20 07:29:26 INFO mapred.JobClient:  map 30% reduce 0%
+14/04/20 07:29:35 INFO mapred.JobClient:  map 31% reduce 0%
+14/04/20 07:29:41 INFO mapred.JobClient:  map 32% reduce 0%
+14/04/20 07:29:50 INFO mapred.JobClient:  map 33% reduce 0%
+14/04/20 07:29:56 INFO mapred.JobClient:  map 34% reduce 0%
+14/04/20 07:30:04 INFO mapred.JobClient:  map 35% reduce 0%
+14/04/20 07:30:11 INFO mapred.JobClient:  map 36% reduce 0%
+14/04/20 07:30:19 INFO mapred.JobClient:  map 37% reduce 0%
+14/04/20 07:30:28 INFO mapred.JobClient:  map 38% reduce 0%
+14/04/20 07:30:34 INFO mapred.JobClient:  map 39% reduce 0%
+14/04/20 07:31:01 INFO mapred.JobClient:  map 40% reduce 0%
+14/04/20 07:31:11 INFO mapred.JobClient:  map 41% reduce 1%
+14/04/20 07:31:14 INFO mapred.JobClient:  map 41% reduce 2%
+14/04/20 07:31:17 INFO mapred.JobClient:  map 41% reduce 4%
+14/04/20 07:31:20 INFO mapred.JobClient:  map 42% reduce 5%
+14/04/20 07:31:23 INFO mapred.JobClient:  map 42% reduce 6%
+14/04/20 07:31:26 INFO mapred.JobClient:  map 42% reduce 7%
+14/04/20 07:31:29 INFO mapred.JobClient:  map 43% reduce 8%
+14/04/20 07:31:35 INFO mapred.JobClient:  map 43% reduce 9%
+14/04/20 07:31:37 INFO mapred.JobClient:  map 44% reduce 9%
+14/04/20 07:31:41 INFO mapred.JobClient:  map 44% reduce 10%
+14/04/20 07:31:44 INFO mapred.JobClient:  map 45% reduce 10%
+14/04/20 07:31:47 INFO mapred.JobClient:  map 45% reduce 11%
+14/04/20 07:31:51 INFO mapred.JobClient:  map 46% reduce 11%
+14/04/20 07:31:53 INFO mapred.JobClient:  map 46% reduce 12%
+14/04/20 07:31:59 INFO mapred.JobClient:  map 47% reduce 12%
+14/04/20 07:32:02 INFO mapred.JobClient:  map 47% reduce 13%
+14/04/20 07:32:06 INFO mapred.JobClient:  map 48% reduce 13%
+14/04/20 07:32:14 INFO mapred.JobClient:  map 49% reduce 13%
+14/04/20 07:32:20 INFO mapred.JobClient:  map 50% reduce 13%
+14/04/20 07:32:27 INFO mapred.JobClient:  map 51% reduce 13%
+14/04/20 07:32:35 INFO mapred.JobClient:  map 52% reduce 13%
+14/04/20 07:32:41 INFO mapred.JobClient:  map 53% reduce 13%
+14/04/20 07:32:48 INFO mapred.JobClient:  map 54% reduce 13%
+14/04/20 07:32:56 INFO mapred.JobClient:  map 55% reduce 13%
+14/04/20 07:33:03 INFO mapred.JobClient:  map 56% reduce 13%
+14/04/20 07:33:11 INFO mapred.JobClient:  map 57% reduce 13%
+14/04/20 07:33:18 INFO mapred.JobClient:  map 58% reduce 13%
+14/04/20 07:33:26 INFO mapred.JobClient:  map 59% reduce 13%
+14/04/20 07:33:33 INFO mapred.JobClient:  map 60% reduce 13%
+14/04/20 07:33:41 INFO mapred.JobClient:  map 61% reduce 13%
+14/04/20 07:33:47 INFO mapred.JobClient:  map 62% reduce 13%
+14/04/20 07:33:54 INFO mapred.JobClient:  map 63% reduce 13%
+14/04/20 07:34:02 INFO mapred.JobClient:  map 64% reduce 13%
+14/04/20 07:34:08 INFO mapred.JobClient:  map 65% reduce 13%
+14/04/20 07:34:17 INFO mapred.JobClient:  map 66% reduce 13%
+14/04/20 07:34:23 INFO mapred.JobClient:  map 67% reduce 13%
+14/04/20 07:34:30 INFO mapred.JobClient:  map 68% reduce 13%
+14/04/20 07:34:38 INFO mapred.JobClient:  map 69% reduce 13%
+14/04/20 07:34:44 INFO mapred.JobClient:  map 70% reduce 13%
+14/04/20 07:34:53 INFO mapred.JobClient:  map 71% reduce 13%
+14/04/20 07:34:59 INFO mapred.JobClient:  map 72% reduce 13%
+14/04/20 07:35:08 INFO mapred.JobClient:  map 73% reduce 13%
+14/04/20 07:35:14 INFO mapred.JobClient:  map 74% reduce 13%
+14/04/20 07:35:21 INFO mapred.JobClient:  map 75% reduce 13%
+14/04/20 07:35:29 INFO mapred.JobClient:  map 76% reduce 13%
+14/04/20 07:35:37 INFO mapred.JobClient:  map 77% reduce 13%
+14/04/20 07:35:45 INFO mapred.JobClient:  map 78% reduce 13%
+14/04/20 07:35:54 INFO mapred.JobClient:  map 79% reduce 13%
+14/04/20 07:36:10 INFO mapred.JobClient:  map 80% reduce 13%
+14/04/20 07:36:12 INFO mapred.JobClient:  map 80% reduce 14%
+14/04/20 07:36:24 INFO mapred.JobClient:  map 80% reduce 16%
+14/04/20 07:36:30 INFO mapred.JobClient:  map 81% reduce 17%
+14/04/20 07:36:33 INFO mapred.JobClient:  map 81% reduce 18%
+14/04/20 07:36:36 INFO mapred.JobClient:  map 81% reduce 19%
+14/04/20 07:36:42 INFO mapred.JobClient:  map 81% reduce 20%
+14/04/20 07:36:43 INFO mapred.JobClient:  map 82% reduce 20%
+14/04/20 07:36:45 INFO mapred.JobClient:  map 82% reduce 21%
+14/04/20 07:36:48 INFO mapred.JobClient:  map 82% reduce 22%
+14/04/20 07:36:51 INFO mapred.JobClient:  map 82% reduce 23%
+14/04/20 07:36:57 INFO mapred.JobClient:  map 83% reduce 24%
+14/04/20 07:37:09 INFO mapred.JobClient:  map 84% reduce 25%
+14/04/20 07:37:18 INFO mapred.JobClient:  map 84% reduce 26%
+14/04/20 07:37:22 INFO mapred.JobClient:  map 85% reduce 26%
+14/04/20 07:37:34 INFO mapred.JobClient:  map 86% reduce 26%
+14/04/20 07:37:47 INFO mapred.JobClient:  map 87% reduce 26%
+14/04/20 07:38:01 INFO mapred.JobClient:  map 88% reduce 26%
+14/04/20 07:38:14 INFO mapred.JobClient:  map 89% reduce 26%
+14/04/20 07:38:28 INFO mapred.JobClient:  map 90% reduce 26%
+14/04/20 07:38:40 INFO mapred.JobClient:  map 91% reduce 26%
+14/04/20 07:38:53 INFO mapred.JobClient:  map 92% reduce 26%
+14/04/20 07:39:08 INFO mapred.JobClient:  map 93% reduce 26%
+14/04/20 07:39:22 INFO mapred.JobClient:  map 94% reduce 26%
+14/04/20 07:39:35 INFO mapred.JobClient:  map 95% reduce 26%
+14/04/20 07:39:48 INFO mapred.JobClient:  map 96% reduce 26%
+14/04/20 07:40:02 INFO mapred.JobClient:  map 97% reduce 26%
+14/04/20 07:40:18 INFO mapred.JobClient:  map 98% reduce 26%
+14/04/20 07:40:31 INFO mapred.JobClient:  map 99% reduce 26%
+14/04/20 07:40:48 INFO mapred.JobClient:  map 99% reduce 27%
+14/04/20 07:41:00 INFO mapred.JobClient:  map 99% reduce 28%
+14/04/20 07:41:01 INFO mapred.JobClient:  map 100% reduce 28%
+14/04/20 07:41:07 INFO mapred.JobClient:  map 100% reduce 29%
+14/04/20 07:41:16 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/20 07:41:18 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/20 07:41:28 INFO mapred.JobClient:  map 100% reduce 32%
+14/04/20 07:41:40 INFO mapred.JobClient:  map 100% reduce 49%
+14/04/20 07:41:42 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/20 07:41:43 INFO mapred.JobClient:  map 100% reduce 67%
+14/04/20 07:41:54 INFO mapred.JobClient:  map 100% reduce 68%
+14/04/20 07:42:04 INFO mapred.JobClient:  map 100% reduce 69%
+14/04/20 07:42:15 INFO mapred.JobClient:  map 100% reduce 70%
+14/04/20 07:42:24 INFO mapred.JobClient:  map 100% reduce 71%
+14/04/20 07:42:34 INFO mapred.JobClient:  map 100% reduce 72%
+14/04/20 07:42:43 INFO mapred.JobClient:  map 100% reduce 73%
+14/04/20 07:42:52 INFO mapred.JobClient:  map 100% reduce 74%
+14/04/20 07:43:03 INFO mapred.JobClient:  map 100% reduce 75%
+14/04/20 07:43:12 INFO mapred.JobClient:  map 100% reduce 76%
+14/04/20 07:43:21 INFO mapred.JobClient:  map 100% reduce 77%
+14/04/20 07:43:31 INFO mapred.JobClient:  map 100% reduce 78%
+14/04/20 07:43:40 INFO mapred.JobClient:  map 100% reduce 79%
+14/04/20 07:43:49 INFO mapred.JobClient:  map 100% reduce 80%
+14/04/20 07:44:00 INFO mapred.JobClient:  map 100% reduce 81%
+14/04/20 07:44:09 INFO mapred.JobClient:  map 100% reduce 82%
+14/04/20 07:44:18 INFO mapred.JobClient:  map 100% reduce 83%
+14/04/20 07:44:28 INFO mapred.JobClient:  map 100% reduce 84%
+14/04/20 07:44:37 INFO mapred.JobClient:  map 100% reduce 85%
+14/04/20 07:44:46 INFO mapred.JobClient:  map 100% reduce 86%
+14/04/20 07:44:57 INFO mapred.JobClient:  map 100% reduce 87%
+14/04/20 07:45:07 INFO mapred.JobClient:  map 100% reduce 88%
+14/04/20 07:45:16 INFO mapred.JobClient:  map 100% reduce 89%
+14/04/20 07:45:26 INFO mapred.JobClient:  map 100% reduce 90%
+14/04/20 07:45:35 INFO mapred.JobClient:  map 100% reduce 91%
+14/04/20 07:45:44 INFO mapred.JobClient:  map 100% reduce 92%
+14/04/20 07:45:53 INFO mapred.JobClient:  map 100% reduce 93%
+14/04/20 07:46:02 INFO mapred.JobClient:  map 100% reduce 94%
+14/04/20 07:46:13 INFO mapred.JobClient:  map 100% reduce 95%
+14/04/20 07:46:23 INFO mapred.JobClient:  map 100% reduce 96%
+14/04/20 07:46:32 INFO mapred.JobClient:  map 100% reduce 97%
+14/04/20 07:46:41 INFO mapred.JobClient:  map 100% reduce 98%
+14/04/20 07:46:52 INFO mapred.JobClient:  map 100% reduce 99%
+14/04/20 07:47:07 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/20 07:47:15 INFO mapred.JobClient: Job complete: job_201404200723_0001
+14/04/20 07:47:15 INFO mapred.JobClient: Counters: 29
+14/04/20 07:47:15 INFO mapred.JobClient:   Job Counters 
+14/04/20 07:47:15 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/20 07:47:15 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=12575613
+14/04/20 07:47:15 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/20 07:47:15 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/20 07:47:15 INFO mapred.JobClient:     Launched map tasks=40
+14/04/20 07:47:15 INFO mapred.JobClient:     Data-local map tasks=40
+14/04/20 07:47:15 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=1945454
+14/04/20 07:47:15 INFO mapred.JobClient:   File Output Format Counters 
+14/04/20 07:47:15 INFO mapred.JobClient:     Bytes Written=4223901626
+14/04/20 07:47:15 INFO mapred.JobClient:   FileSystemCounters
+14/04/20 07:47:15 INFO mapred.JobClient:     FILE_BYTES_READ=19363866104
+14/04/20 07:47:15 INFO mapred.JobClient:     HDFS_BYTES_READ=630834793
+14/04/20 07:47:15 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=29045999090
+14/04/20 07:47:15 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=4223901626
+14/04/20 07:47:15 INFO mapred.JobClient:   File Input Format Counters 
+14/04/20 07:47:15 INFO mapred.JobClient:     Bytes Read=628118849
+14/04/20 07:47:15 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/20 07:47:15 INFO mapred.JobClient:     Map output materialized bytes=9681624520
+14/04/20 07:47:15 INFO mapred.JobClient:     Map input records=2860655
+14/04/20 07:47:15 INFO mapred.JobClient:     Reduce shuffle bytes=9400256355
+14/04/20 07:47:15 INFO mapred.JobClient:     Spilled Records=15360
+14/04/20 07:47:15 INFO mapred.JobClient:     Map output bytes=9681598440
+14/04/20 07:47:15 INFO mapred.JobClient:     Total committed heap usage (bytes)=110138753024
+14/04/20 07:47:15 INFO mapred.JobClient:     CPU time spent (ms)=13277290
+14/04/20 07:47:15 INFO mapred.JobClient:     Combine input records=0
+14/04/20 07:47:15 INFO mapred.JobClient:     SPLIT_RAW_BYTES=4760
+14/04/20 07:47:15 INFO mapred.JobClient:     Reduce input records=5120
+14/04/20 07:47:15 INFO mapred.JobClient:     Reduce input groups=128
+14/04/20 07:47:15 INFO mapred.JobClient:     Combine output records=0
+14/04/20 07:47:15 INFO mapred.JobClient:     Physical memory (bytes) snapshot=95378448384
+14/04/20 07:47:15 INFO mapred.JobClient:     Reduce output records=128
+14/04/20 07:47:15 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=207904325632
+14/04/20 07:47:15 INFO mapred.JobClient:     Map output records=5120
+14/04/20 07:47:15 INFO driver.MahoutDriver: Program took 1321886 ms (Minutes: 22.031433333333332)
+
+real	22m6.062s
+user	0m11.662s
+sys	0m2.957s

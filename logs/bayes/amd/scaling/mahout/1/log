@@ -1,0 +1,902 @@
+===== node08 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node08 =====
+1007     29147  0.0  0.0  12600  1488 ?        Ss   16:03   0:00 bash -c ps aux | grep java
+1007     29149  0.0  0.0   9692   936 ?        S    16:03   0:00 grep java
+===== node05 =====
+1007     28778  1.0  0.0  43908  2976 pts/0    S+   16:04   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     28816  0.0  0.0  12600  1488 ?        Ss   16:04   0:00 bash -c ps aux | grep java
+1007     28818  0.0  0.0   9692   932 ?        S    16:04   0:00 grep java
+===== node08 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node08 =====
+1007     29266  0.0  0.0  12600  1488 ?        Ss   16:04   0:00 bash -c ps aux | grep java
+1007     29268  0.0  0.0   9692   932 ?        S    16:04   0:00 grep java
+===== node05 =====
+1007     28930  0.0  0.0  43908  2976 pts/0    S+   16:04   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     28968  0.0  0.0  12600  1484 ?        Ss   16:04   0:00 bash -c ps aux | grep java
+1007     28970  0.0  0.0   9692   932 ?        S    16:04   0:00 grep java
+Setting path to /tmp/hadoop
+4 1 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 1 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node08
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/19 16:04:16 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/19 16:04:16 INFO util.GSet: VM type       = 64-bit
+14/04/19 16:04:16 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/19 16:04:16 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/19 16:04:16 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/19 16:04:17 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/19 16:04:17 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/19 16:04:17 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/19 16:04:17 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/19 16:04:17 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/19 16:04:17 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/19 16:04:17 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/19 16:04:17 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/19 16:04:17 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node08: no tasktracker to stop
+no namenode to stop
+node08: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Sending 0 to HDFS took 137 ms
+Sending 0 to HDFS for stage MAPPER took 24 ms
+Sending 0 to HDFS for stage COMBINER took 27 ms
+Sending 0 to HDFS for stage REDUCER took 31 ms
+14/04/19 16:06:09 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/19 16:06:09 INFO input.FileInputFormat: Total input paths to process : 50
+14/04/19 16:06:10 INFO mapred.JobClient: Running job: job_201404191604_0001
+14/04/19 16:06:11 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/19 16:06:28 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/19 16:06:31 INFO mapred.JobClient:  map 5% reduce 0%
+14/04/19 16:06:34 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/19 16:06:40 INFO mapred.JobClient:  map 7% reduce 0%
+14/04/19 16:06:43 INFO mapred.JobClient:  map 9% reduce 0%
+14/04/19 16:06:46 INFO mapred.JobClient:  map 10% reduce 1%
+14/04/19 16:06:49 INFO mapred.JobClient:  map 12% reduce 2%
+14/04/19 16:06:55 INFO mapred.JobClient:  map 14% reduce 2%
+14/04/19 16:06:58 INFO mapred.JobClient:  map 17% reduce 3%
+14/04/19 16:07:01 INFO mapred.JobClient:  map 18% reduce 4%
+14/04/19 16:07:07 INFO mapred.JobClient:  map 20% reduce 4%
+14/04/19 16:07:10 INFO mapred.JobClient:  map 23% reduce 5%
+14/04/19 16:07:13 INFO mapred.JobClient:  map 25% reduce 6%
+14/04/19 16:07:20 INFO mapred.JobClient:  map 26% reduce 7%
+14/04/19 16:07:23 INFO mapred.JobClient:  map 29% reduce 7%
+14/04/19 16:07:26 INFO mapred.JobClient:  map 31% reduce 8%
+14/04/19 16:07:32 INFO mapred.JobClient:  map 33% reduce 9%
+14/04/19 16:07:35 INFO mapred.JobClient:  map 36% reduce 10%
+14/04/19 16:07:41 INFO mapred.JobClient:  map 37% reduce 10%
+14/04/19 16:07:44 INFO mapred.JobClient:  map 39% reduce 10%
+14/04/19 16:07:47 INFO mapred.JobClient:  map 41% reduce 11%
+14/04/19 16:07:50 INFO mapred.JobClient:  map 43% reduce 12%
+14/04/19 16:07:56 INFO mapred.JobClient:  map 45% reduce 13%
+14/04/19 16:07:59 INFO mapred.JobClient:  map 48% reduce 13%
+14/04/19 16:08:02 INFO mapred.JobClient:  map 49% reduce 14%
+14/04/19 16:08:05 INFO mapred.JobClient:  map 50% reduce 15%
+14/04/19 16:08:08 INFO mapred.JobClient:  map 52% reduce 15%
+14/04/19 16:08:11 INFO mapred.JobClient:  map 54% reduce 15%
+14/04/19 16:08:14 INFO mapred.JobClient:  map 56% reduce 16%
+14/04/19 16:08:18 INFO mapred.JobClient:  map 56% reduce 17%
+14/04/19 16:08:21 INFO mapred.JobClient:  map 58% reduce 17%
+14/04/19 16:08:24 INFO mapred.JobClient:  map 60% reduce 17%
+14/04/19 16:08:27 INFO mapred.JobClient:  map 62% reduce 18%
+14/04/19 16:08:33 INFO mapred.JobClient:  map 64% reduce 19%
+14/04/19 16:08:35 INFO mapred.JobClient:  map 68% reduce 20%
+14/04/19 16:08:44 INFO mapred.JobClient:  map 71% reduce 21%
+14/04/19 16:08:47 INFO mapred.JobClient:  map 75% reduce 22%
+14/04/19 16:08:56 INFO mapred.JobClient:  map 78% reduce 23%
+14/04/19 16:08:59 INFO mapred.JobClient:  map 81% reduce 25%
+14/04/19 16:09:05 INFO mapred.JobClient:  map 84% reduce 26%
+14/04/19 16:09:08 INFO mapred.JobClient:  map 85% reduce 26%
+14/04/19 16:09:11 INFO mapred.JobClient:  map 87% reduce 26%
+14/04/19 16:09:14 INFO mapred.JobClient:  map 90% reduce 27%
+14/04/19 16:09:17 INFO mapred.JobClient:  map 92% reduce 28%
+14/04/19 16:09:20 INFO mapred.JobClient:  map 93% reduce 29%
+14/04/19 16:09:23 INFO mapred.JobClient:  map 96% reduce 29%
+14/04/19 16:09:26 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/19 16:09:35 INFO mapred.JobClient:  map 100% reduce 65%
+14/04/19 16:09:38 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/19 16:09:43 INFO mapred.JobClient: Job complete: job_201404191604_0001
+14/04/19 16:09:43 INFO mapred.JobClient: Counters: 29
+14/04/19 16:09:43 INFO mapred.JobClient:   Job Counters 
+14/04/19 16:09:43 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/19 16:09:43 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=697149
+14/04/19 16:09:43 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/19 16:09:43 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/19 16:09:43 INFO mapred.JobClient:     Launched map tasks=64
+14/04/19 16:09:43 INFO mapred.JobClient:     Data-local map tasks=64
+14/04/19 16:09:43 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=357324
+14/04/19 16:09:43 INFO mapred.JobClient:   File Output Format Counters 
+14/04/19 16:09:43 INFO mapred.JobClient:     Bytes Written=10260
+14/04/19 16:09:43 INFO mapred.JobClient:   FileSystemCounters
+14/04/19 16:09:43 INFO mapred.JobClient:     FILE_BYTES_READ=12362
+14/04/19 16:09:43 INFO mapred.JobClient:     HDFS_BYTES_READ=3413147971
+14/04/19 16:09:43 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=1776054
+14/04/19 16:09:43 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=10260
+14/04/19 16:09:43 INFO mapred.JobClient:   File Input Format Counters 
+14/04/19 16:09:43 INFO mapred.JobClient:     Bytes Read=3007802906
+14/04/19 16:09:43 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/19 16:09:43 INFO mapred.JobClient:     Map output materialized bytes=13502
+14/04/19 16:09:43 INFO mapred.JobClient:     Map input records=14303334
+14/04/19 16:09:43 INFO mapred.JobClient:     Reduce shuffle bytes=13006
+14/04/19 16:09:43 INFO mapred.JobClient:     Spilled Records=128
+14/04/19 16:09:43 INFO mapred.JobClient:     Map output bytes=12160
+14/04/19 16:09:43 INFO mapred.JobClient:     Total committed heap usage (bytes)=144825122816
+14/04/19 16:09:43 INFO mapred.JobClient:     CPU time spent (ms)=448350
+14/04/19 16:09:43 INFO mapred.JobClient:     Combine input records=64
+14/04/19 16:09:43 INFO mapred.JobClient:     SPLIT_RAW_BYTES=7872
+14/04/19 16:09:43 INFO mapred.JobClient:     Reduce input records=64
+14/04/19 16:09:43 INFO mapred.JobClient:     Reduce input groups=1
+14/04/19 16:09:43 INFO mapred.JobClient:     Combine output records=64
+14/04/19 16:09:43 INFO mapred.JobClient:     Physical memory (bytes) snapshot=61280780288
+14/04/19 16:09:43 INFO mapred.JobClient:     Reduce output records=1
+14/04/19 16:09:43 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=326362394624
+14/04/19 16:09:43 INFO mapred.JobClient:     Map output records=64
+Program Time = 214489 ms
+===== node08 =====
+===== node05 =====
+===== node08 =====
+1007      1045  0.0  0.0  12600  1484 ?        Ss   16:09   0:00 bash -c ps aux | grep java
+1007      1047  0.0  0.0   9692   936 ?        S    16:09   0:00 grep java
+===== node05 =====
+1007     30207  0.0  0.0  43908  2972 pts/0    S+   16:09   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     30245  0.0  0.0  12600  1484 ?        Ss   16:09   0:00 bash -c ps aux | grep java
+1007     30247  0.0  0.0   9692   936 ?        S    16:09   0:00 grep java
+===== node08 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node08 =====
+1007      1165  0.0  0.0  12600  1484 ?        Ss   16:09   0:00 bash -c ps aux | grep java
+1007      1168  0.0  0.0   9692   932 ?        S    16:09   0:00 grep java
+===== node05 =====
+1007     30344  1.0  0.0  43908  2972 pts/0    S+   16:09   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     30382  0.0  0.0  12600  1488 ?        Ss   16:09   0:00 bash -c ps aux | grep java
+1007     30384  0.0  0.0   9692   936 ?        S    16:09   0:00 grep java
+Setting path to /tmp/hadoop
+4 1 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 1 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node08
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/19 16:09:56 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/19 16:09:56 INFO util.GSet: VM type       = 64-bit
+14/04/19 16:09:56 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/19 16:09:56 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/19 16:09:56 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/19 16:09:56 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/19 16:09:56 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/19 16:09:56 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/19 16:09:56 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/19 16:09:56 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/19 16:09:56 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/19 16:09:57 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/19 16:09:57 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/19 16:09:57 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node08: no tasktracker to stop
+no namenode to stop
+node08: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Sending 0 to HDFS took 130 ms
+Sending 0 to HDFS for stage MAPPER took 24 ms
+Sending 0 to HDFS for stage COMBINER took 27 ms
+Sending 0 to HDFS for stage REDUCER took 31 ms
+14/04/19 16:11:48 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/19 16:11:49 INFO input.FileInputFormat: Total input paths to process : 50
+14/04/19 16:11:49 INFO mapred.JobClient: Running job: job_201404191610_0001
+14/04/19 16:11:50 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/19 16:12:09 INFO mapred.JobClient:  map 2% reduce 0%
+14/04/19 16:12:12 INFO mapred.JobClient:  map 5% reduce 0%
+14/04/19 16:12:15 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/19 16:12:21 INFO mapred.JobClient:  map 9% reduce 0%
+14/04/19 16:12:24 INFO mapred.JobClient:  map 10% reduce 0%
+14/04/19 16:12:30 INFO mapred.JobClient:  map 12% reduce 1%
+14/04/19 16:12:36 INFO mapred.JobClient:  map 17% reduce 3%
+14/04/19 16:12:42 INFO mapred.JobClient:  map 18% reduce 3%
+14/04/19 16:12:45 INFO mapred.JobClient:  map 20% reduce 5%
+14/04/19 16:12:48 INFO mapred.JobClient:  map 22% reduce 5%
+14/04/19 16:12:51 INFO mapred.JobClient:  map 23% reduce 5%
+14/04/19 16:12:54 INFO mapred.JobClient:  map 24% reduce 5%
+14/04/19 16:12:57 INFO mapred.JobClient:  map 26% reduce 6%
+14/04/19 16:13:00 INFO mapred.JobClient:  map 29% reduce 7%
+14/04/19 16:13:03 INFO mapred.JobClient:  map 29% reduce 8%
+14/04/19 16:13:06 INFO mapred.JobClient:  map 30% reduce 8%
+14/04/19 16:13:09 INFO mapred.JobClient:  map 33% reduce 8%
+14/04/19 16:13:12 INFO mapred.JobClient:  map 35% reduce 9%
+14/04/19 16:13:18 INFO mapred.JobClient:  map 36% reduce 10%
+14/04/19 16:13:21 INFO mapred.JobClient:  map 39% reduce 11%
+14/04/19 16:13:24 INFO mapred.JobClient:  map 41% reduce 11%
+14/04/19 16:13:27 INFO mapred.JobClient:  map 42% reduce 11%
+14/04/19 16:13:30 INFO mapred.JobClient:  map 43% reduce 12%
+14/04/19 16:13:33 INFO mapred.JobClient:  map 45% reduce 14%
+14/04/19 16:13:36 INFO mapred.JobClient:  map 48% reduce 14%
+14/04/19 16:13:42 INFO mapred.JobClient:  map 49% reduce 14%
+14/04/19 16:13:45 INFO mapred.JobClient:  map 52% reduce 15%
+14/04/19 16:13:48 INFO mapred.JobClient:  map 54% reduce 16%
+14/04/19 16:13:54 INFO mapred.JobClient:  map 56% reduce 16%
+14/04/19 16:13:57 INFO mapred.JobClient:  map 58% reduce 17%
+14/04/19 16:14:00 INFO mapred.JobClient:  map 60% reduce 18%
+14/04/19 16:14:06 INFO mapred.JobClient:  map 62% reduce 18%
+14/04/19 16:14:09 INFO mapred.JobClient:  map 65% reduce 19%
+14/04/19 16:14:12 INFO mapred.JobClient:  map 67% reduce 20%
+14/04/19 16:14:15 INFO mapred.JobClient:  map 67% reduce 21%
+14/04/19 16:14:18 INFO mapred.JobClient:  map 68% reduce 21%
+14/04/19 16:14:21 INFO mapred.JobClient:  map 71% reduce 21%
+14/04/19 16:14:24 INFO mapred.JobClient:  map 73% reduce 22%
+14/04/19 16:14:30 INFO mapred.JobClient:  map 75% reduce 23%
+14/04/19 16:14:33 INFO mapred.JobClient:  map 79% reduce 24%
+14/04/19 16:14:39 INFO mapred.JobClient:  map 81% reduce 24%
+14/04/19 16:14:42 INFO mapred.JobClient:  map 84% reduce 25%
+14/04/19 16:14:45 INFO mapred.JobClient:  map 85% reduce 27%
+14/04/19 16:14:48 INFO mapred.JobClient:  map 87% reduce 28%
+14/04/19 16:14:51 INFO mapred.JobClient:  map 90% reduce 28%
+14/04/19 16:14:54 INFO mapred.JobClient:  map 92% reduce 28%
+14/04/19 16:14:57 INFO mapred.JobClient:  map 93% reduce 28%
+14/04/19 16:15:00 INFO mapred.JobClient:  map 96% reduce 30%
+14/04/19 16:15:03 INFO mapred.JobClient:  map 100% reduce 31%
+14/04/19 16:15:12 INFO mapred.JobClient:  map 100% reduce 66%
+14/04/19 16:15:15 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/19 16:15:20 INFO mapred.JobClient: Job complete: job_201404191610_0001
+14/04/19 16:15:20 INFO mapred.JobClient: Counters: 29
+14/04/19 16:15:20 INFO mapred.JobClient:   Job Counters 
+14/04/19 16:15:20 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/19 16:15:20 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=690835
+14/04/19 16:15:20 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/19 16:15:20 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/19 16:15:20 INFO mapred.JobClient:     Launched map tasks=64
+14/04/19 16:15:20 INFO mapred.JobClient:     Data-local map tasks=64
+14/04/19 16:15:20 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=345586
+14/04/19 16:15:20 INFO mapred.JobClient:   File Output Format Counters 
+14/04/19 16:15:20 INFO mapred.JobClient:     Bytes Written=10260
+14/04/19 16:15:20 INFO mapred.JobClient:   FileSystemCounters
+14/04/19 16:15:20 INFO mapred.JobClient:     FILE_BYTES_READ=12362
+14/04/19 16:15:20 INFO mapred.JobClient:     HDFS_BYTES_READ=3413147971
+14/04/19 16:15:20 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=1776054
+14/04/19 16:15:20 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=10260
+14/04/19 16:15:20 INFO mapred.JobClient:   File Input Format Counters 
+14/04/19 16:15:20 INFO mapred.JobClient:     Bytes Read=3007802906
+14/04/19 16:15:20 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/19 16:15:20 INFO mapred.JobClient:     Map output materialized bytes=13502
+14/04/19 16:15:20 INFO mapred.JobClient:     Map input records=14303334
+14/04/19 16:15:20 INFO mapred.JobClient:     Reduce shuffle bytes=13006
+14/04/19 16:15:20 INFO mapred.JobClient:     Spilled Records=128
+14/04/19 16:15:20 INFO mapred.JobClient:     Map output bytes=12160
+14/04/19 16:15:20 INFO mapred.JobClient:     Total committed heap usage (bytes)=144825122816
+14/04/19 16:15:20 INFO mapred.JobClient:     CPU time spent (ms)=451900
+14/04/19 16:15:20 INFO mapred.JobClient:     Combine input records=64
+14/04/19 16:15:20 INFO mapred.JobClient:     SPLIT_RAW_BYTES=7872
+14/04/19 16:15:20 INFO mapred.JobClient:     Reduce input records=64
+14/04/19 16:15:20 INFO mapred.JobClient:     Reduce input groups=1
+14/04/19 16:15:20 INFO mapred.JobClient:     Combine output records=64
+14/04/19 16:15:20 INFO mapred.JobClient:     Physical memory (bytes) snapshot=61128048640
+14/04/19 16:15:20 INFO mapred.JobClient:     Reduce output records=1
+14/04/19 16:15:20 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=326295052288
+14/04/19 16:15:20 INFO mapred.JobClient:     Map output records=64
+Program Time = 212379 ms
+===== node08 =====
+===== node05 =====
+===== node08 =====
+1007      5486  0.0  0.0  12600  1484 ?        Ss   16:15   0:00 bash -c ps aux | grep java
+1007      5488  0.0  0.0   9692   936 ?        S    16:15   0:00 grep java
+===== node05 =====
+1007     31586  0.0  0.0  43908  2972 pts/0    S+   16:15   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     31624  0.0  0.0  12600  1488 ?        Ss   16:15   0:00 bash -c ps aux | grep java
+1007     31626  0.0  0.0   9692   928 ?        S    16:15   0:00 grep java
+===== node08 =====
+java: no process found
+===== node05 =====
+java: no process found
+===== node08 =====
+1007      5605  0.0  0.0  12600  1480 ?        Ss   16:15   0:00 bash -c ps aux | grep java
+1007      5607  0.0  0.0   9692   932 ?        S    16:15   0:00 grep java
+===== node05 =====
+1007     31723  0.0  0.0  43908  2972 pts/0    S+   16:15   0:00 ssh -o ConnectTimeout=2 node05 ps aux | grep java
+1007     31761  0.0  0.0  12600  1488 ?        Ss   16:15   0:00 bash -c ps aux | grep java
+1007     31763  0.0  0.0   9692   932 ?        S    16:15   0:00 grep java
+Setting path to /tmp/hadoop
+4 1 0 0 0 0 67108864 3
+Max. num tasks = 4 mappers, 1 reducers
+Mapper thread configs = GPU ( 0 ), CPU ( 0 )
+Reducer thread configs = GPU ( 0 ), CPU ( 0 )
+HDFS block size = 67108864
+GPU/CPU Mults shouldn't matter
+
+
+
+Here are the results:
+export JAVA_HOME=/home-nis/mgrossman/jdk1.7.0_51
+export HOME=/home-nis/mgrossman
+export APARAPI_HOME=${HOME}/hadoopcl-aparapi
+export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
+export HADOOP_LOG_DIR=/tmp/hadoop/logs
+export HADOOPCL_KERNEL_FOLDER=${HOME}/kernels
+export HADOOP_APP_DIR=${HOME}/hadoopcl-app
+export CLASSPATH=/home-nis/mgrossman/mahout/trunk/core/target/mahout-core-0.8-SNAPSHOT.jar:/home-nis/mgrossman/mahout/trunk/math/target/mahout-math-0.8-SNAPSHOT.jar:${APARAPI_HOME}/com.amd.aparapi/dist/aparapi.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HOME}/jfreechart-1.0.14.jar:.:${CLASSPATH}
+export HADOOP_CLASSPATH=${HADOOP_HOME}/build/hadoop-core-1.0.4-SNAPSHOT.jar:${HADOOP_GPL_COMPRESSION_HOME}/build/hadoop-gpl-compression-0.2.0-dev.jar:${CLASSPATH}:${HADOOP_CLASSPATH}
+export JAVA_LIBRARY_PATH=${HOME}/lzo-install/lib:${JAVA_LIBRARY_PATH}
+
+export SCIPY_HOME=${HOME}/scipy-install
+export NUMPY_HOME=${HOME}/numpy-install
+export SCIKIT_HOME=${HOME}/scikit-install
+
+export PYTHONPATH=${PYTHONPATH}:${HOME}/numpy-install/lib/python2.7/site-packages
+export PYTHONPATH=${PYTHONPATH}:${HOME}/scipy-install/lib/python2.7/site-packages
+
+export PATH=${JAVA_HOME}/bin:${PATH}
+
+export LD_LIBRARY_PATH=/usr/lib64:${APARAPI_HOME}/com.amd.aparapi.jni/dist/:${LD_LIBRARY_PATH}
+-----------------------------------------------------
+  <name>mapred.job.tracker</name>
+  <value>node05:54311</value>
+  <name>mapred.task.tracker.http.address</name>
+  <value>0.0.0.0:50061</value>
+  <name>mapred.reduce.parallel.copies</name><value>5</value>
+  <name>tasktracker.http.threads</name><value>40</value>
+  <name>mapred.map.tasks</name><value>32</value>
+  <name>mapred.reduce.tasks</name><value>2</value>
+  <name>mapred.tasktracker.map.tasks.maximum</name><value>4</value>
+  <name>mapred.tasktracker.reduce.tasks.maximum</name><value>2</value>
+  <name>mapred.map.tasks.speculative.execution</name>
+  <value>true</value>
+  <name>mapred.task.timeout</name><value>600000</value>
+  <!--name>mapred.task.timeout</name><value>1200000</value-->
+  <name>mapred.child.java.opts</name><value>-Xms2G -Xmx3G -Dopencl.mapper.threadsPerGroup.gpu=0 -Dopencl.mapper.threadsPerGroup.cpu=0 -Dopencl.reducer.threadsPerGroup.gpu=0 -Dopencl.reducer.threadsPerGroup.cpu=0 -Dopencl.scheduler=BALANCED -Dopencl.vectorsToBuffer=32768</value>
+  <name>mapred.map.tasks.speculative.execution</name><value>false</value>
+  <name>mapred.reduce.tasks.speculative.execution</name><value>false</value>
+  <name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.map.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLBalanceScheduler</value>
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLML4Scheduler</value-->
+  <!--name>mapreduce.reduce.ocl_scheduler</name><value>org.apache.hadoop.mapreduce.HadoopCLStaticScheduler</value-->
+  <name>io.compression.codecs</name>
+  <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+  <name>io.sort.spill.percent</name>
+  <value>0.7</value>
+  <name>io.sort.spill.percent.hadoopcl</name>
+  <value>0.6</value>
+  <name>io.sort.spill.percent.hadoopcl.initial</name>
+  <value>0.5</value>
+  <name>io.sort.quickrestart</name>
+  <value>0.4</value>
+  <name>io.sort.maxrestart</name>
+  <value>0.6</value>
+  <name>io.sort.mb</name>
+  <value>100</value>
+  <name>min.num.spills.for.combine</name>
+  <value>3</value>
+  <name>opencl.global.buckets</name>
+  <value>65536</value>
+  <name>opencl.spill.chunk</name>
+  <value>2</value>
+<property><name>opencl.mapper.nkernels</name><value>1</value></property>
+<property><name>opencl.mapper.ninputbuffers</name><value>2</value></property>
+<property><name>opencl.mapper.noutputbuffers</name><value>4</value></property>
+<property><name>opencl.mapper.prealloc.length.int</name><value>1966080</value></property>
+<property><name>opencl.mapper.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.mapper.prealloc.length.double</name><value>1966080</value></property>
+<property><name>opencl.mapper.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.outputBufferSize</name><value>65536</value></property>
+<property><name>opencl.mapper.val_ele_multiplier</name><value>15</value></property>
+<!--property><name>opencl.mapper.compare</name><value>true</value></property-->
+<property><name>opencl.combiner.nkernels</name><value>1</value></property>
+<property><name>opencl.combiner.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.combiner.prealloc.length.int</name><value>7340032</value></property>
+<property><name>opencl.combiner.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.combiner.prealloc.length.double</name><value>6291456</value></property>
+<property><name>opencl.combiner.inputBufferSize</name><value>6000</value></property>
+<property><name>opencl.combiner.outputBufferSize</name><value>16384</value></property>
+<property><name>opencl.combiner.val_multiplier</name><value>60</value></property>
+<property><name>opencl.combiner.val_ele_multiplier</name><value>20</value></property>
+<property><name>opencl.reducer.nkernels</name><value>1</value></property>
+<property><name>opencl.reducer.ninputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.noutputbuffers</name><value>1</value></property>
+<property><name>opencl.reducer.prealloc.length.int</name><value>16777216</value></property>
+<property><name>opencl.reducer.prealloc.length.float</name><value>0</value></property>
+<property><name>opencl.reducer.prealloc.length.double</name><value>16777216</value></property>
+<property><name>opencl.reducer.inputBufferSize</name><value>65536</value></property>
+<property><name>opencl.reducer.outputBufferSize</name><value>2048</value></property>
+  <name>opencl.buffer.diagnostics</name>
+  <value>false</value>
+  <name>opencl.profiling</name>
+  <value>false</value>
+  <name>opencl.highlevel</name>
+  <value>false</value>
+  <name>opencl.recordings_folder</name>
+  <value>/home-nis/mgrossman/hadoopcl-recordings/</value>
+-----------------------------------------------------
+  <name>dfs.safemode.threshold.pct</name>
+  <value>0</value>
+  <name>dfs.replication</name><value>3</value>
+  <name>dfs.block.size</name><value>67108864</value>
+  <name>dfs.datanode.handler.count</name><value>3</value>
+  <name>dfs.namenode.handler.count</name><value>10</value>
+  <name>dfs.datanode.max.xcievers</name><value>256</value>
+-----------------------------------------------------
+  <name>hadoop.tmp.dir</name>
+  <value>/tmp/hadoop/hadoop-${user.name}</value>
+  <name>fs.default.name</name>
+  <value>hdfs://node05:54309</value>
+<name>io.compression.codecs</name>
+<value>
+</value>
+    <name>io.compression.codec.lzo.class</name>
+    <value>com.hadoop.compression.lzo.LzoCodec</value>
+-----------------------------------------------------
+node08
+-----------------------------------------------------
+192.168.0.105
+-----------------------------------------------------
+Completed reconfiguring
+Warning: $HADOOP_HOME is deprecated.
+
+14/04/19 16:15:33 INFO namenode.NameNode: STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = node05/192.168.0.105
+STARTUP_MSG:   args = [-format]
+STARTUP_MSG:   version = Unknown
+STARTUP_MSG:   build = Unknown -r Unknown; compiled by 'Unknown' on Unknown
+************************************************************/
+14/04/19 16:15:33 INFO util.GSet: VM type       = 64-bit
+14/04/19 16:15:33 INFO util.GSet: 2% max memory = 17.78 MB
+14/04/19 16:15:33 INFO util.GSet: capacity      = 2^21 = 2097152 entries
+14/04/19 16:15:33 INFO util.GSet: recommended=2097152, actual=2097152
+14/04/19 16:15:33 INFO namenode.FSNamesystem: fsOwner=mgrossman
+14/04/19 16:15:34 INFO namenode.FSNamesystem: supergroup=supergroup
+14/04/19 16:15:34 INFO namenode.FSNamesystem: isPermissionEnabled=false
+14/04/19 16:15:34 INFO namenode.FSNamesystem: dfs.block.invalidate.limit=100
+14/04/19 16:15:34 INFO namenode.FSNamesystem: isAccessTokenEnabled=false accessKeyUpdateInterval=0 min(s), accessTokenLifetime=0 min(s)
+14/04/19 16:15:34 INFO namenode.NameNode: Caching file names occuring more than 10 times 
+14/04/19 16:15:34 INFO common.Storage: Image file of size 115 saved in 0 seconds.
+14/04/19 16:15:34 INFO common.Storage: Storage directory /tmp/hadoop/hadoop-mgrossman/dfs/name has been successfully formatted.
+14/04/19 16:15:34 INFO namenode.NameNode: SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at node05/192.168.0.105
+************************************************************/
+Completed namenode startup
+Warning: $HADOOP_HOME is deprecated.
+
+no jobtracker to stop
+node08: no tasktracker to stop
+no namenode to stop
+node08: no datanode to stop
+192.168.0.105: no secondarynamenode to stop
+Completed stop all
+Warning: $HADOOP_HOME is deprecated.
+
+starting namenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-namenode-node05.out
+node08: starting datanode, logging to /tmp/hadoop/logs/hadoop-mgrossman-datanode-node08.out
+192.168.0.105: starting secondarynamenode, logging to /tmp/hadoop/logs/hadoop-mgrossman-secondarynamenode-node05.out
+starting jobtracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-jobtracker-node05.out
+node08: starting tasktracker, logging to /tmp/hadoop/logs/hadoop-mgrossman-tasktracker-node08.out
+Completed start all
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Warning: $HADOOP_HOME is deprecated.
+
+Sending 0 to HDFS took 121 ms
+Sending 0 to HDFS for stage MAPPER took 24 ms
+Sending 0 to HDFS for stage COMBINER took 27 ms
+Sending 0 to HDFS for stage REDUCER took 31 ms
+14/04/19 16:17:26 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+14/04/19 16:17:26 INFO input.FileInputFormat: Total input paths to process : 50
+14/04/19 16:17:27 INFO mapred.JobClient: Running job: job_201404191615_0001
+14/04/19 16:17:28 INFO mapred.JobClient:  map 0% reduce 0%
+14/04/19 16:17:49 INFO mapred.JobClient:  map 3% reduce 0%
+14/04/19 16:17:52 INFO mapred.JobClient:  map 6% reduce 0%
+14/04/19 16:18:04 INFO mapred.JobClient:  map 7% reduce 1%
+14/04/19 16:18:07 INFO mapred.JobClient:  map 12% reduce 2%
+14/04/19 16:18:16 INFO mapred.JobClient:  map 15% reduce 2%
+14/04/19 16:18:19 INFO mapred.JobClient:  map 18% reduce 3%
+14/04/19 16:18:22 INFO mapred.JobClient:  map 18% reduce 4%
+14/04/19 16:18:28 INFO mapred.JobClient:  map 21% reduce 4%
+14/04/19 16:18:31 INFO mapred.JobClient:  map 24% reduce 5%
+14/04/19 16:18:34 INFO mapred.JobClient:  map 25% reduce 6%
+14/04/19 16:18:37 INFO mapred.JobClient:  map 25% reduce 7%
+14/04/19 16:18:40 INFO mapred.JobClient:  map 27% reduce 7%
+14/04/19 16:18:43 INFO mapred.JobClient:  map 30% reduce 8%
+14/04/19 16:18:46 INFO mapred.JobClient:  map 31% reduce 8%
+14/04/19 16:18:49 INFO mapred.JobClient:  map 31% reduce 9%
+14/04/19 16:18:52 INFO mapred.JobClient:  map 33% reduce 10%
+14/04/19 16:18:55 INFO mapred.JobClient:  map 36% reduce 10%
+14/04/19 16:18:58 INFO mapred.JobClient:  map 37% reduce 10%
+14/04/19 16:19:04 INFO mapred.JobClient:  map 39% reduce 11%
+14/04/19 16:19:07 INFO mapred.JobClient:  map 42% reduce 12%
+14/04/19 16:19:10 INFO mapred.JobClient:  map 43% reduce 12%
+14/04/19 16:19:16 INFO mapred.JobClient:  map 45% reduce 13%
+14/04/19 16:19:19 INFO mapred.JobClient:  map 49% reduce 14%
+14/04/19 16:19:22 INFO mapred.JobClient:  map 50% reduce 14%
+14/04/19 16:19:28 INFO mapred.JobClient:  map 52% reduce 15%
+14/04/19 16:19:31 INFO mapred.JobClient:  map 55% reduce 16%
+14/04/19 16:19:34 INFO mapred.JobClient:  map 56% reduce 17%
+14/04/19 16:19:40 INFO mapred.JobClient:  map 58% reduce 17%
+14/04/19 16:19:43 INFO mapred.JobClient:  map 62% reduce 18%
+14/04/19 16:19:49 INFO mapred.JobClient:  map 62% reduce 19%
+14/04/19 16:19:52 INFO mapred.JobClient:  map 64% reduce 20%
+14/04/19 16:19:55 INFO mapred.JobClient:  map 67% reduce 20%
+14/04/19 16:19:58 INFO mapred.JobClient:  map 68% reduce 20%
+14/04/19 16:20:04 INFO mapred.JobClient:  map 71% reduce 22%
+14/04/19 16:20:07 INFO mapred.JobClient:  map 73% reduce 22%
+14/04/19 16:20:10 INFO mapred.JobClient:  map 75% reduce 22%
+14/04/19 16:20:13 INFO mapred.JobClient:  map 76% reduce 23%
+14/04/19 16:20:16 INFO mapred.JobClient:  map 79% reduce 24%
+14/04/19 16:20:19 INFO mapred.JobClient:  map 81% reduce 25%
+14/04/19 16:20:22 INFO mapred.JobClient:  map 82% reduce 25%
+14/04/19 16:20:25 INFO mapred.JobClient:  map 85% reduce 25%
+14/04/19 16:20:28 INFO mapred.JobClient:  map 87% reduce 26%
+14/04/19 16:20:31 INFO mapred.JobClient:  map 89% reduce 27%
+14/04/19 16:20:34 INFO mapred.JobClient:  map 92% reduce 28%
+14/04/19 16:20:37 INFO mapred.JobClient:  map 93% reduce 28%
+14/04/19 16:20:40 INFO mapred.JobClient:  map 95% reduce 29%
+14/04/19 16:20:43 INFO mapred.JobClient:  map 100% reduce 29%
+14/04/19 16:20:46 INFO mapred.JobClient:  map 100% reduce 30%
+14/04/19 16:20:52 INFO mapred.JobClient:  map 100% reduce 65%
+14/04/19 16:20:55 INFO mapred.JobClient:  map 100% reduce 100%
+14/04/19 16:21:00 INFO mapred.JobClient: Job complete: job_201404191615_0001
+14/04/19 16:21:01 INFO mapred.JobClient: Counters: 29
+14/04/19 16:21:01 INFO mapred.JobClient:   Job Counters 
+14/04/19 16:21:01 INFO mapred.JobClient:     Launched reduce tasks=2
+14/04/19 16:21:01 INFO mapred.JobClient:     SLOTS_MILLIS_MAPS=698497
+14/04/19 16:21:01 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+14/04/19 16:21:01 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+14/04/19 16:21:01 INFO mapred.JobClient:     Launched map tasks=64
+14/04/19 16:21:01 INFO mapred.JobClient:     Data-local map tasks=64
+14/04/19 16:21:01 INFO mapred.JobClient:     SLOTS_MILLIS_REDUCES=358747
+14/04/19 16:21:01 INFO mapred.JobClient:   File Output Format Counters 
+14/04/19 16:21:01 INFO mapred.JobClient:     Bytes Written=10260
+14/04/19 16:21:01 INFO mapred.JobClient:   FileSystemCounters
+14/04/19 16:21:01 INFO mapred.JobClient:     FILE_BYTES_READ=12362
+14/04/19 16:21:01 INFO mapred.JobClient:     HDFS_BYTES_READ=3413147971
+14/04/19 16:21:01 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=1776054
+14/04/19 16:21:01 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=10260
+14/04/19 16:21:01 INFO mapred.JobClient:   File Input Format Counters 
+14/04/19 16:21:01 INFO mapred.JobClient:     Bytes Read=3007802906
+14/04/19 16:21:01 INFO mapred.JobClient:   Map-Reduce Framework
+14/04/19 16:21:01 INFO mapred.JobClient:     Map output materialized bytes=13502
+14/04/19 16:21:01 INFO mapred.JobClient:     Map input records=14303334
+14/04/19 16:21:01 INFO mapred.JobClient:     Reduce shuffle bytes=13112
+14/04/19 16:21:01 INFO mapred.JobClient:     Spilled Records=128
+14/04/19 16:21:01 INFO mapred.JobClient:     Map output bytes=12160
+14/04/19 16:21:01 INFO mapred.JobClient:     Total committed heap usage (bytes)=144825122816
+14/04/19 16:21:01 INFO mapred.JobClient:     CPU time spent (ms)=447470
+14/04/19 16:21:01 INFO mapred.JobClient:     Combine input records=64
+14/04/19 16:21:01 INFO mapred.JobClient:     SPLIT_RAW_BYTES=7872
+14/04/19 16:21:01 INFO mapred.JobClient:     Reduce input records=64
+14/04/19 16:21:01 INFO mapred.JobClient:     Reduce input groups=1
+14/04/19 16:21:01 INFO mapred.JobClient:     Combine output records=64
+14/04/19 16:21:01 INFO mapred.JobClient:     Physical memory (bytes) snapshot=61197803520
+14/04/19 16:21:01 INFO mapred.JobClient:     Reduce output records=1
+14/04/19 16:21:01 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=326295052288
+14/04/19 16:21:01 INFO mapred.JobClient:     Map output records=64
+Program Time = 215416 ms

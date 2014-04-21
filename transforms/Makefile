@@ -87,6 +87,8 @@ merge-int-fsparse: file-merger merge/MergeIntFSparseFiles.java
 	javac -cp ${CLASSPATH} merge/MergeIntFSparseFiles.java
 merge-text-vector: file-merger merge/MergeTextVector.java
 	javac -cp ${CLASSPATH} merge/MergeTextVector.java
+merge-int-vector:
+	javac -cp ${CLASSPATH} merge/MergeIntVector.java
 file-merger:
 	javac -cp ${CLASSPATH} merge/FileMerger.java
 
