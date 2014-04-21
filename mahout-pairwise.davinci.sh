@@ -27,7 +27,7 @@ sleep 2
 ./startup.sh ${MAP_SLOTS} ${REDUCE_SLOTS} 0 0 0 0 67108864 ${JAVA_HEAP}
 sleep 30
 
-${HADOOP} fs -put /scratch/jmg3/weights input
+${HADOOP} fs -put /scratch/jmg3/weights-split2 input
 ${HADOOP} fs -put ${HOME}/transfer/norms.bin norms-file
 ${HADOOP} fs -put ${HOME}/transfer/numNonZeroEntries.bin non-zero-entries-file
 
