@@ -53,10 +53,10 @@ public abstract class CompressedInputGenerator {
 
         SequenceFile.CompressionType[] compressionTypes = { 
             //SequenceFile.CompressionType.RECORD,
-            SequenceFile.CompressionType.BLOCK 
+            // SequenceFile.CompressionType.BLOCK 
         };
         CompressionCodec[] codecs = {
-            /*new BZip2Codec(),*/ new DefaultCodec()/*, new GzipCodec(), new SnappyCodec(), new com.hadoop.compression.lzo.LzoCodec()*/ };
+            /*new BZip2Codec(), new DefaultCodec(), new GzipCodec(), new SnappyCodec(), new com.hadoop.compression.lzo.LzoCodec()*/ };
 
         init();
         writeType(SequenceFile.CompressionType.NONE, null, containingOutputFolder, nFiles, perFile);
@@ -78,6 +78,8 @@ public abstract class CompressedInputGenerator {
         String outputFolder = containingOutputFolder+"/"+compressionTypeString+"."+
             codecString+"/";
 
+        long total = nFiles * perFile;
+        long sofar = 0;
         long start = System.currentTimeMillis();
         for(int f = 0; f < nFiles; f++) {
             Path path = new Path(outputFolder+"file."+Integer.toString(f));
@@ -96,13 +98,13 @@ public abstract class CompressedInputGenerator {
 
                 for(int i = 0; i < perFile; i++) {
                     writeNextKeyValue(writer, f * perFile + i, perFile * nFiles);
-                    //jlong val1 = rand.nextLong();
-                    //jlong val2 = rand.nextLong();
-                    //jif(val1 < 0) val1 = -1 * val1;
-                    //jif(val2 < 0) val2 = -1 * val2;
-                    //jwriter.append(new LongWritable(val1), new LongWritable(val2));
+                    sofar++;
+                    if (sofar % 100000 == 0) {
+                        System.out.println(sofar + " / " + total);
+                    }
                 }
                 writer.close();
+                System.out.println("Done with " + f + " / " + nFiles + " files");
             } catch(Exception ex) {
                 ex.printStackTrace();
                 System.exit(-1);

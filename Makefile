@@ -3,9 +3,8 @@ include Makefile.common
 all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testbsparsestridedclasses/ TestBSparseStrided.java 
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
-	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
 	javac -g -classpath ${CLASSPATH} -d testglobalsongpuclasses/ TestGlobalsOnGPU.java
-	javac -g -classpath ${CLASSPATH} -d testfglobalsongpuclasses/ TestFGlobalsOnGPU.java
+	# javac -g -classpath ${CLASSPATH} -d testfglobalsongpuclasses/ TestFGlobalsOnGPU.java
 	javac -g -classpath ${CLASSPATH} -d openclsortclasses/ SortOpenCLVersion.java
 	javac -g -classpath ${CLASSPATH} -d javasortclasses/ SortJavaVersion.java
 	javac -g -classpath ${CLASSPATH} -d openclkmeansclasses/ KMeansOpenCLVersion.java -Xlint:deprecation
@@ -23,9 +22,9 @@ all: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d testmapinputivecclasses/ TestMapInputIvec.java
 	javac -g -classpath ${CLASSPATH} -d testjustreduceoutputsvecclasses/ TestJustReduceOutputSvec.java
 	javac -g -classpath ${CLASSPATH} -d teststridedclasses/ TestStridedPerf.java
+	javac -g -classpath ${CLASSPATH} -d pihcl2classes/ PiHCL2.java
 	jar cvf TestBSparseStrided.jar -C testbsparsestridedclasses/ . SetupInputCompression.class
 	jar cvf PairwiseSimilarity64.jar -C pairwise64classes/ .
-	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . 
 	jar cvf SortOpenCLVersion.jar -C openclsortclasses/ . SetupInputCompression.class
 	jar cvf SortJavaVersion.jar -C javasortclasses/ . SetupInputCompression.class
 	jar cvf KMeansOpenCLVersion.jar -C openclkmeansclasses/ . SetupInputCompression.class
@@ -43,8 +42,9 @@ all: SetupInputCompression.class
 	jar cvf TestMapInputIvec.jar -C testmapinputivecclasses/ . SetupInputCompression.class
 	jar cvf TestJustReduceOutputSvec.jar -C testjustreduceoutputsvecclasses/ . SetupInputCompression.class
 	jar cvf TestGlobalsOnGPU.jar -C testglobalsongpuclasses/ . SetupInputCompression.class
-	jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
+	# jar cvf TestFGlobalsOnGPU.jar -C testfglobalsongpuclasses/ . SetupInputCompression.class
 	jar cvf TestStridedPerf.jar -C teststridedclasses/ . SetupInputCompression.class
+	jar cvf PiHCL2.jar -C pihcl2classes/ . SetupInputCompression.class
 
 opencl-pairwise: SetupInputCompression.class
 	javac -g -classpath ${CLASSPATH} -d pairwise64classes/ PairwiseSimilarity64.java
@@ -65,14 +65,27 @@ opencl-dirichlet:
 	rm -rf dirichletclasses/*
 	javac -g -classpath ${CLASSPATH} -d dirichletclasses/ Dirichlet.java
 	jar cvf Dirichlet.jar -C dirichletclasses/ .
+opencl-pi:
+	rm -rf pihcl2classes/*
+	javac -g -classpath ${CLASSPATH} -d pihcl2classes/ PiHCL2.java
+	jar cvf PiHCL2.jar -C pihcl2classes/ .
+opencl-blackscholes:
+	rm -rf blackscholeshcl2classes/*
+	javac -g -classpath ${CLASSPATH} -d blackscholeshcl2classes/ BlackscholesHCL2.java
+	jar cvf BlackscholesHCL2.jar -C blackscholeshcl2classes/ .
+opencl-old-kmeans:
+	rm -rf oldkmeanshcl2classes/*
+	javac -g -classpath ${CLASSPATH} -d oldkmeanshcl2classes/ KMeansHCL2.java
+	jar cvf KMeansHCL2.jar -C oldkmeanshcl2classes/ .
+opencl-sort:
+	rm -rf sorthcl2classes/*
+	javac -g -classpath ${CLASSPATH} -d sorthcl2classes/ SortHCL2.java
+	jar cvf SortHCL2.jar -C sorthcl2classes/ .
+
 opencl-writable: SetupInputCompression.class
 	rm -rf writableclasses/*
 	javac -g -classpath ${CLASSPATH} -d writableclasses/ TestWritables.java
 	jar cvf TestWritables.jar -C writableclasses/ .
-
-opencl-pairwise_xiangyu: SetupInputCompression.class
-	javac -g -classpath ${CLASSPATH} -d pairwise64classes_xiangyu/ PairwiseSimilarity64_xiangyu.java
-	jar cvf PairwiseSimilarity64_xiangyu.jar -C pairwise64classes_xiangyu/ . 
 
 generate-weights-file-build:
 	javac -classpath ${CLASSPATH} GenerateWeightsFile.java
@@ -175,13 +188,13 @@ compression-gen-build:
 	javac -cp ${CLASSPATH} GenerateTestWritables.java
 
 bs-generate:
-	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/blackscholes.input 50 038400
+	java ${RUN_FLAGS} BlacksholesCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_blackscholes.input 50 8038400
 sort-generate:
-	java ${RUN_FLAGS} SortCompressedInputGenerator ${HADOOP_INPUT_DIR}/sort.input 30 4000000
+	java ${RUN_FLAGS} SortCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_sort.input 50 4000000
 pi-generate:
-	java ${RUN_FLAGS} PiCompressedInputGenerator ${HADOOP_INPUT_DIR}/pi.input 50 4000000
+	java ${RUN_FLAGS} PiCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_pi.input 50 8000000
 kmeans-generate:
-	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/kmeans.input 30 4000000
+	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_kmeans.input 50 4000000
 kmeans-dyn-generate:
 	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/kmeansdyn.input 30 4000000
 svec-map-input-generate:
