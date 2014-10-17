@@ -181,13 +181,6 @@ public class KMeansHCL2 {
         }
     }
 
-    private static boolean contains(int[] arr, int val) {
-        for(int i = 0; i < arr.length; i++) {
-            if(arr[i] == val) return true;
-        }
-        return false;
-    }
-
     private static List<Point> getStartingCentroids(int N, Configuration conf) throws IOException {
         Random rand = new Random();
         List<Point> points = new ArrayList<Point>();

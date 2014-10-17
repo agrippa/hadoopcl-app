@@ -194,7 +194,8 @@ sort-generate:
 pi-generate:
 	java ${RUN_FLAGS} PiCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_pi.input 50 8000000
 kmeans-generate:
-	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_kmeans.input 50 4000000
+	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_kmeans.input 25 8000000
+# java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/old_kmeans.input 50 4000000
 kmeans-dyn-generate:
 	java ${RUN_FLAGS} KMeansCompressedInputGenerator ${HADOOP_INPUT_DIR}/kmeansdyn.input 30 4000000
 svec-map-input-generate:
