@@ -14,10 +14,11 @@ import org.apache.hadoop.mapreduce.OpenCLMapper;
 import org.apache.hadoop.mapreduce.OpenCLReducer;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.IntPairDoubleDoubleHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntUPairDoubleDoubleHadoopCLReducerKernel;
+import org.apache.hadoop.mapreduce.IntUPairIntUPairHadoopCLReducerKernel;
 import org.apache.hadoop.mapreduce.DeviceStrength;
-import org.apache.hadoop.mapreduce.DoubleDoubleIntPairHadoopCLMapperKernel;
-import org.apache.hadoop.mapreduce.HadoopCLPairValueIterator;
+import org.apache.hadoop.mapreduce.DoubleDoubleIntUPairHadoopCLMapperKernel;
+import org.apache.hadoop.mapreduce.HadoopCLUPairValueIterator;
 import org.apache.hadoop.mapreduce.HadoopOpenCLContext;
 import org.apache.hadoop.mapreduce.lib.input.*;
 import org.apache.hadoop.mapreduce.lib.output.*;
@@ -52,7 +53,7 @@ public class KMeansHCL2 {
                 }
             }
 
-            write(closest_index, x, y, 1);
+            write(closest_index, 1, x, y);
         }
 
         public void deviceStrength(DeviceStrength str) {
@@ -66,6 +67,67 @@ public class KMeansHCL2 {
         static {
             fileMapping.put(Device.TYPE.CPU, "old_kmeans.mapper.cpu");
             fileMapping.put(Device.TYPE.GPU, "old_kmeans.mapper.gpu");
+        }
+        @Override
+        public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
+    }
+
+    public static class KMeansHCL2Combiner extends
+            IntUPairIntUPairHadoopCLReducerKernel {
+        public KMeansHCL2Combiner(HadoopOpenCLContext c, Integer i) { super(c, i); }
+
+        private double dist(double x1, double y1, double x2, double y2) {
+            double xdiff = x2 - x1;
+            double ydiff = y2 - y1;
+            return Math.sqrt(xdiff*xdiff + ydiff*ydiff);
+        }
+
+        public void reduce(int cluster, HadoopCLUPairValueIterator valIter) {
+            double sumX = 0.0;
+            double sumY = 0.0;
+            int count = 0;
+
+            for(int i = 0; i < valIter.nValues(); i++) {
+                int this_count = valIter.getValId();
+                sumX += (valIter.getVal1() * this_count);
+                sumY += (valIter.getVal2() * this_count);
+                count += this_count;
+                valIter.next();
+            }
+           
+            double avgX = sumX / (double)count;
+            double avgY = sumY / (double)count;
+
+            double closest_x = -1.0;
+            double closest_y = -1.0;
+            double closest_dist = 1000000.0;
+            double dist;
+
+            valIter.seekTo(0);
+            for(int i = 0; i < valIter.nValues(); i++) {
+                dist = dist(avgX, avgY, valIter.getVal1(), valIter.getVal2());
+                if(dist < closest_dist) {
+                    closest_dist = dist;
+                    closest_x = valIter.getVal1();
+                    closest_y = valIter.getVal2();
+                }
+                valIter.next();
+            }
+
+            write(cluster, count, closest_x, closest_y);
+        }
+
+        public void deviceStrength(DeviceStrength str) {
+            str.add(Device.TYPE.JAVA, 10);
+        }
+        public Device.TYPE[] validDevices() {
+          return null;
+        }
+        private static final Map<Device.TYPE, String> fileMapping =
+            new HashMap<Device.TYPE, String>();
+        static {
+            fileMapping.put(Device.TYPE.CPU, "old_kmeans.reducer.cpu");
+            fileMapping.put(Device.TYPE.GPU, "old_kmeans.reducer.gpu");
         }
         @Override
         public Map<Device.TYPE, String> getKernelFile() { return fileMapping; }
@@ -148,7 +210,7 @@ public class KMeansHCL2 {
        job.setOutputValueClass(DoubleWritable.class);
 
        job.setMapOutputKeyClass(IntWritable.class);
-       job.setMapOutputValueClass(UPairWritable.class);
+       job.setMapOutputValueClass(UniquePairWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
        job.setOCLMapperClass(KMeansHCL2Mapper.class);
@@ -156,7 +218,7 @@ public class KMeansHCL2 {
        job.setReducerClass(OpenCLReducer.class);
        job.setOCLReducerClass(KMeansHCL2Reducer.class);
 
-       job.setCombinerClass(OpenCLCombiner.class);
+       job.setCombinerClass(OpenCLReducer.class);
        job.setOCLCombinerClass(KMeansHCL2Combiner.class);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
