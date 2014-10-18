@@ -30,7 +30,7 @@ import org.apache.mahout.math.Vector;
 import org.apache.mahout.clustering.iterator.ClusterWritable;
 
 public class KMeansHCL2 {
-    public static class KMeansHCL2Mapper extends DoubleDoubleIntPairHadoopCLMapperKernel {
+    public static class KMeansHCL2Mapper extends DoubleDoubleIntUPairHadoopCLMapperKernel {
         public KMeansHCL2Mapper(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         private double dist(double x1, double y1, double x2, double y2) {
@@ -52,7 +52,7 @@ public class KMeansHCL2 {
                 }
             }
 
-            write(closest_index, x, y);
+            write(closest_index, x, y, 1);
         }
 
         public void deviceStrength(DeviceStrength str) {
@@ -72,7 +72,7 @@ public class KMeansHCL2 {
     }
 
     public static class KMeansHCL2Reducer extends
-            IntPairDoubleDoubleHadoopCLReducerKernel {
+            IntUPairDoubleDoubleHadoopCLReducerKernel {
         public KMeansHCL2Reducer(HadoopOpenCLContext c, Integer i) { super(c, i); }
 
         private double dist(double x1, double y1, double x2, double y2) {
@@ -81,18 +81,21 @@ public class KMeansHCL2 {
             return Math.sqrt(xdiff*xdiff + ydiff*ydiff);
         }
 
-        public void reduce(int cluster, HadoopCLPairValueIterator valIter /*double[] xValues, double[] yValues, int startOffset, int stopOffset*/) {
+        public void reduce(int cluster, HadoopCLUPairValueIterator valIter) {
             double sumX = 0.0;
             double sumY = 0.0;
+            int count = 0;
 
             for(int i = 0; i < valIter.nValues(); i++) {
-                sumX += valIter.getVal1();
-                sumY += valIter.getVal2();
+                int this_count = valIter.getValId();
+                sumX += (valIter.getVal1() * this_count);
+                sumY += (valIter.getVal2() * this_count);
+                count += this_count;
                 valIter.next();
             }
            
-            double avgX = sumX / (double)valIter.nValues();
-            double avgY = sumY / (double)valIter.nValues();
+            double avgX = sumX / (double)count;
+            double avgY = sumY / (double)count;
 
             double closest_x = -1.0;
             double closest_y = -1.0;
@@ -145,13 +148,16 @@ public class KMeansHCL2 {
        job.setOutputValueClass(DoubleWritable.class);
 
        job.setMapOutputKeyClass(IntWritable.class);
-       job.setMapOutputValueClass(PairWritable.class);
+       job.setMapOutputValueClass(UPairWritable.class);
 
        job.setMapperClass(OpenCLMapper.class);
        job.setOCLMapperClass(KMeansHCL2Mapper.class);
        
        job.setReducerClass(OpenCLReducer.class);
        job.setOCLReducerClass(KMeansHCL2Reducer.class);
+
+       job.setCombinerClass(OpenCLCombiner.class);
+       job.setOCLCombinerClass(KMeansHCL2Combiner.class);
 
        job.setInputFormatClass(SequenceFileInputFormat.class);
        job.setOutputFormatClass(SequenceFileOutputFormat.class);
